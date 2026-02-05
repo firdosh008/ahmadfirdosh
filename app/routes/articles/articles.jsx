@@ -19,9 +19,9 @@ const jsonData = [
     "title": "Full Stack Developer - LLMCONTROLS",
     "company": "Zemuria Venture Studio",
     "location": "Pondicherry",
-    "abstract": `•	Built a visual flow-based React interface for LLM workflows and developed FastAPI backend services to power workflow components, enabling dynamic functionality and execution through React Flow.
-                 •	Implemented MLflow, enabling experiment tracking and performance monitoring for AI agents.
-                 •	Designed an agentic RFP automation system using 5 specialized AI agents, reducing manual proposal effort and improving bid accuracy through real-time market validation.
+    "abstract": `•	Built a visual flow-based React interface for LLM workflows and developed FastAPI backend services to power workflow components.
+                 •	Implemented MLflow, enabling experiment tracking, performance monitoring for AI agents.
+                 •	Designed an agentic RFP automation system using 5 specialized AI agents, reducing manual proposal effort and improving bid accuracy.
                  `,
     "date": "2025-04-01",
     "end": "2026-01-15",
