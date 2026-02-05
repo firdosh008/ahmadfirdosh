@@ -15,6 +15,7 @@ import objsImage from '~/assets/objs.png';
 import flatlineImage from '~/assets/flatline.png';
 import sraHotelImage1 from '~/assets/sra_htole_1.png';
 import sraHotelImage2 from '~/assets/sra_hotle_2.png';
+import pathVisualizerImage from '~/assets/path_visul.png';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { ProjectSummary } from '../home/project-summary';
@@ -39,9 +40,10 @@ export const Projects = () => {
   const projectSix = useRef();
   const projectSeven = useRef();
   const projectEight = useRef();
+  const projectNine = useRef();
 
   useEffect(() => {
-    const sections = [projectOne, projectTwo, projectThree, projectFour, projectFive, projectSix, projectSeven, projectEight];
+    const sections = [projectOne, projectTwo, projectThree, projectFour, projectFive, projectSix, projectSeven, projectEight, projectNine];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -162,9 +164,54 @@ export const Projects = () => {
       />
       <ProjectSummary
         id="project-5"
+        sectionRef={projectNine}
+        visible={visibleSections.includes(projectNine.current)}
+        index={5}
+        title="Path Visualizer"
+        description="Developed an interactive path-finding visualizer using Dijkstra's algorithm for educational graph traversal demonstrations. Implemented real-time grid-based visualization with user-controlled node placement and animated shortest path rendering. Built a responsive web application that allows users to interactively place start nodes, end nodes, and walls, then visualize the algorithm's step-by-step execution with color-coded visited nodes and the final shortest path."
+        buttonText="View Website"
+        buttonLink="https://firdosh008.github.io/path_vizualization/"
+        model={{
+          type: 'laptop',
+          alt: 'Path Visualizer web application',
+          textures: [
+            {
+              srcSet: `${pathVisualizerImage} 800w, ${pathVisualizerImage} 1920w`,
+              placeholder: sliceTexturePlaceholder,
+            },
+          ],
+        }}
+      />
+      <ProjectSummary
+        id="project-6"
+        alternate
+        sectionRef={projectEight}
+        visible={visibleSections.includes(projectEight.current)}
+        index={6}
+        title="SRA Hotels"
+        description="Designed and developed a visually stunning, multi-page hotel website with engaging UI and smooth animations. The site includes Home, About, Services, Rooms, Booking, Gallery, Team, Testimonials, and Contact pages with responsive layouts and dynamic animation effects to enhance user interaction and visual appeal. Built using HTML, CSS, and JavaScript, the website showcases premium hotel offerings, room details, and service information, creating an immersive and user-friendly browsing experience."
+        buttonText="View Website"
+        buttonLink="#"
+        model={{
+          type: 'phone',
+          alt: 'SRA Hotels mobile app',
+          textures: [
+            {
+              srcSet: `${sraHotelImage1} 375w, ${sraHotelImage1} 750w`,
+              placeholder: gamestackTexturePlaceholder,
+            },
+            {
+              srcSet: `${sraHotelImage2} 375w, ${sraHotelImage2} 750w`,
+              placeholder: gamestackTexture2Placeholder,
+            },
+          ],
+        }}
+      />
+      <ProjectSummary
+        id="project-7"
         sectionRef={projectFive}
         visible={visibleSections.includes(projectFive.current)}
-        index={5}
+        index={7}
         title="LLM Controls"
         description="Built an advanced AI control platform for managing and monitoring large language models with real-time analytics, prompt optimization, and security controls. Developed visual workflow orchestration system enabling dynamic configuration of LLMs, vector databases, and tools across multiple client use cases. Implemented MLflow for experiment tracking and performance monitoring, along with an agentic RFP automation system using specialized AI agents."
         buttonText="View Website"
@@ -181,11 +228,11 @@ export const Projects = () => {
         }}
       />
       <ProjectSummary
-        id="project-6"
+        id="project-8"
         alternate
         sectionRef={projectSix}
         visible={visibleSections.includes(projectSix.current)}
-        index={6}
+        index={8}
         title="FlexiPaisa"
         description="Built a production-grade lending services mobile application using React Native, serving business entities and MSME employees with secure loan management and real-time tracking. Implemented comprehensive financial workflows including loan application processing, credit assessment, and automated repayment scheduling. Integrated secure payment gateways and real-time notifications to enhance user experience and operational efficiency."
         buttonText="View on Play Store"
@@ -206,10 +253,10 @@ export const Projects = () => {
         }}
       />
       <ProjectSummary
-        id="project-7"
+        id="project-9"
         sectionRef={projectSeven}
         visible={visibleSections.includes(projectSeven.current)}
-        index={7}
+        index={9}
         title="Preplix"
         description="Designed and developed a scalable online learning platform for higher education using Next.js, featuring real-time progress tracking and interactive course management. Built comprehensive learning management system with video streaming, assignment submissions, and automated grading capabilities. Implemented advanced analytics dashboard for educators to monitor student engagement and performance metrics."
         buttonText="View Website"
@@ -221,31 +268,6 @@ export const Projects = () => {
             {
               srcSet: `${sprTexture} 1280w, ${sprTexture} 2560w`,
               placeholder: sprTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-8"
-        alternate
-        sectionRef={projectEight}
-        visible={visibleSections.includes(projectEight.current)}
-        index={8}
-        title="SRA Hotels"
-        description="Designed and developed a visually stunning, multi-page hotel website with engaging UI and smooth animations. The site includes Home, About, Services, Rooms, Booking, Gallery, Team, Testimonials, and Contact pages with responsive layouts and dynamic animation effects to enhance user interaction and visual appeal. Built using HTML, CSS, and JavaScript, the website showcases premium hotel offerings, room details, and service information, creating an immersive and user-friendly browsing experience."
-        buttonText="View Website"
-        buttonLink="#"
-        model={{
-          type: 'phone',
-          alt: 'SRA Hotels mobile app',
-          textures: [
-            {
-              srcSet: `${sraHotelImage1} 375w, ${sraHotelImage1} 750w`,
-              placeholder: gamestackTexturePlaceholder,
-            },
-            {
-              srcSet: `${sraHotelImage2} 375w, ${sraHotelImage2} 750w`,
-              placeholder: gamestackTexture2Placeholder,
             },
           ],
         }}
