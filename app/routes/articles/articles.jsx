@@ -30,6 +30,22 @@ const jsonData = [
     "featured": true
   },
   {
+    "title": "Full Stack Developer",
+    "company": "Objs",
+    "location": "Remote",
+    "abstract": `• Worked on an AI-driven platform that converts uploaded documents into semantic vector embeddings to enable intelligent file understanding and retrieval.
+                • Implemented conversational search and context-aware Q&A allowing users to interact with document content naturally.
+                • Built functionality to automatically generate mini web applications and feature interfaces from uploaded files for interactive visualization and content exploration.
+                • Developed user prompt-driven workflows enabling dynamic creation of file-based web components and knowledge interfaces.
+                • Enhanced document readability through rich previews and structured markdown-formatted responses.
+                • Contributed to improving file navigation, information extraction, and knowledge accessibility through AI-powered processing pipelines.`,
+
+    "date": "2025-01-1",
+    "end": "2025-03-30",
+    "banner": "/static/hello-world-banner.jpg",
+    "featured": false
+  },
+  {
     "title": "Frontend Developer - E-learning Platform | Financial services App",
     "company": "One-For-Life",
     "location": "Remote",
@@ -38,10 +54,11 @@ const jsonData = [
                  •	Collaborated with an 8-member cross-functional team following Agile workflows.
                   `,
     "date": "2023-09-12",
-    "end": "2025-03-31",
+    "end": "2024-12-31",
     "banner": "/static/hello-world-banner.jpg",
     "featured": false
   },
+  
   {
     "title": "Research - Multi-Object Tracking System",
     "company": "IEEE GCAT Conference",
