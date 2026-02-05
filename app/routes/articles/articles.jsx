@@ -37,7 +37,7 @@ const jsonData = [
                  •	Collaborated with an 8-member cross-functional team following Agile workflows.
                   `,
     "date": "2023-09-12",
-    "end": "2024-03-31",
+    "end": "2025-03-31",
     "banner": "/static/hello-world-banner.jpg",
     "featured": false
   },
