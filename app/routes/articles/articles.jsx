@@ -19,8 +19,7 @@ const jsonData = [
     "title": "Full Stack Developer - LLMCONTROLS",
     "company": "Zemuria Venture Studio",
     "location": "Pondicherry",
-    "abstract": `•	Developed an AI workflow orchestration platform enabling dynamic configuration of LLMs, vector databases, and tools across multiple client use cases.
-                 •	Built a visual flow-based React interface for LLM workflows and developed FastAPI backend services to power workflow components, enabling dynamic functionality and execution through React Flow.
+    "abstract": `•	Built a visual flow-based React interface for LLM workflows and developed FastAPI backend services to power workflow components, enabling dynamic functionality and execution through React Flow.
                  •	Implemented MLflow, enabling experiment tracking and performance monitoring for AI agents.
                  •	Designed an agentic RFP automation system using 5 specialized AI agents, reducing manual proposal effort and improving bid accuracy through real-time market validation.
                  `,
@@ -28,22 +27,6 @@ const jsonData = [
     "end": "2026-01-15",
     "banner": "/static/modern-styling-in-react-banner.jpg",
     "featured": true
-  },
-  {
-    "title": "Full Stack Developer",
-    "company": "Objs",
-    "location": "Remote",
-    "abstract": `• Worked on an AI-driven platform that converts uploaded documents into semantic vector embeddings to enable intelligent file understanding and retrieval.
-                • Implemented conversational search and context-aware Q&A allowing users to interact with document content naturally.
-                • Built functionality to automatically generate mini web applications and feature interfaces from uploaded files for interactive visualization and content exploration.
-                • Developed user prompt-driven workflows enabling dynamic creation of file-based web components and knowledge interfaces.
-                • Enhanced document readability through rich previews and structured markdown-formatted responses.
-                • Contributed to improving file navigation, information extraction, and knowledge accessibility through AI-powered processing pipelines.`,
-
-    "date": "2025-01-1",
-    "end": "2025-03-30",
-    "banner": "/static/hello-world-banner.jpg",
-    "featured": false
   },
   {
     "title": "Frontend Developer - E-learning Platform | Financial services App",
