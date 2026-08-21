@@ -140,25 +140,97 @@ password gate, not a secret URL.
 
 ## 8. Visual and performance direction
 
-**Remove the Three.js displacement sphere hero.** Primary reason is performance,
-not taste: buyer A is on a mid-range Android phone on mobile data, and the WebGL
-hero costs seconds of load and battery to produce an effect that signals
-"developer portfolio" — the opposite of the positioning. Removing it also drops
-`three` and `three-stdlib` from the critical path.
+### 8.1 References
 
-Replacement direction: editorial. Large typography, generous whitespace,
-staggered scroll-triggered reveals, subtle hover states on cards and buttons.
-Premium and eye-catching without reading as technical.
+Two references were supplied and analysed:
+
+- **okaydev.co** — full-bleed colour-block sections, scrolling marquee band,
+  oversized display type, 3-up card rows, FAQ accordion, hard-edged pill buttons.
+  Energy: high. Palette (acid green / electric purple / neon yellow) rejected —
+  reads "creative agency for creative people" to buyer A, and dark-dominant
+  sections read "techy" to exactly the buyer being targeted.
+- **themewagon Noah** — cream editorial layout, serif display type, enormous
+  whitespace, oversized low-contrast ghost section headings, letterspaced
+  small-caps eyebrow labels, image + overlapping caption-card project layout,
+  two-column numbered capability list. Structure adopted wholesale. Rejected: its
+  ghost headings fail contrast requirements and vanish on small screens; rotated
+  vertical side labels break on mobile for no payoff; stock photography is worse
+  than the real product screenshots already available.
+
+**Direction: Noah's bones, okaydev's pulse, warm neutral palette.**
+Target energy level 5 on a scale where Noah is 2 and okaydev is 9.
+
+### 8.2 Palette
+
+Single accent. Everything else cream and near-black.
+
+| Token | Value | Use |
+|---|---|---|
+| `--bg` | `#F7F4EE` | Cream page base |
+| `--bg-alt` | `#EDE6DA` | Warm sand, alternating sections |
+| `--ink` | `#16150F` | Warm near-black type. Never pure black on cream. |
+| `--ink-muted` | `#5A5850` | Body copy, captions |
+| `--accent` | `#1E3D30` | Deep forest green. Buttons, links, chapter blocks. |
+| `--accent-hover` | `#2C5744` | Hover/active |
+| `--on-accent` | `#F7F4EE` | Cream type reversed out of green blocks |
+
+Rationale: cream + near-black + deep green is the register high-end editorial and
+hospitality brands use — premium without effort. Green reads as growth and calm to
+a business buyer and avoids the indigo default that most freelance sites use.
+
+Dark mode: the existing theme system stays functional, but cream/green is the
+canonical presentation. Dark variants derive from the same tokens.
+
+### 8.3 Typography
+
+**Gotham is removed.** The template bundles Gotham woff2 files
+(`app/assets/fonts/gotham-*.woff2`) — a commercial Hoefler&Co typeface almost
+certainly served without a webfont licence. Acceptable risk on a hobby portfolio,
+not on the site used to sell services to businesses and agencies. Replaced:
+
+- **Display: Instrument Serif** — high contrast, carries the oversized ghost headings
+- **Body: Inter** — variable, strong at small sizes
+
+Both open-licensed. Self-hosted as woff2 (better than the Google CDN on Cloudflare
+Pages). All Gotham files deleted; `theme.js` `fontStack` updated.
+
+### 8.4 Devices
+
+Adopted, in order of value:
+
+1. **Oversized ghost section headings** — large display word behind each section
+   heading. Highest premium-signal-per-line-of-CSS on the page. Contrast raised
+   above Noah's to stay accessible; hidden below 768px where it does not fit.
+2. **Scrolling marquee band** — `WEBSITES ✦ WEB APPS ✦ AI INTEGRATION ✦ AGENCIES`
+   on an accent-coloured strip. Best single borrow from okaydev: eye-catching,
+   no technical connotation, one CSS animation, no dependency.
+3. **Full-bleed colour-block chapters** — two or three sections on `--accent` or
+   `--bg-alt` so scrolling reads as chapters rather than one long document.
+4. **Letterspaced small-caps eyebrow labels** above section headings.
+5. **Project cards** — large image with a small overlapping caption card and a
+   thin `VIEW DETAILS →` link. Replaces the current 3D-model cards; far lighter.
+6. **Two-column numbered capability list** for the "What I build" section.
+7. **Pill buttons with a hard offset edge.**
+8. **FAQ accordion** — functional, not decorative. Answering "how long",
+   "what do you need from me", "do you handle maintenance" on the page removes
+   pre-sales friction from WhatsApp conversations.
+
+### 8.5 Performance
+
+**Remove the Three.js displacement sphere hero.** Performance, not taste: buyer A
+is on a mid-range Android over mobile data, and the WebGL hero costs seconds of
+load and battery to signal "developer portfolio" — the opposite of the positioning.
+Removing it drops `three` and `three-stdlib` from the critical path.
 
 **No new dependencies.** `framer-motion` is already installed and covers every
 animation required. Scroll reveals reuse the existing `IntersectionObserver`
-pattern already in `home.jsx`.
+pattern in `home.jsx`. The marquee is pure CSS.
 
-Respect `prefers-reduced-motion` — the existing theme system already has hooks
-for this and they must not be bypassed.
+Respect `prefers-reduced-motion`; the existing theme system has hooks for this and
+they must not be bypassed. The marquee must stop under reduced motion.
 
-**Responsiveness is a hard requirement on every page**, including the hidden rate
-card. Mobile-first: the majority of buyer A traffic is mobile.
+**Responsiveness is a hard requirement on every page**, including the unlisted rate
+card, from 320px up. Mobile-first: the majority of buyer A traffic is mobile.
 
 ## 9. Conversion
 
