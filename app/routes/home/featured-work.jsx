@@ -1,4 +1,5 @@
 import { Button } from '~/components/button';
+import { MagneticWrap } from '~/components/magnetic-wrap';
 import { ProjectCard } from '~/components/project-card';
 import { Section } from '~/components/section';
 import { SectionHeading } from '~/components/section-heading';
@@ -36,9 +37,11 @@ export function FeaturedWork({ id, sectionRef }) {
         ))}
       </motion.div>
       <div className={styles.more}>
-        <Button href="/work" iconEnd="arrow-right" iconHoverShift>
-          See all work
-        </Button>
+        <MagneticWrap>
+          <Button href="/work" iconEnd="arrow-right" iconHoverShift>
+            See all work
+          </Button>
+        </MagneticWrap>
       </div>
     </Section>
   );

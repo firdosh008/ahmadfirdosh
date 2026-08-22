@@ -1,6 +1,7 @@
 import { Button } from '~/components/button';
 import { Footer } from '~/components/footer';
 import { Heading } from '~/components/heading';
+import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Marquee } from '~/components/marquee';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
@@ -62,9 +63,11 @@ const ClosingCta = () => (
         Tell me a little about it on WhatsApp — I usually reply the same day.
       </Text>
       <div className={styles.ctaActions}>
-        <Button className={styles.ctaButton} icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
-          Chat on WhatsApp
-        </Button>
+        <MagneticWrap>
+          <Button className={styles.ctaButton} icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
+            Chat on WhatsApp
+          </Button>
+        </MagneticWrap>
         <Button className={styles.ctaButtonSecondary} secondary iconEnd="arrow-right" iconHoverShift href="/contact">
           Or use the contact form
         </Button>

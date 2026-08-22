@@ -3,9 +3,11 @@ import heroPhotoPlaceholder from '~/assets/hero-photo-placeholder.jpg';
 import { Button } from '~/components/button';
 import { Heading } from '~/components/heading';
 import { Image } from '~/components/image';
+import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { getWhatsAppLink } from '~/utils/contact';
 import { heroFadeUp, heroStagger } from '~/utils/motion';
 import styles from './hero.module.css';
@@ -18,6 +20,11 @@ const CREDIBILITY = [
 ];
 
 export function Hero({ id, sectionRef }) {
+  const reduceMotion = useReducedMotion();
+  const photoRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: photoRef, offset: ['start start', 'end start'] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 40]);
+
   return (
     <Section as="header" id={id} ref={sectionRef} className={styles.hero}>
       <div className={styles.layout}>
@@ -44,9 +51,11 @@ export function Hero({ id, sectionRef }) {
             </Text>
           </motion.div>
           <motion.div className={styles.actions} variants={heroFadeUp}>
-            <Button icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
-              Chat on WhatsApp
-            </Button>
+            <MagneticWrap>
+              <Button icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
+                Chat on WhatsApp
+              </Button>
+            </MagneticWrap>
             <Button secondary iconEnd="arrow-right" iconHoverShift href="/work">
               See the work
             </Button>
@@ -58,9 +67,11 @@ export function Hero({ id, sectionRef }) {
           </motion.ul>
         </motion.div>
         <motion.div
+          ref={photoRef}
           className={styles.photo}
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
+          style={{ y: parallaxY }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
         >
           <Image

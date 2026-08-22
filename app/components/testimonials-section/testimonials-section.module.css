@@ -20,6 +20,12 @@
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space2XL);
     align-items: stretch;
+    touch-action: pan-y;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
 
     @media (--mediaTablet) {
       grid-template-columns: repeat(2, 1fr);

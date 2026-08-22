@@ -50,6 +50,7 @@ export const TestimonialsSection = ({ items, id }) => {
   const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
   const hasMultiplePages = pages.length > 1;
+  const currentPage = Math.min(page, pages.length - 1);
 
   useEffect(() => {
     setPage(0);
@@ -67,6 +68,21 @@ export const TestimonialsSection = ({ items, id }) => {
 
   if (!items.length) return null;
 
+  const goToPage = delta => {
+    setPage(current => (current + delta + pages.length) % pages.length);
+  };
+
+  const handleDragEnd = (event, info) => {
+    const SWIPE_DISTANCE = 40;
+    const SWIPE_VELOCITY = 300;
+
+    if (info.offset.x < -SWIPE_DISTANCE || info.velocity.x < -SWIPE_VELOCITY) {
+      goToPage(1);
+    } else if (info.offset.x > SWIPE_DISTANCE || info.velocity.x > SWIPE_VELOCITY) {
+      goToPage(-1);
+    }
+  };
+
   return (
     <Section as="section" id={id} className={styles.section}>
       <SectionHeading eyebrow="Testimonials" ghost="Clients" align="center">
@@ -80,9 +96,14 @@ export const TestimonialsSection = ({ items, id }) => {
         whileInView="visible"
         viewport={revealViewport}
         variants={fadeUp}
+        drag={hasMultiplePages ? 'x' : false}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.15}
+        onDragStart={() => setPaused(true)}
+        onDragEnd={handleDragEnd}
       >
         <AnimatePresence mode="popLayout" initial={false}>
-          {pages[page].map(item => (
+          {pages[currentPage].map(item => (
             <motion.article
               className={styles.card}
               key={item.name}
@@ -126,7 +147,7 @@ export const TestimonialsSection = ({ items, id }) => {
               key={i}
               type="button"
               className={styles.dot}
-              data-active={i === page}
+              data-active={i === currentPage}
               aria-label={`Show testimonials page ${i + 1} of ${pages.length}`}
               onClick={() => setPage(i)}
             />
