@@ -29,7 +29,7 @@ const MARQUEE_ITEMS = [
 export const meta = () => {
   return baseMeta({
     title: 'Full-Stack Developer & AI Engineer',
-    description: `${config.name} builds websites, web apps, and AI-powered tools for businesses and agencies in ${config.location}.`,
+    description: `${config.name} builds websites, web apps, and AI-powered tools for businesses and agencies.`,
   });
 };
 
