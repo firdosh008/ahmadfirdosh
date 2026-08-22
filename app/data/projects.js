@@ -139,20 +139,6 @@ export const projects = [
     },
   },
   {
-    id: 'anymart',
-    title: 'Anymart',
-    category: ProjectCategory.BusinessWebsites,
-    summary: 'E-commerce platform with payments, inventory, and an admin dashboard.',
-    buttonText: 'View Website',
-    buttonLink: 'https://anymart.onrender.com/',
-    images: [
-      { src: anymart1, placeholder: anymart1Placeholder, alt: 'Anymart homepage' },
-      { src: anymart2, placeholder: anymart2Placeholder, alt: 'Anymart top categories' },
-      { src: anymart3, placeholder: anymart3Placeholder, alt: 'Anymart top anime section' },
-    ],
-  },
-
-  {
     id: 'hotel-classic-inn',
     title: 'Hotel Classic Inn',
     category: ProjectCategory.BusinessWebsites,
@@ -201,17 +187,17 @@ export const projects = [
     },
   },
   {
-    id: 'preplix',
-    title: 'Preplix',
+    id: 'anymart',
+    title: 'Anymart',
     category: ProjectCategory.ClientProducts,
-    summary: 'Online learning platform connecting students with expert instructors.',
-    buttonText: null,
-    buttonLink: null,
-    image: {
-      srcSet: `${sprTexture} 1280w, ${sprTexture} 2560w`,
-      placeholder: sprTexturePlaceholder,
-      alt: 'Preplix learning platform',
-    },
+    summary: 'E-commerce platform with payments, inventory, and an admin dashboard.',
+    buttonText: 'View Website',
+    buttonLink: 'https://anymart.onrender.com/',
+    images: [
+      { src: anymart1, placeholder: anymart1Placeholder, alt: 'Anymart homepage' },
+      { src: anymart2, placeholder: anymart2Placeholder, alt: 'Anymart top categories' },
+      { src: anymart3, placeholder: anymart3Placeholder, alt: 'Anymart top anime section' },
+    ],
   },
   {
     id: 'flexipaisa',
@@ -225,6 +211,19 @@ export const projects = [
       srcSet: `${gamestackTextureLarge} 375w, ${gamestackTextureLarge} 750w`,
       placeholder: gamestackTexturePlaceholder,
       alt: 'FlexiPaisa mobile app',
+    },
+  },
+  {
+    id: 'preplix',
+    title: 'Preplix',
+    category: ProjectCategory.ClientProducts,
+    summary: 'Online learning platform connecting students with expert instructors.',
+    buttonText: null,
+    buttonLink: null,
+    image: {
+      srcSet: `${sprTexture} 1280w, ${sprTexture} 2560w`,
+      placeholder: sprTexturePlaceholder,
+      alt: 'Preplix learning platform',
     },
   },
 
