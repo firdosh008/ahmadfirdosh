@@ -3,6 +3,7 @@ import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jp
 import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
 import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
 import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
+import ladderbriefLogo from '~/assets/ladderbrief-logo.svg';
 import llmControlsImage from '~/assets/llm_controls.png';
 import objsImage from '~/assets/objs.png';
 import sra1 from '~/assets/sra-1-home.jpg';
@@ -79,7 +80,6 @@ export const projects = [
     summary: 'College admissions counselling website for a Dehradun-based business, live since 2020.',
     buttonText: 'View Website',
     buttonLink: 'https://www.admissiondesk.info/',
-    featured: true,
     images: [
       { src: ad1, placeholder: ad1Placeholder, alt: 'AdmissionDesk homepage' },
       { src: ad2, placeholder: ad2Placeholder, alt: 'AdmissionDesk counselling process' },
@@ -145,13 +145,6 @@ export const projects = [
       { src: anymart2, placeholder: anymart2Placeholder, alt: 'Anymart top categories' },
       { src: anymart3, placeholder: anymart3Placeholder, alt: 'Anymart top anime section' },
     ],
-    testimonial: {
-      quote:
-        'We went from a static catalogue to a real e-commerce platform with payments and inventory tracking. Firdosh kept us updated at every step and delivered on time.',
-      name: 'Shivam Chandhok',
-      role: 'Anymart',
-      rating: 5,
-    },
   },
 
   {
@@ -189,7 +182,6 @@ export const projects = [
     summary: 'Travel booking platform with real-time itineraries and online payments.',
     buttonText: 'View Website',
     buttonLink: 'https://thecrazymountaineers.com/',
-    featured: true,
     images: [
       { src: crazy1, placeholder: crazy1Placeholder, alt: 'The Crazy Mountaineers homepage' },
       { src: crazy2, placeholder: crazy2Placeholder, alt: 'The Crazy Mountaineers treks listing' },
@@ -233,17 +225,40 @@ export const projects = [
 
   // --- AI & Automation ---------------------------------------------------
   {
+    id: 'ladderbrief',
+    title: 'Ladder Brief',
+    category: ProjectCategory.AI,
+    summary:
+      'AI content pipeline that takes founders from research to script to video, powered by a custom long-term memory system and MCP server.',
+    buttonText: 'View Website',
+    buttonLink: 'https://ladderbrief.com/',
+    logo: ladderbriefLogo,
+    testimonial: {
+      quote:
+        'Firdosh built our entire AI content pipeline from the ground up — research to script to finished video, with real memory behind it instead of a one-off script. It changed how fast we can put out content.',
+      name: 'Shivam Chandhok',
+      role: 'Ladder Brief',
+      rating: 5,
+    },
+  },
+  {
     id: 'llm-controls',
     title: 'LLM Controls',
     category: ProjectCategory.AI,
     summary: 'AI control platform for LLM workflows and agent monitoring.',
     buttonText: 'View Website',
     buttonLink: 'https://app.llmcontrols.ai/',
-    featured: true,
     image: {
       srcSet: `${llmControlsImage} 800w, ${llmControlsImage} 1920w`,
       placeholder: sliceTexturePlaceholder,
       alt: 'LLM Controls platform interface',
+    },
+    testimonial: {
+      quote:
+        'We needed real visibility into what our agents were actually doing, not just logs. Firdosh built us a platform that gives us that control.',
+      name: 'Pradeep',
+      role: 'LLM Controls',
+      rating: 5,
     },
   },
   {
@@ -258,10 +273,22 @@ export const projects = [
       placeholder: sliceTexturePlaceholder,
       alt: 'Objs AI workspace platform',
     },
+    testimonial: {
+      quote:
+        'Firdosh built exactly what we needed — a place to dump every file and actually find what mattered again. It just works.',
+      name: 'Jimmy',
+      role: 'Objs',
+      rating: 5,
+    },
   },
 ];
 
-export const featuredProjects = projects.filter(project => project.featured);
+// Curated, ordered subset for the home page — Ladder Brief leads.
+const FEATURED_IDS = ['ladderbrief', 'admissiondesk', 'crazy-mountaineers'];
+
+export const featuredProjects = FEATURED_IDS.map(id =>
+  projects.find(project => project.id === id)
+);
 
 export const testimonials = projects
   .filter(project => project.testimonial)

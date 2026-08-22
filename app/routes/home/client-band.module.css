@@ -1,6 +1,6 @@
 .band {
   width: 100%;
-  padding: var(--space2XL) var(--spaceOuter);
+  padding: var(--space2XL) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,22 +12,4 @@
   color: var(--textLight);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-}
-
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--spaceM) var(--space2XL);
-  max-width: var(--maxWidthL);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.item {
-  font-family: var(--fontStackDisplay);
-  font-size: var(--fontSizeBodyL);
-  color: var(--textTitle);
-  white-space: nowrap;
 }

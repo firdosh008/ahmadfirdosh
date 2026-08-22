@@ -14,7 +14,7 @@ const CREDIBILITY = [
   '3+ years shipping production software',
   'AI Engineer, Anthropic-certified',
   'Live client sites across hospitality, healthcare & travel',
-  '9+ business websites shipped and running',
+  '12+ projects shipped for real clients',
 ];
 
 export function Hero({ id, sectionRef }) {

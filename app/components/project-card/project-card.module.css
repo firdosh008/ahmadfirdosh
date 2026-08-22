@@ -16,6 +16,34 @@
     height: 100%;
   }
 
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spaceM);
+    height: 100%;
+    padding: var(--spaceL);
+    text-align: center;
+    background: linear-gradient(
+      135deg,
+      var(--accent),
+      color-mix(in lab, var(--accent) 70%, var(--text))
+    );
+  }
+
+  .coverLogo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+  }
+
+  .coverTitle {
+    font-family: var(--fontStackDisplay);
+    font-size: var(--fontSizeH4);
+    color: var(--background);
+  }
+
   .caption {
     position: relative;
     z-index: var(--zIndex2);

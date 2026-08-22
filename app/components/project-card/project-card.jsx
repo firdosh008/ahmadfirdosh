@@ -11,17 +11,25 @@ export const ProjectCard = ({
   summary,
   image,
   images,
+  logo,
   buttonText,
   buttonLink,
   className,
   ...rest
 }) => {
-  const slides = images || [{ src: image.srcSet.split(' ')[0], alt: image.alt }];
+  const slides = images || (image ? [{ src: image.srcSet.split(' ')[0], alt: image.alt }] : null);
 
   return (
     <article className={classes(styles.card, className)} {...rest}>
       <div className={styles.imageWrap}>
-        <MediaCarousel images={slides} className={styles.image} />
+        {slides ? (
+          <MediaCarousel images={slides} className={styles.image} />
+        ) : (
+          <div className={styles.cover}>
+            {logo && <img src={logo} alt="" className={styles.coverLogo} />}
+            <span className={styles.coverTitle}>{title}</span>
+          </div>
+        )}
       </div>
       <div className={styles.caption}>
         {!!category && (

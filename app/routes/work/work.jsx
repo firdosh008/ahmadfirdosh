@@ -47,6 +47,7 @@ export const Work = () => (
                 summary={project.summary}
                 image={project.image}
                 images={project.images}
+                logo={project.logo}
                 buttonText={project.buttonText}
                 buttonLink={project.buttonLink}
               />
