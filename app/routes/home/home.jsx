@@ -36,9 +36,9 @@ export const Home = () => (
   <div className={styles.home}>
     <Hero id="hero" />
     <ClientBand />
-    <Marquee items={MARQUEE_ITEMS} />
     <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />
+    <Marquee items={MARQUEE_ITEMS} />
     <WhatWeBuild id="what-i-build" />
     <WhoWeWorkWith />
     <ClosingCta />

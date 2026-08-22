@@ -2,10 +2,10 @@
   .hero {
     display: flex;
     justify-content: center;
-    padding: 200px var(--spaceOuter) var(--space4XL);
+    padding: 140px var(--spaceOuter) var(--space2XL);
 
     @media (--mediaTablet) {
-      padding-top: 160px;
+      padding-top: 120px;
     }
 
     @media (--mediaMobile) {

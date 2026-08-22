@@ -29,7 +29,7 @@ export function Hero({ id, sectionRef }) {
         >
           <motion.div variants={fadeUp}>
             <Text className={styles.eyebrow} size="s">
-              Full-Stack &amp; AI Developer &middot; Dehradun
+              Full-Stack &amp; AI Developer
             </Text>
           </motion.div>
           <motion.div variants={fadeUp}>

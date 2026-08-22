@@ -3,7 +3,12 @@ import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jp
 import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
 import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
 import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
-import ladderbriefLogo from '~/assets/ladderbrief-logo.svg';
+import ladderbrief1 from '~/assets/ladderbrief-1-hero.jpg';
+import ladderbrief1Placeholder from '~/assets/ladderbrief-1-hero-placeholder.jpg';
+import ladderbrief2 from '~/assets/ladderbrief-2-script.jpg';
+import ladderbrief2Placeholder from '~/assets/ladderbrief-2-script-placeholder.jpg';
+import ladderbrief3 from '~/assets/ladderbrief-3-brain.jpg';
+import ladderbrief3Placeholder from '~/assets/ladderbrief-3-brain-placeholder.jpg';
 import llmControlsImage from '~/assets/llm_controls.png';
 import objsImage from '~/assets/objs.png';
 import sra1 from '~/assets/sra-1-home.jpg';
@@ -232,7 +237,11 @@ export const projects = [
       'AI content pipeline that takes founders from research to script to video, powered by a custom long-term memory system and MCP server.',
     buttonText: 'View Website',
     buttonLink: 'https://ladderbrief.com/',
-    logo: ladderbriefLogo,
+    images: [
+      { src: ladderbrief1, placeholder: ladderbrief1Placeholder, alt: 'Ladder Brief homepage' },
+      { src: ladderbrief2, placeholder: ladderbrief2Placeholder, alt: 'Ladder Brief AI script generation' },
+      { src: ladderbrief3, placeholder: ladderbrief3Placeholder, alt: "Ladder Brief Digital Brain knowledge graph" },
+    ],
     testimonial: {
       quote:
         'Firdosh built our entire AI content pipeline from the ground up — research to script to finished video, with real memory behind it instead of a one-off script. It changed how fast we can put out content.',
