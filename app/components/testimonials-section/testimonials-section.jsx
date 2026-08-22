@@ -6,7 +6,7 @@ import { useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import styles from './testimonials-section.module.css';
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 3;
 const AUTO_ADVANCE_MS = 6000;
 const MAX_RATING = 5;
 

@@ -14,12 +14,17 @@
 
   .stage {
     width: 100%;
-    max-width: var(--maxWidthL);
+    max-width: var(--maxWidthXL);
     margin-top: var(--space3XL);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space2XL);
-    align-items: start;
+    align-items: stretch;
+
+    @media (--mediaLaptop) {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: var(--maxWidthL);
+    }
 
     @media (--mediaTablet) {
       grid-template-columns: 1fr;
@@ -28,6 +33,9 @@
   }
 
   .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: var(--space2XL);
     background: var(--backgroundLight);
     border-radius: 6px;
@@ -64,6 +72,7 @@
   }
 
   .quote {
+    flex: 1;
     margin: 0 0 var(--spaceL);
     color: var(--textBody);
   }
