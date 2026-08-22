@@ -7,9 +7,24 @@ import { useEffect, useState } from 'react';
 import { fadeUp, revealViewport } from '~/utils/motion';
 import styles from './testimonials-section.module.css';
 
-const PAGE_SIZE = 3;
 const AUTO_ADVANCE_MS = 6000;
 const MAX_RATING = 5;
+// Keep in sync with --mediaMobile in global.module.css.
+const MOBILE_QUERY = '(max-width: 696px)';
+
+function usePageSize() {
+  const [pageSize, setPageSize] = useState(3);
+
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_QUERY);
+    const update = () => setPageSize(mql.matches ? 1 : 3);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+
+  return pageSize;
+}
 
 function chunk(items, size) {
   const pages = [];
@@ -29,11 +44,16 @@ function initials(name) {
 }
 
 export const TestimonialsSection = ({ items, id }) => {
-  const pages = chunk(items, PAGE_SIZE);
+  const pageSize = usePageSize();
+  const pages = chunk(items, pageSize);
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
   const hasMultiplePages = pages.length > 1;
+
+  useEffect(() => {
+    setPage(0);
+  }, [pageSize]);
 
   useEffect(() => {
     if (!hasMultiplePages || paused || reduceMotion) return;
