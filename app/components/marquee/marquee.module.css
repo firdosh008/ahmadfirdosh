@@ -4,6 +4,13 @@
     overflow: hidden;
     background: var(--accent);
     padding: var(--spaceL) 0;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black var(--spaceXL),
+      black calc(100% - var(--spaceXL)),
+      transparent
+    );
   }
 
   .track {

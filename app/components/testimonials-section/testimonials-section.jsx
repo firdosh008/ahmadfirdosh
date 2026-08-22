@@ -2,8 +2,9 @@ import { Heading } from '~/components/heading';
 import { Section } from '~/components/section';
 import { SectionHeading } from '~/components/section-heading';
 import { Text } from '~/components/text';
-import { useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { fadeUp, revealViewport } from '~/utils/motion';
 import styles from './testimonials-section.module.css';
 
 const PAGE_SIZE = 3;
@@ -51,40 +52,53 @@ export const TestimonialsSection = ({ items, id }) => {
       <SectionHeading eyebrow="Testimonials" ghost="Clients" align="center">
         What clients say
       </SectionHeading>
-      <div
+      <motion.div
         className={styles.stage}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+        variants={fadeUp}
       >
-        {pages[page].map(item => (
-          <article className={styles.card} key={item.name}>
-            <div className={styles.avatar} aria-hidden>
-              {initials(item.name)}
-            </div>
-            {!!item.rating && (
-              <div
-                className={styles.rating}
-                aria-label={`Rated ${item.rating} out of ${MAX_RATING}`}
-              >
-                {Array.from({ length: MAX_RATING }, (_, i) => (
-                  <span aria-hidden key={i} data-filled={i < item.rating}>
-                    ★
-                  </span>
-                ))}
+        <AnimatePresence mode="popLayout" initial={false}>
+          {pages[page].map(item => (
+            <motion.article
+              className={styles.card}
+              key={item.name}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <div className={styles.avatar} aria-hidden>
+                {initials(item.name)}
               </div>
-            )}
-            <Text as="p" size="m" className={styles.quote}>
-              “{item.quote}”
-            </Text>
-            <Heading level={5} as="p" className={styles.name}>
-              {item.name}
-            </Heading>
-            <Text as="p" size="s" className={styles.role}>
-              {item.role}
-            </Text>
-          </article>
-        ))}
-      </div>
+              {!!item.rating && (
+                <div
+                  className={styles.rating}
+                  aria-label={`Rated ${item.rating} out of ${MAX_RATING}`}
+                >
+                  {Array.from({ length: MAX_RATING }, (_, i) => (
+                    <span aria-hidden key={i} data-filled={i < item.rating}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+              )}
+              <Text as="p" size="m" className={styles.quote}>
+                “{item.quote}”
+              </Text>
+              <Heading level={5} as="p" className={styles.name}>
+                {item.name}
+              </Heading>
+              <Text as="p" size="s" className={styles.role}>
+                {item.role}
+              </Text>
+            </motion.article>
+          ))}
+        </AnimatePresence>
+      </motion.div>
       {hasMultiplePages && (
         <div className={styles.dots}>
           {pages.map((_, i) => (

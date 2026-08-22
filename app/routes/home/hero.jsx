@@ -7,7 +7,7 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { motion } from 'framer-motion';
 import { getWhatsAppLink } from '~/utils/contact';
-import { fadeUp, staggerChildren } from '~/utils/motion';
+import { heroFadeUp, heroStagger } from '~/utils/motion';
 import styles from './hero.module.css';
 
 const CREDIBILITY = [
@@ -25,25 +25,25 @@ export function Hero({ id, sectionRef }) {
           className={styles.content}
           initial="hidden"
           animate="visible"
-          variants={staggerChildren}
+          variants={heroStagger}
         >
-          <motion.div variants={fadeUp}>
+          <motion.div variants={heroFadeUp}>
             <Text className={styles.eyebrow} size="s">
               Full-Stack &amp; AI Developer
             </Text>
           </motion.div>
-          <motion.div variants={fadeUp}>
+          <motion.div variants={heroFadeUp}>
             <Heading level={1} as="h1" className={styles.title}>
               Websites and apps that turn visitors into customers.
             </Heading>
           </motion.div>
-          <motion.div variants={fadeUp}>
+          <motion.div variants={heroFadeUp}>
             <Text className={styles.subtitle} size="l" as="p">
               Full-stack development for businesses and agencies — from a simple
               site to a custom AI-powered tool.
             </Text>
           </motion.div>
-          <motion.div className={styles.actions} variants={fadeUp}>
+          <motion.div className={styles.actions} variants={heroFadeUp}>
             <Button icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
               Chat on WhatsApp
             </Button>
@@ -51,7 +51,7 @@ export function Hero({ id, sectionRef }) {
               See the work
             </Button>
           </motion.div>
-          <motion.ul className={styles.credibility} variants={fadeUp}>
+          <motion.ul className={styles.credibility} variants={heroFadeUp}>
             {CREDIBILITY.map(item => (
               <li key={item}>{item}</li>
             ))}
@@ -59,9 +59,9 @@ export function Hero({ id, sectionRef }) {
         </motion.div>
         <motion.div
           className={styles.photo}
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.7, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
         >
           <Image
             cover

@@ -3,6 +3,17 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    @media (--mediaUseMotion) {
+      transition: transform var(--durationM) var(--bezierFastoutSlowin);
+
+      &:hover {
+        transform: translateY(-4px);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
   }
 
   .imageWrap {
@@ -10,6 +21,22 @@
     aspect-ratio: 16 / 9;
     border-radius: 6px;
     overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    transition: box-shadow var(--durationM) var(--bezierFastoutSlowin);
+
+    & img {
+      transition: transform var(--durationL) var(--bezierFastoutSlowin);
+    }
+
+    @media (--mediaUseMotion) {
+      .card:hover & {
+        box-shadow: 0 20px 40px -16px color-mix(in lab, var(--text) 35%, transparent);
+      }
+
+      .card:hover & img {
+        transform: scale(1.06);
+      }
+    }
   }
 
   .image {

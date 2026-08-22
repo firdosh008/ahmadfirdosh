@@ -13,3 +13,16 @@ export const staggerChildren = {
 };
 
 export const revealViewport = { once: true, margin: '-10% 0px' };
+
+// Slightly bigger/slower variant reserved for the hero's first-load
+// entrance, so the one animation every visitor sees immediately feels
+// more deliberate than the standard scroll-reveal used everywhere else.
+export const heroFadeUp = {
+  hidden: { opacity: 0, y: 36 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
+};
+
+export const heroStagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14 } },
+};

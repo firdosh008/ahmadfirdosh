@@ -4,6 +4,13 @@
     overflow: hidden;
     background: var(--backgroundLight);
     padding: var(--spaceL) 0;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black var(--spaceXL),
+      black calc(100% - var(--spaceXL)),
+      transparent
+    );
   }
 
   .track {
@@ -11,7 +18,7 @@
     width: max-content;
 
     @media (--mediaUseMotion) {
-      animation: marquee 36s linear infinite;
+      animation: marquee 26s linear infinite;
     }
   }
 

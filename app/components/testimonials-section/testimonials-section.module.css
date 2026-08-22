@@ -21,12 +21,12 @@
     gap: var(--space2XL);
     align-items: stretch;
 
-    @media (--mediaLaptop) {
+    @media (--mediaTablet) {
       grid-template-columns: repeat(2, 1fr);
       max-width: var(--maxWidthL);
     }
 
-    @media (--mediaTablet) {
+    @media (--mediaMobile) {
       grid-template-columns: 1fr;
       max-width: var(--maxWidthS);
     }

@@ -36,7 +36,7 @@ export function FeaturedWork({ id, sectionRef }) {
         ))}
       </motion.div>
       <div className={styles.more}>
-        <Button secondary href="/work" iconEnd="arrow-right" iconHoverShift>
+        <Button href="/work" iconEnd="arrow-right" iconHoverShift>
           See all work
         </Button>
       </div>
