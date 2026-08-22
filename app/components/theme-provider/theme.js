@@ -12,7 +12,8 @@ const baseTokens = {
   durationXL: '800ms',
   systemFontStack:
     'system-ui, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Ubuntu, Helvetica Neue, sans-serif',
-  fontStack: `Gotham, var(--systemFontStack)`,
+  fontStack: `Inter, var(--systemFontStack)`,
+  fontStackDisplay: `'Instrument Serif', Georgia, Cambria, 'Times New Roman', serif`,
   monoFontStack:
     'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
   japaneseFontStack:
@@ -107,26 +108,29 @@ const tokensMobileSmall = {
 };
 
 // Tokens that change based on theme
+// Canonical presentation is `light`: cream + deep forest green (see
+// docs/superpowers/specs/2026-08-21-freelance-portfolio-design.md §8.2).
+// `dark` is a derived variant so the existing theme toggle keeps working.
 const dark = {
-  background: 'oklch(17.76% 0 0)',
-  backgroundLight: 'oklch(21.78% 0 0)',
-  primary: 'oklch(84.42% 0.19 202.24)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  background: 'oklch(19% 0.01 130)',
+  backgroundLight: 'oklch(24% 0.012 130)',
+  primary: 'oklch(64% 0.1 155)',
+  accent: 'oklch(64% 0.1 155)',
   error: 'oklch(65.91% 0.249 13.76)',
-  text: 'var(--white)',
+  text: 'oklch(96% 0.008 95)',
   textTitle: 'var(--text)',
   textBody: 'color-mix(in lab, var(--text) 80%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 60%, transparent)',
 };
 
 const light = {
-  background: 'oklch(96.12% 0 0)',
-  backgroundLight: 'var(--white)',
-  primary: 'var(--black)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  background: 'oklch(96% 0.008 95)',
+  backgroundLight: 'oklch(92% 0.014 90)',
+  primary: 'oklch(29% 0.045 155)',
+  accent: 'oklch(29% 0.045 155)',
   error: 'oklch(63.17% 0.259 25.41)',
-  text: 'var(--black)',
-  textTitle: 'color-mix(in lab, var(--text) 90%, transparent)',
+  text: 'oklch(16% 0.006 95)',
+  textTitle: 'color-mix(in lab, var(--text) 92%, transparent)',
   textBody: 'color-mix(in lab, var(--text) 75%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 55%, transparent)',
 };

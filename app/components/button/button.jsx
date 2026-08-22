@@ -7,7 +7,7 @@ import { classes } from '~/utils/style';
 import styles from './button.module.css';
 
 function isExternalLink(href) {
-  return href?.includes('://');
+  return href?.includes('://') || href?.startsWith('tel:') || href?.startsWith('mailto:');
 }
 
 export const Button = forwardRef(({ href, ...rest }, ref) => {

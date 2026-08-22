@@ -1,0 +1,106 @@
+@layer components {
+  .carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--backgroundLight);
+
+    &:hover .arrow {
+      opacity: 1;
+    }
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    opacity: 0;
+    transition: opacity var(--durationL) ease;
+
+    &[data-active='true'] {
+      opacity: 1;
+    }
+  }
+
+  .arrow {
+    position: absolute;
+    z-index: var(--zIndex2);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: color-mix(in lab, var(--text) 55%, transparent);
+    color: var(--background);
+    opacity: 0;
+    transition: opacity var(--durationM) ease, background var(--durationM) ease;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in lab, var(--text) 75%, transparent);
+    }
+
+    &:focus-visible {
+      opacity: 1;
+    }
+
+    &[data-side='prev'] {
+      left: var(--spaceM);
+    }
+
+    &[data-side='next'] {
+      right: var(--spaceM);
+    }
+
+    @media (--mediaTouch) {
+      opacity: 1;
+    }
+  }
+
+  .counter {
+    position: absolute;
+    z-index: var(--zIndex2);
+    top: var(--spaceM);
+    right: var(--spaceM);
+    padding: 2px var(--spaceS);
+    font-size: var(--fontSizeBodyXS);
+    font-weight: var(--fontWeightMedium);
+    color: var(--background);
+    background: color-mix(in lab, var(--text) 55%, transparent);
+    border-radius: 100px;
+  }
+
+  .dots {
+    position: absolute;
+    z-index: var(--zIndex2);
+    left: 50%;
+    bottom: var(--spaceM);
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spaceS);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: color-mix(in lab, var(--background) 60%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in lab, var(--text) 30%, transparent);
+    cursor: pointer;
+    transition: background var(--durationM) ease, width var(--durationM) ease;
+
+    &[data-active='true'] {
+      width: 18px;
+      border-radius: 4px;
+      background: var(--background);
+    }
+  }
+}

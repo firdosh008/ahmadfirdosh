@@ -1,0 +1,87 @@
+@layer layout {
+  .build {
+    padding-top: var(--space5XL);
+    padding-bottom: var(--space5XL);
+
+    @media (--mediaMobile) {
+      padding-top: var(--space3XL);
+      padding-bottom: var(--space3XL);
+    }
+  }
+
+  .buildGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space2XL);
+    margin-top: var(--space3XL);
+
+    @media (--mediaTablet) {
+      grid-template-columns: 1fr;
+      gap: var(--space2XL);
+    }
+  }
+
+  .buildCard {
+    padding-top: var(--spaceXL);
+    border-top: 2px solid var(--accent);
+  }
+
+  .index {
+    display: block;
+    margin-bottom: var(--spaceM);
+    font-family: var(--fontStackDisplay);
+    font-size: var(--fontSizeH4);
+    color: color-mix(in lab, var(--text) 30%, transparent);
+  }
+
+  .buildTitle {
+    margin: 0 0 var(--spaceM);
+  }
+
+  .buildText {
+    color: var(--textBody);
+  }
+
+  .audience {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background: var(--backgroundLight);
+    padding-top: var(--space5XL);
+    padding-bottom: var(--space5XL);
+
+    @media (--mediaMobile) {
+      padding-top: var(--space3XL);
+      padding-bottom: var(--space3XL);
+    }
+  }
+
+  .audienceGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space2XL);
+    margin-top: var(--space3XL);
+
+    @media (--mediaTablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .audienceCard {
+    background: var(--background);
+    padding: var(--space2XL);
+  }
+
+  .audienceTitle {
+    margin: 0 0 var(--spaceM);
+  }
+
+  .audienceText {
+    display: block;
+    margin-bottom: var(--spaceXL);
+    color: var(--textBody);
+  }
+}

@@ -10,7 +10,6 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "start": "wrangler pages dev ./build/client",
-    "postinstall": "node ./scripts/draco.cjs",
     "deploy": "wrangler pages deploy",
     "dev:storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",

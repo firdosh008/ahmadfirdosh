@@ -1,0 +1,41 @@
+@layer components {
+  .faq {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item {
+    border-bottom: 1px solid color-mix(in lab, var(--text) 15%, transparent);
+    padding: var(--spaceL) 0;
+
+    &[open] .chevron {
+      transform: rotate(90deg);
+    }
+  }
+
+  .question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spaceL);
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .chevron {
+    flex: 0 0 auto;
+    color: var(--accent);
+    transition: transform var(--durationM) var(--bezierFastoutSlowin);
+  }
+
+  .answer {
+    margin: 0;
+    padding-top: var(--spaceM);
+    max-width: var(--maxWidthS);
+    color: var(--textBody);
+  }
+}

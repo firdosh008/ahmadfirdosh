@@ -13,12 +13,30 @@
     color: var(--textLight);
   }
 
-  .link {
-    display: inline-flex;
-  }
-
   .date {
     padding-right: var(--spaceXS);
     display: inline-flex;
+  }
+
+  .socialLinks {
+    display: flex;
+    gap: var(--spaceM);
+    margin-left: var(--spaceM);
+  }
+
+  .socialLink {
+    display: inline-flex;
+    color: var(--textLight);
+    transition: color var(--durationM) ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--text);
+    }
+
+    & svg {
+      width: 18px;
+      height: 18px;
+    }
   }
 }

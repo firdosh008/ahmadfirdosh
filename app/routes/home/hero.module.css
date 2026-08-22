@@ -1,0 +1,125 @@
+@layer layout {
+  .hero {
+    display: flex;
+    justify-content: center;
+    padding: 200px var(--spaceOuter) var(--space4XL);
+
+    @media (--mediaTablet) {
+      padding-top: 160px;
+    }
+
+    @media (--mediaMobile) {
+      padding-top: 120px;
+      padding-bottom: var(--space3XL);
+    }
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, var(--maxWidthM)) auto;
+    align-items: stretch;
+    gap: var(--space4XL);
+    width: 100%;
+    max-width: 1320px;
+
+    @media (--mediaTablet) {
+      grid-template-columns: 1fr;
+      align-items: center;
+      gap: var(--space3XL);
+    }
+  }
+
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .photo {
+    justify-self: center;
+    width: 420px;
+    min-height: 420px;
+    border-radius: 6px;
+    border: 1px solid color-mix(in lab, var(--text) 12%, transparent);
+    overflow: hidden;
+
+    @media (--mediaLaptop) {
+      width: 340px;
+      min-height: 340px;
+    }
+
+    @media (--mediaTablet) {
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 4 / 5;
+      min-height: 0;
+      justify-self: center;
+    }
+
+    @media (--mediaMobile) {
+      max-width: 300px;
+    }
+  }
+
+  .photoImage {
+    height: 100%;
+  }
+
+  .eyebrow {
+    display: block;
+    margin-bottom: var(--spaceL);
+    color: var(--accent);
+    font-weight: var(--fontWeightMedium);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .title {
+    margin: 0 0 var(--spaceXL);
+    max-width: 16ch;
+  }
+
+  .subtitle {
+    display: block;
+    max-width: 46ch;
+    margin-bottom: var(--space2XL);
+    color: var(--textBody);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spaceL);
+    margin-bottom: var(--space3XL);
+  }
+
+  .credibility {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spaceM) var(--space2XL);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border-top: 1px solid color-mix(in lab, var(--text) 15%, transparent);
+    padding-top: var(--spaceXL);
+
+    & li {
+      position: relative;
+      padding-left: var(--spaceM);
+      font-size: var(--fontSizeBodyS);
+      color: var(--textLight);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5em;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+    }
+  }
+}

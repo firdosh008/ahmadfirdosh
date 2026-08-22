@@ -1,3 +1,54 @@
 .home {
   overflow-x: hidden;
 }
+
+.cta {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: var(--accent);
+  padding-top: var(--space5XL);
+  padding-bottom: var(--space5XL);
+  display: flex;
+  justify-content: center;
+
+  @media (--mediaMobile) {
+    padding-top: var(--space3XL);
+    padding-bottom: var(--space3XL);
+  }
+}
+
+.ctaContent {
+  max-width: var(--maxWidthS);
+  text-align: center;
+}
+
+.ctaTitle {
+  margin: 0 0 var(--spaceM);
+  color: var(--background);
+}
+
+.ctaText {
+  display: block;
+  margin-bottom: var(--space2XL);
+  color: color-mix(in lab, var(--background) 85%, transparent);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spaceL);
+}
+
+.ctaButton {
+  --primary: var(--background);
+  --buttonTextColor: var(--accent);
+}
+
+.ctaButtonSecondary {
+  --buttonTextColor: var(--background);
+}

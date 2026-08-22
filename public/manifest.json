@@ -1,8 +1,8 @@
 {
-    "short_name": "Firdosh Ahmad",
-    "name": "Portfolio of Firdosh Ahmad - Full-Stack Developer",
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#111111",
-    "background_color": "#111111"
-  }
+  "short_name": "Firdosh Ahmad",
+  "name": "Firdosh Ahmad - Full-Stack Developer & AI Engineer",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#F7F4EE",
+  "background_color": "#F7F4EE"
+}

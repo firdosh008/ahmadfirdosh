@@ -11,9 +11,10 @@ import {
   useRouteError,
 } from '@remix-run/react';
 import { createCookieSessionStorage, json } from '@remix-run/node';
+import { MotionConfig } from 'framer-motion';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
-import GothamBook from '~/assets/fonts/gotham-book.woff2';
-import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
+import InterVariable from '~/assets/fonts/inter-variable.woff2';
+import InstrumentSerifRegular from '~/assets/fonts/instrument-serif-regular.woff2';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
@@ -27,14 +28,14 @@ import './global.module.css';
 export const links = () => [
   {
     rel: 'preload',
-    href: GothamMedium,
+    href: InterVariable,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
   },
   {
     rel: 'preload',
-    href: GothamBook,
+    href: InstrumentSerifRegular,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
@@ -66,7 +67,7 @@ export const loader = async ({ request, context }) => {
   });
 
   const session = await getSession(request.headers.get('Cookie'));
-  const theme = session.get('theme') || 'dark';
+  const theme = session.get('theme') || 'light';
 
   return json(
     { canonicalUrl, theme },
@@ -117,10 +118,10 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Theme color doesn't support oklch so I'm hard coding these hexes for now */}
-        <meta name="theme-color" content={theme === 'dark' ? '#111' : '#F2F2F2'} />
+        <meta name="theme-color" content={theme === 'dark' ? '#14150F' : '#F7F4EE'} />
         <meta
           name="color-scheme"
-          content={theme === 'light' ? 'light dark' : 'dark light'}
+          content={theme === 'dark' ? 'dark light' : 'light dark'}
         />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />
@@ -140,7 +141,9 @@ export default function App() {
             tabIndex={-1}
             data-loading={state === 'loading'}
           >
-            <Outlet />
+            <MotionConfig reducedMotion="user">
+              <Outlet />
+            </MotionConfig>
           </main>
         </ThemeProvider>
         <ScrollRestoration />
@@ -158,13 +161,13 @@ export function ErrorBoundary() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#111" />
-        <meta name="color-scheme" content="dark light" />
+        <meta name="theme-color" content="#F7F4EE" />
+        <meta name="color-scheme" content="light dark" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />
         <Links />
       </head>
-      <body data-theme="dark">
+      <body data-theme="light">
         <Error error={error} />
         <ScrollRestoration />
         <Scripts />

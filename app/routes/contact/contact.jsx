@@ -11,8 +11,10 @@ import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
 import { useFormInput } from '~/hooks';
 import { useRef, useState } from 'react';
-import { cssProps, msToNum, numToMs } from '~/utils/style';
+import { classes, cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
+import { getWhatsAppLink } from '~/utils/contact';
+import config from '~/config.json';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import styles from './contact.module.css';
 import emailjs from '@emailjs/browser';
@@ -28,6 +30,14 @@ export const meta = () => {
 const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
+
+const BUDGET_OPTIONS = [
+  'Under ₹25,000',
+  '₹25,000 – 75,000',
+  '₹75,000 – 2,00,000',
+  '₹2,00,000+',
+  'Not sure yet',
+];
 
 export const Contact = () => {
   const errorRef = useRef();
@@ -56,6 +66,8 @@ export const Contact = () => {
       return;
     }
 
+    const budget = new FormData(e.currentTarget.form).get('budget') || 'Not specified';
+
     try {
       await emailjs.send(
         'service_kgkw9mr',
@@ -63,6 +75,7 @@ export const Contact = () => {
         {
           email: email.value,
           message: message.value,
+          budget,
         },
         'il0zj6ZLldwJH_0tL'
       );
@@ -76,6 +89,33 @@ export const Contact = () => {
 
   return (
     <Section className={styles.contact}>
+      <div className={styles.quickContact}>
+        <Text as="p" size="s" className={styles.quickContactLabel}>
+          Quicker ways to reach me
+        </Text>
+        <Button
+          className={styles.quickContactButton}
+          icon="whatsapp"
+          iconHoverShift
+          href={getWhatsAppLink()}
+        >
+          Chat on WhatsApp
+        </Button>
+        {!!config.calLink && (
+          <Button
+            secondary
+            className={styles.quickContactButton}
+            iconEnd="arrow-right"
+            iconHoverShift
+            href={config.calLink}
+          >
+            Book a call
+          </Button>
+        )}
+        <a className={styles.quickContactPhone} href="tel:+917017282924">
+          {config.whatsappDisplay}
+        </a>
+      </div>
       <Transition unmount in={!success} timeout={1600}>
         {({ status, nodeRef }) => (
           <Form
@@ -129,6 +169,21 @@ export const Contact = () => {
               maxLength={MAX_MESSAGE_LENGTH}
               {...message}
             />
+            <div className={classes(styles.input, styles.select)} data-status={status} style={getDelay(tokens.base.durationS, initDelay, 1.2)}>
+              <label className={styles.selectLabel} htmlFor="budget">
+                Rough budget (optional)
+              </label>
+              <select className={styles.selectInput} id="budget" name="budget" defaultValue="">
+                <option value="" disabled>
+                  Select a range
+                </option>
+                {BUDGET_OPTIONS.map(option => (
+                  <option value={option} key={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
             <Transition
               unmount
               in={!sending && actionData?.errors}
@@ -167,17 +222,6 @@ export const Contact = () => {
                 onClick={sendEmail}
               >
                 Send message
-              </Button>
-
-              <Button
-                className={styles.button}
-                data-status={status}
-                data-sending={sending}
-                style={getDelay(tokens.base.durationM, initDelay)}
-                icon="send"
-                disabled={true}
-              >
-                +91 7017282924
               </Button>
             </div>
 
