@@ -35,6 +35,7 @@ export const SectionHeading = ({
         className={styles.ghost}
         data-invert={invert}
         variants={ghostReveal}
+        style={align === 'center' ? { x: '-50%' } : undefined}
       >
         {ghost}
       </motion.span>

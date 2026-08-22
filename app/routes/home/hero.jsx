@@ -6,7 +6,7 @@ import { Image } from '~/components/image';
 import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { getWhatsAppLink } from '~/utils/contact';
 import { heroFadeUp, heroStagger } from '~/utils/motion';
@@ -23,7 +23,8 @@ export function Hero({ id, sectionRef }) {
   const reduceMotion = useReducedMotion();
   const photoRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: photoRef, offset: ['start start', 'end start'] });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 40]);
+  const smoothScrollYProgress = useSpring(scrollYProgress, { stiffness: 300, damping: 40, mass: 0.2 });
+  const parallaxY = useTransform(smoothScrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 40]);
 
   return (
     <Section as="header" id={id} ref={sectionRef} className={styles.hero}>
