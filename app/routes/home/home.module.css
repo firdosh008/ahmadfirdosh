@@ -1,5 +1,8 @@
 .home {
-  overflow-x: hidden;
+  /* clip, not hidden: overflow-x: hidden forces overflow-y to auto, which makes
+     this a scroll container and stops position: sticky inside it from ever
+     pinning. clip contains the bleeding hero cards without that side effect. */
+  overflow-x: clip;
 }
 
 /* Hero and the "worked with" band split one viewport between them, so the

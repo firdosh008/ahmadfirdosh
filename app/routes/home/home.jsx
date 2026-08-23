@@ -13,6 +13,7 @@ import config from '~/config.json';
 import { testimonials } from '~/data/projects';
 import { Hero } from './hero';
 import { Billboard } from './billboard';
+import { ProjectCarousel } from './carousel';
 import { ScatterFlight } from './scatter-flight';
 import { ClientBand } from './client-band';
 import { WhatWeBuild, WhoWeWorkWith } from './capabilities';
@@ -32,7 +33,8 @@ export const Home = () => (
       <Hero id="hero" />
       <ClientBand />
     </div>
-    <Billboard id="highlights" />
+    <Billboard id="achievements" />
+    <ProjectCarousel id="more-work" />
     <WhatWeBuild id="what-i-build" />
     <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />

@@ -1,0 +1,139 @@
+@layer layout {
+  /* Tall enough to give the ring room to turn while the pin holds it in view. */
+  .stage {
+    position: relative;
+    height: 260svh;
+
+    @media (--mediaMobile) {
+      height: 220svh;
+    }
+  }
+
+  .pin {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .heading {
+    padding: 0 var(--spaceOuter);
+  }
+
+  /* The camera. Perspective lives here so the ring can own the rotation. */
+  .viewport {
+    perspective: 1400px;
+    perspective-origin: 50% 45%;
+    flex: 1;
+    min-height: 0;
+    margin-top: -7vh;
+
+    @media (--mediaMobile) {
+      perspective: 900px;
+    }
+  }
+
+  .ring {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+
+  /* Radius = (cardWidth + gap) / (2 * sin(180deg / count)). At twelve cards
+     that's (300 + 80) / 0.518 — the gap is what keeps neighbours from touching
+     as they come round. */
+  .cardBase {
+    --radius: 734px;
+    --cardRadius: var(--radiusL);
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(var(--angle)) translateZ(var(--radius));
+    border: 1px solid var(--border);
+    /* The grey slot the card fills in from. */
+    background: color-mix(in lab, var(--text) 7%, transparent);
+    border-radius: var(--cardRadius);
+    box-shadow: 0 40px 70px -40px color-mix(in lab, var(--text) 45%, transparent);
+    backface-visibility: hidden;
+
+    @media (--mediaTablet) {
+      --radius: 540px;
+    }
+
+    @media (--mediaMobile) {
+      --radius: 370px;
+    }
+  }
+
+  /* The screenshot that drops into the slot. Corners are set on every layer:
+     overflow: hidden alone doesn't reliably clip a composited child inside a
+     3D-transformed ancestor. */
+  .fill {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--cardRadius);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .fill img {
+    border-radius: var(--cardRadius);
+  }
+
+  .web {
+    composes: cardBase;
+    width: 300px;
+    aspect-ratio: 16 / 9;
+
+    @media (--mediaTablet) {
+      width: 220px;
+    }
+
+    @media (--mediaMobile) {
+      width: 150px;
+    }
+  }
+
+  /* The one mobile app in the set. */
+  .app {
+    composes: cardBase;
+    --cardRadius: 26px;
+
+    width: 126px;
+    aspect-ratio: 9 / 16;
+
+    @media (--mediaTablet) {
+      width: 96px;
+    }
+
+    @media (--mediaMobile) {
+      width: 68px;
+    }
+  }
+
+  .shot {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--cardRadius);
+  }
+
+  .caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: var(--spaceM);
+    background: linear-gradient(
+      to top,
+      color-mix(in lab, var(--black) 62%, transparent),
+      transparent
+    );
+    color: var(--white);
+    text-align: center;
+  }
+}

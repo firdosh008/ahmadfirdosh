@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { HIGHLIGHT_CARDS, HighlightCard } from './highlight-cards';
+import { ARRIVALS } from './ring';
 import styles from './scatter-flight.module.css';
 
 const clamp = value => Math.min(1, Math.max(0, value));
@@ -40,9 +41,12 @@ export const ScatterFlight = () => {
       el: layer.querySelector(`[data-flight-card="${card.key}"]`),
       anchor: document.querySelector(`[data-flight-anchor="${card.key}"]`),
       slots: document.querySelectorAll(`[data-flight-slot="${card.key}"]`),
+      ring: document.querySelector(`[data-ring-slot="${card.key}"]`),
+      arrival: ARRIVALS[card.key],
     })).filter(entry => entry.el && entry.anchor && entry.slots.length);
 
     const stage = document.querySelector('[data-flight-stage]');
+    const ringStage = document.querySelector('[data-ring-stage]');
     if (!stage || !cards.length) return;
 
     let frame = null;
@@ -56,31 +60,57 @@ export const ScatterFlight = () => {
       const raw = clamp((viewport - stageTop) / (viewport * 0.72));
       const progress = reduceMotion ? Math.round(raw) : ease(raw);
 
+      // Second leg: out of the grid and down onto the carousel's ring. Measured
+      // off how far through its pinned stretch the carousel is, which is the
+      // same clock its slots fill on.
+      let ringProgress = 0;
+
+      if (ringStage) {
+        const rect = ringStage.getBoundingClientRect();
+        ringProgress = clamp(-rect.top / Math.max(1, rect.height - viewport));
+      }
+
       // Read every rect before writing anything — interleaving them would force
       // a layout per card.
-      const frames = cards.map(({ el, card, anchor, slots }) => {
+      const frames = cards.map(({ el, card, anchor, slots, ring, arrival }) => {
         const slot = visible(slots);
 
         return {
           el,
           card,
+          arrival,
           from: anchor.getBoundingClientRect(),
           to: slot?.getBoundingClientRect(),
+          onward: ring?.getBoundingClientRect(),
         };
       });
 
-      frames.forEach(({ el, card, from, to }) => {
+      frames.forEach(({ el, card, arrival, from, to, onward }) => {
         if (!from.width || !to?.width) {
           el.style.opacity = '0';
           return;
         }
 
-        const width = lerp(from.width, to.width, progress);
-        const height = lerp(from.height, to.height, progress);
-        const x = lerp(from.left, to.left, progress);
-        const y = lerp(from.top, to.top, progress);
+        let width = lerp(from.width, to.width, progress);
+        let height = lerp(from.height, to.height, progress);
+        let x = lerp(from.left, to.left, progress);
+        let y = lerp(from.top, to.top, progress);
+        let fade = 1;
 
-        el.style.opacity = '';
+        // Ride the second leg down to the ring, arriving exactly as that slot
+        // starts to fill, then hand over to it across the fill window.
+        if (arrival && onward?.width) {
+          const travel = ease(clamp(ringProgress / arrival.start));
+
+          width = lerp(width, onward.width, travel);
+          height = lerp(height, onward.height, travel);
+          x = lerp(x, onward.left, travel);
+          y = lerp(y, onward.top, travel);
+          fade =
+            1 - clamp((ringProgress - arrival.start) / (arrival.end - arrival.start));
+        }
+
+        el.style.opacity = fade === 1 ? '' : `${fade}`;
         el.style.width = `${width}px`;
         el.style.height = `${height}px`;
         el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${lerp(
