@@ -124,8 +124,12 @@
     }
 
     @media (--mediaUseMotion) {
-      .button:hover &[data-shift='true'] {
-        transform: translate3d(var(--spaceXS), 0, 0);
+      .button:hover &[data-shift='true'][data-end='true'] {
+        transform: translate3d(var(--spaceS), 0, 0);
+      }
+
+      .button:hover &[data-shift='true'][data-start='true'] {
+        transform: translate3d(calc(var(--spaceXS) * -1), 0, 0);
       }
     }
 

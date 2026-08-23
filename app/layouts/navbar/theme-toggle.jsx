@@ -17,7 +17,7 @@ export const ThemeToggle = ({ isMobile, ...rest }) => {
       onClick={() => toggleTheme()}
       {...rest}
     >
-      <svg aria-hidden className={styles.svg} width="38" height="38" viewBox="0 0 38 38">
+      <svg aria-hidden className={styles.svg} width="24" height="24" viewBox="0 0 38 38">
         <defs>
           <mask id={maskId}>
             <circle className={styles.circle} data-mask={true} cx="19" cy="19" r="13" />

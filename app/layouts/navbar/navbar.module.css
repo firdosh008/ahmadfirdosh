@@ -1,10 +1,10 @@
 @layer layout {
   .navbar {
-    --headerNavFontSize: calc((16 / 16) * 1rem);
+    --headerNavFontSize: calc((14 / 16) * 1rem);
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: var(--spaceL);
     padding: var(--spaceM) var(--spaceOuter);
     width: 100%;
@@ -26,15 +26,23 @@
     }
   }
 
+  .navCta {
+    --buttonSize: 34px;
+    --buttonFontSize: calc((13 / 16) * 1rem);
+    --buttonPadding: 0 var(--spaceM);
+  }
+
   .logo {
     display: flex;
+    justify-self: start;
     position: relative;
     z-index: var(--zIndex2);
   }
 
-  .nav {
+  .navList {
     display: flex;
     align-items: center;
+    justify-self: center;
     gap: var(--space2XL);
 
     @media (--mediaMobile), (--mediaMobileLS) {
@@ -42,10 +50,17 @@
     }
   }
 
-  .navList {
+  .navActions {
     display: flex;
     align-items: center;
-    gap: var(--space2XL);
+    justify-self: end;
+    gap: var(--spaceL);
+    position: relative;
+    z-index: var(--zIndex2);
+
+    @media (--mediaMobile), (--mediaMobileLS) {
+      display: none;
+    }
   }
 
   .navLink {

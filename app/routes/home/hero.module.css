@@ -2,112 +2,265 @@
   .hero {
     display: flex;
     justify-content: center;
-    padding: 140px var(--spaceOuter) var(--space2XL);
+    padding: 130px var(--spaceOuter) var(--space2XL);
+
+    /* Extra clearance for the doodle cloud above the portrait — only
+       needed where the cloud actually renders (matches --mediaLaptop). */
+    @media (min-width: 1681px) {
+      padding-top: 260px;
+    }
 
     @media (--mediaTablet) {
-      padding-top: 120px;
+      padding-top: 110px;
     }
 
     @media (--mediaMobile) {
-      padding-top: 120px;
+      padding-top: 110px;
       padding-bottom: var(--space3XL);
     }
   }
 
   .layout {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, var(--maxWidthM)) auto;
-    align-items: stretch;
-    gap: var(--space4XL);
+    grid-template-columns: minmax(320px, 420px) 1fr;
+    align-items: center;
+    gap: var(--space2XL);
     width: 100%;
-    max-width: 1320px;
+    max-width: 1240px;
 
     @media (--mediaTablet) {
       grid-template-columns: 1fr;
-      align-items: center;
-      gap: var(--space3XL);
+      justify-items: center;
+      gap: var(--spaceXL);
     }
   }
 
-  .content {
-    width: 100%;
+  /* ---- Portrait column ---- */
+
+  .portraitCol {
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
   }
 
-  .photoWrap {
+  .portrait {
     position: relative;
-    justify-self: center;
-    align-self: start;
-    width: 380px;
-
-    @media (--mediaLaptop) {
-      width: 320px;
-    }
+    width: 100%;
+    max-width: 380px;
 
     @media (--mediaTablet) {
-      width: 100%;
-      max-width: 360px;
-    }
-
-    @media (--mediaMobile) {
-      max-width: 280px;
+      max-width: 300px;
     }
   }
 
-  .photo {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radiusM);
+  /* ---- Doodle cloud — clustered above the head, drifts up and fades
+     as the hero scrolls out of view ---- */
+
+  .cloud {
+    /* Centered via margin, not transform: translateX — this element also
+       gets an animated `y` from Framer Motion, which takes over the whole
+       transform property via inline style and would silently wipe out a
+       CSS-defined transform. */
+    position: absolute;
+    left: 50%;
+    top: -210px;
+    margin-left: -190px;
+    width: 380px;
+    height: 200px;
+    pointer-events: none;
+
+    @media (--mediaLaptop) {
+      display: none;
+    }
+  }
+
+  .floatBase {
+    position: absolute;
+    z-index: var(--zIndex1);
+    background: var(--background);
     border: 1px solid var(--border);
-    overflow: hidden;
+    border-radius: var(--radiusM);
+    box-shadow: 0 16px 28px -12px color-mix(in lab, var(--text) 20%, transparent);
   }
 
-  .photoImage {
+  .floatBob {
+    width: 100%;
     height: 100%;
   }
 
-  .photoTag {
-    position: absolute;
-    left: var(--spaceL);
-    bottom: calc(var(--spaceL) * -1);
-    padding: var(--spaceS) var(--spaceM);
-    background: var(--background);
-    border: 1px solid var(--border);
-    border-radius: var(--radiusS);
-    font-size: var(--fontSizeBodyXS);
-    font-weight: var(--fontWeightMedium);
-    color: var(--textTitle);
-    white-space: nowrap;
+  .floatProofBase {
+    composes: floatBase;
+    width: 118px;
+    height: 66px;
+    padding: 4px;
+  }
 
-    @media (--mediaMobileS) {
-      white-space: normal;
-      max-width: calc(100% - var(--spaceL));
+  .floatProof1 {
+    composes: floatProofBase;
+    top: 10px;
+    left: 6%;
+    transform: rotate(-8deg);
+  }
+
+  .floatProof2 {
+    composes: floatProofBase;
+    top: 108px;
+    left: 0%;
+    transform: rotate(5deg);
+  }
+
+  .floatProof3 {
+    composes: floatProofBase;
+    top: 130px;
+    left: 42%;
+    transform: rotate(-4deg);
+  }
+
+  .floatProofImageWrap {
+    width: 100%;
+    height: 100%;
+    border-radius: calc(var(--radiusM) - 4px);
+    overflow: hidden;
+  }
+
+  .floatProofImage {
+    height: 100%;
+  }
+
+  .floatCheck {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--background);
+    box-shadow: 0 0 0 3px var(--background);
+  }
+
+  .floatReview {
+    composes: floatBase;
+    top: 0px;
+    right: 4%;
+    width: 190px;
+    padding: var(--spaceM);
+    transform: rotate(6deg);
+    text-align: left;
+  }
+
+  .floatReviewQuote {
+    margin: 0 0 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--fontStackDisplay);
+    font-style: italic;
+    color: var(--textTitle);
+  }
+
+  .floatReviewName {
+    margin: 0;
+    line-height: 1.2;
+    color: var(--textLight);
+  }
+
+  /* ---- Tech-stack logo cards — real skills, not decoration ---- */
+
+  .floatLogoBase {
+    composes: floatBase;
+    width: 46px;
+    height: 46px;
+
+    & .floatBob {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
-  .eyebrow {
+  .floatLogoImage {
+    display: block;
+  }
+
+  .floatLogoReact {
+    composes: floatLogoBase;
+    top: 60px;
+    right: 22%;
+    transform: rotate(8deg);
+  }
+
+  .floatLogoPython {
+    composes: floatLogoBase;
+    top: 150px;
+    right: 10%;
+    transform: rotate(-6deg);
+  }
+
+  .floatLogoTypescript {
+    composes: floatLogoBase;
+    top: 175px;
+    left: 22%;
+    transform: rotate(-5deg);
+  }
+
+  .floatLogoAnthropic {
+    composes: floatLogoBase;
+    top: 0px;
+    left: 34%;
+    transform: rotate(5deg);
+  }
+
+  /* ---- Text column ---- */
+
+  .textCol {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+
+    @media (--mediaTablet) {
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .eyebrowPill {
+    display: inline-flex;
     align-items: center;
     gap: var(--spaceS);
     margin-bottom: var(--spaceL);
-    color: var(--accent);
+    padding: 6px var(--spaceM);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--backgroundLight);
+    font-size: var(--fontSizeBodyXS);
     font-weight: var(--fontWeightMedium);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-
-    &::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-    }
+    color: var(--textTitle);
   }
 
+  .eyebrowDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Sized and tracked to match the reference: 60px / weight 300 / -1.5px
+     tracking at desktop, scaling down on smaller viewports. */
   .title {
-    margin: 0 0 var(--spaceXL);
-    max-width: 16ch;
+    margin: 0 0 var(--spaceL);
+    font-family: var(--fontStack);
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--textTitle);
   }
 
   .titleAccent {
@@ -118,33 +271,26 @@
 
   .subtitle {
     display: block;
-    max-width: 46ch;
-    margin-bottom: var(--space2XL);
+    max-width: 42ch;
+    margin: 0 0 var(--spaceXL);
     color: var(--textBody);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spaceL);
-    margin-bottom: var(--space3XL);
+    gap: var(--spaceM);
+
+    @media (--mediaTablet) {
+      justify-content: center;
+    }
   }
 
-  .credibility {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spaceS);
-    padding: var(--spaceXL) 0 0;
-    margin: 0;
-    list-style: none;
-    border-top: 1px solid var(--border);
-
-    & li {
-      padding: var(--spaceXS) var(--spaceM);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: var(--fontSizeBodyXS);
-      color: var(--textLight);
-    }
+  /* Reference buttons are compact (~31px tall, 12px text) — noticeably
+     smaller than the site's default button size everywhere else. */
+  .heroButton {
+    --buttonSize: 38px;
+    --buttonFontSize: calc((13 / 16) * 1rem);
+    --buttonPadding: 0 var(--spaceM);
   }
 }

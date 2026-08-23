@@ -1,3 +1,4 @@
+import { Button } from '~/components/button';
 import { Icon } from '~/components/icon';
 import { Monogram } from '~/components/monogram';
 import { tokens } from '~/components/theme-provider/theme';
@@ -6,6 +7,7 @@ import { useScrollToHash, useWindowSize } from '~/hooks';
 import { Link as RouterLink, useLocation } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { cssProps, media, msToNum, numToMs } from '~/utils/style';
+import { getWhatsAppLink } from '~/utils/contact';
 import { NavToggle } from './nav-toggle';
 import { ThemeToggle } from './theme-toggle';
 import { navLinks, socialLinks } from './nav-data';
@@ -73,25 +75,30 @@ export const Navbar = () => {
       >
         <Monogram highlight />
       </RouterLink>
-      <nav className={styles.nav}>
-        <div className={styles.navList}>
-          {navLinks.map(({ label, pathname }) => (
-            <RouterLink
-              unstable_viewTransition
-              prefetch="intent"
-              to={pathname}
-              key={label}
-              className={styles.navLink}
-              aria-current={getCurrent(pathname)}
-              onClick={handleNavItemClick}
-            >
-              {label}
-            </RouterLink>
-          ))}
-        </div>
-        {!!socialLinks.length && <NavbarIcons desktop />}
-        {!isMobile && <ThemeToggle />}
+      <nav className={styles.navList}>
+        {navLinks.map(({ label, pathname }) => (
+          <RouterLink
+            unstable_viewTransition
+            prefetch="intent"
+            to={pathname}
+            key={label}
+            className={styles.navLink}
+            aria-current={getCurrent(pathname)}
+            onClick={handleNavItemClick}
+          >
+            {label}
+          </RouterLink>
+        ))}
       </nav>
+      <div className={styles.navActions}>
+        {!!socialLinks.length && <NavbarIcons desktop />}
+        {!isMobile && (
+          <Button className={styles.navCta} href={getWhatsAppLink()} icon="whatsapp">
+            Let&apos;s talk
+          </Button>
+        )}
+        {!isMobile && <ThemeToggle />}
+      </div>
     </header>
     {/* NavToggle and the mobile nav overlay are rendered as siblings of
         <header>, not children: the header's own backdrop-filter creates a

@@ -38,7 +38,7 @@ const baseTokens = {
   maxWidthM: '720px',
   maxWidthL: '1096px',
   maxWidthXL: '1680px',
-  spaceOuter: '64px',
+  spaceOuter: '255px',
   spaceXS: '4px',
   spaceS: '8px',
   spaceM: '16px',
@@ -72,7 +72,7 @@ const tokensLaptop = {
   maxWidthM: '640px',
   maxWidthL: '1000px',
   maxWidthXL: '1100px',
-  spaceOuter: '48px',
+  spaceOuter: '255px',
   fontSizeH0: pxToRem(100),
   fontSizeH1: pxToRem(70),
   fontSizeH2: pxToRem(50),
@@ -82,6 +82,7 @@ const tokensLaptop = {
 };
 
 const tokensTablet = {
+  spaceOuter: '48px',
   fontSizeH0: pxToRem(80),
   fontSizeH1: pxToRem(60),
   fontSizeH2: pxToRem(48),
@@ -120,8 +121,8 @@ const tokensMobileSmall = {
 const dark = {
   background: 'oklch(17% 0.006 130)',
   backgroundLight: 'oklch(21% 0.008 130)',
-  primary: 'oklch(68% 0.11 155)',
-  accent: 'oklch(68% 0.11 155)',
+  primary: 'oklch(60% 0.14 18)',
+  accent: 'oklch(60% 0.14 18)',
   error: 'oklch(65.91% 0.249 13.76)',
   text: 'oklch(95% 0.006 95)',
   textTitle: 'var(--text)',
@@ -132,8 +133,8 @@ const dark = {
 const light = {
   background: 'oklch(98% 0.004 90)',
   backgroundLight: 'oklch(95% 0.006 95)',
-  primary: 'oklch(39% 0.1 155)',
-  accent: 'oklch(39% 0.1 155)',
+  primary: 'oklch(32% 0.11 18)',
+  accent: 'oklch(32% 0.11 18)',
   error: 'oklch(63.17% 0.259 25.41)',
   text: 'oklch(15% 0.004 90)',
   textTitle: 'color-mix(in lab, var(--text) 94%, transparent)',
