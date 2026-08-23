@@ -13,7 +13,7 @@ import {
 import { createCookieSessionStorage, json } from '@remix-run/node';
 import { MotionConfig } from 'framer-motion';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
-import InterVariable from '~/assets/fonts/inter-variable.woff2';
+import ElmsSansVariable from '~/assets/fonts/elms-sans-variable.woff2';
 import InstrumentSerifRegular from '~/assets/fonts/instrument-serif-regular.woff2';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
@@ -28,7 +28,7 @@ import './global.module.css';
 export const links = () => [
   {
     rel: 'preload',
-    href: InterVariable,
+    href: ElmsSansVariable,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',

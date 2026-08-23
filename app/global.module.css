@@ -24,10 +24,36 @@
     width: 100vw;
     overflow-x: hidden;
     opacity: 1;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in lab, var(--text) 22%, transparent) transparent;
 
     &:focus {
       outline: none;
     }
+  }
+
+  :global(::-webkit-scrollbar) {
+    width: 10px;
+    height: 10px;
+  }
+
+  :global(::-webkit-scrollbar-track) {
+    background: transparent;
+  }
+
+  :global(::-webkit-scrollbar-thumb) {
+    background-color: color-mix(in lab, var(--text) 22%, transparent);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 100vw;
+
+    &:hover {
+      background-color: color-mix(in lab, var(--text) 34%, transparent);
+    }
+  }
+
+  :global(::-webkit-scrollbar-button) {
+    display: none;
   }
 
   :global(:where(code, pre)) {

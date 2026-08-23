@@ -1,4 +1,5 @@
-import InterVariable from '~/assets/fonts/inter-variable.woff2';
+import ElmsSansVariable from '~/assets/fonts/elms-sans-variable.woff2';
+import ElmsSansVariableItalic from '~/assets/fonts/elms-sans-variable-italic.woff2';
 import InstrumentSerifRegular from '~/assets/fonts/instrument-serif-regular.woff2';
 import InstrumentSerifItalic from '~/assets/fonts/instrument-serif-italic.woff2';
 import IPAGothic from '~/assets/fonts/ipa-gothic.woff2';
@@ -114,11 +115,19 @@ const tokenStyles = squish(`
 
 const fontStyles = squish(`
   @font-face {
-    font-family: Inter;
-    font-weight: 400 700;
-    src: url(${InterVariable}) format('woff2');
+    font-family: 'Elms Sans';
+    font-weight: 100 900;
+    src: url(${ElmsSansVariable}) format('woff2');
     font-display: swap;
     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Elms Sans';
+    font-weight: 100 900;
+    src: url(${ElmsSansVariableItalic}) format('woff2');
+    font-display: swap;
+    font-style: italic;
   }
 
   @font-face {

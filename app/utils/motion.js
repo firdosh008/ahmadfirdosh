@@ -3,8 +3,13 @@
 // root.jsx makes every transform-based animation using these variants a
 // no-op under prefers-reduced-motion automatically.
 export const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] } },
+  hidden: { opacity: 0, y: 28, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 220, damping: 24, mass: 0.6 },
+  },
 };
 
 export const staggerChildren = {
@@ -18,8 +23,13 @@ export const revealViewport = { once: true, margin: '-10% 0px' };
 // entrance, so the one animation every visitor sees immediately feels
 // more deliberate than the standard scroll-reveal used everywhere else.
 export const heroFadeUp = {
-  hidden: { opacity: 0, y: 36 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } },
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 180, damping: 22, mass: 0.7 },
+  },
 };
 
 export const heroStagger = {

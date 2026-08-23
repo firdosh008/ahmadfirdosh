@@ -23,9 +23,10 @@
     padding: var(--spaceXS) calc((100% - var(--cardWidth)) / 2) var(--spaceS);
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    touch-action: pan-x;
 
     &::-webkit-scrollbar {
       display: none;
@@ -39,7 +40,6 @@
   .card {
     flex: 0 0 var(--cardWidth);
     scroll-snap-align: center;
-    scroll-snap-stop: always;
     display: flex;
     flex-direction: column;
     min-height: 400px;
@@ -120,12 +120,11 @@
     border-radius: 50%;
     background: color-mix(in lab, var(--text) 25%, transparent);
     cursor: pointer;
-    transition: background var(--durationM) ease, width var(--durationM) ease;
+    transition: background var(--durationM) ease, transform var(--durationM) ease;
 
     &[data-active='true'] {
-      width: 22px;
-      border-radius: 4px;
       background: var(--accent);
+      transform: scale(1.4);
     }
   }
 

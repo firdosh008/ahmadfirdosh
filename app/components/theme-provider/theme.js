@@ -12,7 +12,7 @@ const baseTokens = {
   durationXL: '800ms',
   systemFontStack:
     'system-ui, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Ubuntu, Helvetica Neue, sans-serif',
-  fontStack: `Inter, var(--systemFontStack)`,
+  fontStack: `'Elms Sans', var(--systemFontStack)`,
   fontStackDisplay: `'Instrument Serif', Georgia, Cambria, 'Times New Roman', serif`,
   monoFontStack:
     'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',

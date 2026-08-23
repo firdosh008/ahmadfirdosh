@@ -27,6 +27,18 @@ export const TestimonialsSection = ({ items, id }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const interactedRef = useRef(false);
 
+  // Scrolls only the horizontal card track — never the page. Card.scrollIntoView()
+  // also considers the vertical axis and will nudge the whole page down to
+  // fully frame the section, which is not what a horizontal carousel should do.
+  const scrollToCard = (index, behavior) => {
+    const stage = stageRef.current;
+    const card = cardRefs.current[index];
+    if (!stage || !card) return;
+
+    const left = card.offsetLeft - (stage.clientWidth - card.clientWidth) / 2;
+    stage.scrollTo({ left, behavior });
+  };
+
   // Track which card is centered in the scroller, so the dots stay in sync
   // whether the user swipes, drags, or scrolls with a trackpad.
   useEffect(() => {
@@ -54,12 +66,7 @@ export const TestimonialsSection = ({ items, id }) => {
 
     const timer = setInterval(() => {
       if (interactedRef.current) return;
-      const next = (activeIndex + 1) % items.length;
-      cardRefs.current[next]?.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest',
-      });
+      scrollToCard((activeIndex + 1) % items.length, 'smooth');
     }, AUTO_ADVANCE_MS);
 
     return () => clearInterval(timer);
@@ -70,11 +77,7 @@ export const TestimonialsSection = ({ items, id }) => {
   const goTo = index => {
     interactedRef.current = true;
     const clamped = Math.min(Math.max(index, 0), items.length - 1);
-    cardRefs.current[clamped]?.scrollIntoView({
-      behavior: reduceMotion ? 'auto' : 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    });
+    scrollToCard(clamped, reduceMotion ? 'auto' : 'smooth');
   };
 
   return (
@@ -83,48 +86,51 @@ export const TestimonialsSection = ({ items, id }) => {
         What clients say
       </SectionHeading>
       <motion.div
-        className={styles.stage}
-        ref={stageRef}
-        onPointerDown={() => {
-          interactedRef.current = true;
-        }}
         initial="hidden"
         whileInView="visible"
         viewport={revealViewport}
         variants={fadeUp}
       >
-        {items.map((item, index) => (
-          <article
-            className={styles.card}
-            key={item.name}
-            ref={el => (cardRefs.current[index] = el)}
-          >
-            <div className={styles.avatar} aria-hidden>
-              {initials(item.name)}
-            </div>
-            {!!item.rating && (
-              <div
-                className={styles.rating}
-                aria-label={`Rated ${item.rating} out of ${MAX_RATING}`}
-              >
-                {Array.from({ length: MAX_RATING }, (_, i) => (
-                  <span aria-hidden key={i} data-filled={i < item.rating}>
-                    ★
-                  </span>
-                ))}
+        <div
+          className={styles.stage}
+          ref={stageRef}
+          onPointerDown={() => {
+            interactedRef.current = true;
+          }}
+        >
+          {items.map((item, index) => (
+            <article
+              className={styles.card}
+              key={item.name}
+              ref={el => (cardRefs.current[index] = el)}
+            >
+              <div className={styles.avatar} aria-hidden>
+                {initials(item.name)}
               </div>
-            )}
-            <Text as="p" size="m" className={styles.quote}>
-              “{item.quote}”
-            </Text>
-            <Heading level={5} as="p" className={styles.name}>
-              {item.name}
-            </Heading>
-            <Text as="p" size="s" className={styles.role}>
-              {item.role}
-            </Text>
-          </article>
-        ))}
+              {!!item.rating && (
+                <div
+                  className={styles.rating}
+                  aria-label={`Rated ${item.rating} out of ${MAX_RATING}`}
+                >
+                  {Array.from({ length: MAX_RATING }, (_, i) => (
+                    <span aria-hidden key={i} data-filled={i < item.rating}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+              )}
+              <Text as="p" size="m" className={styles.quote}>
+                “{item.quote}”
+              </Text>
+              <Heading level={5} as="p" className={styles.name}>
+                {item.name}
+              </Heading>
+              <Text as="p" size="s" className={styles.role}>
+                {item.role}
+              </Text>
+            </article>
+          ))}
+        </div>
       </motion.div>
       {items.length > 1 && (
         <div className={styles.controls}>
