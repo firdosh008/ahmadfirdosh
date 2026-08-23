@@ -112,9 +112,10 @@
      it and shows more lines once it lands. */
   .noteQuote {
     display: -webkit-box;
-    /* Clamped to whatever the card is wide enough to hold: a couple of words
-       while it's a hero doodle, the full quote once it lands in its slot. */
-    -webkit-line-clamp: 2;
+    /* Line counts are what actually fits the card at each size, not a token
+       teaser: the small card is ~108px of content box, and four 16px lines
+       under the name is what fills it. */
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     margin-top: 6px;
     overflow: hidden;
@@ -123,12 +124,14 @@
     color: var(--textLight);
 
     @container (min-width: 190px) {
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 4;
       font-size: var(--fontSizeBodyXS);
     }
 
+    /* Five lines at bodyS is the cap the landed card's height allows — seven
+       would overflow it. */
     @container (min-width: 300px) {
-      -webkit-line-clamp: 7;
+      -webkit-line-clamp: 5;
       font-size: var(--fontSizeBodyS);
     }
   }

@@ -31,6 +31,13 @@
       &[data-on-mobile='false'] {
         display: none;
       }
+
+      /* This one is a 9:16 sliver on small screens. Its source is a wide
+         desktop capture, so a centred crop lands on empty page middle —
+         anchor it to the top left where the masthead is. */
+      &[data-flight-card='b'] img {
+        object-position: left top;
+      }
     }
   }
 

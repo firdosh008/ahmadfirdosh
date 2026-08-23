@@ -55,16 +55,24 @@
   }
 
   /* The camera. Perspective lives here so the ring can own the rotation. */
+  /* Height is set rather than flexible: the ring is centred in this box, so a
+     box that swallows all the pin's leftover height is what leaves a gulf above
+     and below the cards. Sized to hold the front card at its magnified size. */
   .viewport {
+    flex: none;
+    width: 100%;
+    height: clamp(300px, 42vh, 430px);
     perspective: 1400px;
-    perspective-origin: 50% 45%;
-    flex: 1;
-    min-height: 0;
-    margin-top: -11vh;
-    margin-bottom: -6vh;
+    perspective-origin: 50% 50%;
+
+    @media (--mediaTablet) {
+      height: clamp(250px, 36vh, 340px);
+      perspective: 1050px;
+    }
 
     @media (--mediaMobile) {
-      perspective: 900px;
+      height: clamp(200px, 30vh, 270px);
+      perspective: 760px;
     }
   }
 
