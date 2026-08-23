@@ -57,10 +57,12 @@
 
   /* ---- Testimonial note ---- */
 
+  /* Block, not flex: a flex item's display is blockified, which turns the
+     quote's -webkit-box into block and silently kills -webkit-line-clamp — so
+     the text was overflowing and being cropped mid-line instead of ellipsised. */
   .note {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: block;
     width: 100%;
     height: 100%;
     padding: var(--spaceM);
@@ -86,6 +88,7 @@
   }
 
   .noteMeta {
+    display: block;
     overflow: hidden;
     font-size: var(--fontSizeBodyXS);
     white-space: nowrap;
@@ -94,6 +97,7 @@
   }
 
   .noteName {
+    display: block;
     margin-top: 4px;
     overflow: hidden;
     font-size: var(--fontSizeBodyS);
@@ -108,18 +112,19 @@
      it and shows more lines once it lands. */
   .noteQuote {
     display: -webkit-box;
-    /* Clamped to whatever the card is wide enough to hold: two lines while
-       it's a hero doodle, the full quote once it lands in its slot. */
+    /* Clamped to whatever the card is wide enough to hold: a couple of words
+       while it's a hero doodle, the full quote once it lands in its slot. */
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    margin-top: var(--spaceS);
+    margin-top: 6px;
     overflow: hidden;
-    font-size: var(--fontSizeBodyXS);
-    line-height: 1.5;
+    font-size: calc((11 / 16) * 1rem);
+    line-height: 1.45;
     color: var(--textLight);
 
     @container (min-width: 190px) {
       -webkit-line-clamp: 3;
+      font-size: var(--fontSizeBodyXS);
     }
 
     @container (min-width: 300px) {

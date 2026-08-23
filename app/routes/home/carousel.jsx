@@ -47,9 +47,6 @@ function RingCard({ item, index, progress, reduceMotion }) {
           sizes="(max-width: 696px) 70vw, 380px"
           {...source(project)}
         />
-        <Text as="span" size="s" className={styles.caption}>
-          {project.title}
-        </Text>
       </motion.div>
     </div>
   );
