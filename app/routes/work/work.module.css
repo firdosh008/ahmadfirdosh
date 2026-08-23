@@ -33,7 +33,7 @@
 .categoryTitle {
   margin-bottom: var(--space2XL);
   padding-bottom: var(--spaceL);
-  border-bottom: 1px solid color-mix(in lab, var(--text) 15%, transparent);
+  border-bottom: 1px solid var(--border);
 }
 
 .grid {

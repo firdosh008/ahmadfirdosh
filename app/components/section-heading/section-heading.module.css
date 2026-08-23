@@ -11,42 +11,31 @@
     }
   }
 
-  .ghost {
-    position: absolute;
-    top: -1.15em;
-    left: -0.02em;
-    z-index: -1;
-    font-family: var(--fontStackDisplay);
-    font-size: clamp(4rem, 12vw, 9rem);
-    line-height: 1;
-    color: color-mix(in lab, var(--text) 12%, transparent);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-
-    .wrap[data-align='center'] & {
-      left: 50%;
-    }
-
-    &[data-invert='true'] {
-      color: color-mix(in lab, var(--background) 16%, transparent);
-    }
-
-    @media (--mediaTablet) {
-      display: none;
-    }
-  }
-
   .eyebrow {
     position: relative;
-    margin-bottom: var(--spaceS);
+    display: flex;
+    align-items: center;
+    gap: var(--spaceS);
+    margin-bottom: var(--spaceM);
     color: var(--accent);
     font-weight: var(--fontWeightMedium);
+    font-size: var(--fontSizeBodyXS);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+    }
 
     &[data-invert='true'] {
       color: var(--background);
+
+      &::before {
+        background: var(--background);
+      }
     }
   }
 

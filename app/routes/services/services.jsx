@@ -73,7 +73,7 @@ export const meta = () => {
 export const Services = () => (
   <div className={styles.services}>
     <header className={styles.header}>
-      <SectionHeading eyebrow="Services" ghost="Services" align="center">
+      <SectionHeading eyebrow="Services" align="center">
         What working together looks like
       </SectionHeading>
       <Text as="p" size="l" className={styles.intro}>

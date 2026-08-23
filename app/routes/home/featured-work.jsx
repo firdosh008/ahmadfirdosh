@@ -11,7 +11,7 @@ import styles from './featured-work.module.css';
 export function FeaturedWork({ id, sectionRef }) {
   return (
     <Section as="section" id={id} ref={sectionRef} className={styles.work}>
-      <SectionHeading eyebrow="Selected work" ghost="Work">
+      <SectionHeading eyebrow="Selected work">
         A few recent projects
       </SectionHeading>
       <motion.div

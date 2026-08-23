@@ -5,7 +5,7 @@
   }
 
   .item {
-    border-bottom: 1px solid color-mix(in lab, var(--text) 15%, transparent);
+    border-bottom: 1px solid var(--border);
     padding: var(--spaceL) 0;
 
     &[open] .chevron {

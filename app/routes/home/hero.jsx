@@ -37,12 +37,13 @@ export function Hero({ id, sectionRef }) {
         >
           <motion.div variants={heroFadeUp}>
             <Text className={styles.eyebrow} size="s">
-              Full-Stack &amp; AI Developer
+              Full-Stack &amp; AI Developer — Dehradun
             </Text>
           </motion.div>
           <motion.div variants={heroFadeUp}>
             <Heading level={1} as="h1" className={styles.title}>
-              Websites and apps that turn visitors into customers.
+              Websites and apps that turn visitors into{' '}
+              <em className={styles.titleAccent}>customers</em>.
             </Heading>
           </motion.div>
           <motion.div variants={heroFadeUp}>
@@ -69,21 +70,24 @@ export function Hero({ id, sectionRef }) {
         </motion.div>
         <motion.div
           ref={photoRef}
-          className={styles.photo}
+          className={styles.photoWrap}
           style={{ y: parallaxY }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
         >
-          <Image
-            cover
-            reveal
-            className={styles.photoImage}
-            src={heroPhoto}
-            placeholder={heroPhotoPlaceholder}
-            alt="Firdosh Ahmad"
-            sizes="(max-width: 1040px) 60vw, 420px"
-          />
+          <div className={styles.photo}>
+            <Image
+              cover
+              reveal
+              className={styles.photoImage}
+              src={heroPhoto}
+              placeholder={heroPhotoPlaceholder}
+              alt="Firdosh Ahmad"
+              sizes="(max-width: 1040px) 60vw, 420px"
+            />
+          </div>
+          <div className={styles.photoTag}>AI Engineer · Anthropic-certified</div>
         </motion.div>
       </div>
     </Section>

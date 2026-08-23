@@ -36,48 +36,84 @@
     justify-content: center;
   }
 
-  .photo {
+  .photoWrap {
+    position: relative;
     justify-self: center;
-    width: 420px;
-    min-height: 420px;
-    border-radius: 6px;
-    border: 1px solid color-mix(in lab, var(--text) 12%, transparent);
-    overflow: hidden;
+    align-self: start;
+    width: 380px;
 
     @media (--mediaLaptop) {
-      width: 340px;
-      min-height: 340px;
+      width: 320px;
     }
 
     @media (--mediaTablet) {
       width: 100%;
       max-width: 360px;
-      aspect-ratio: 4 / 5;
-      min-height: 0;
-      justify-self: center;
     }
 
     @media (--mediaMobile) {
-      max-width: 300px;
+      max-width: 280px;
     }
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radiusM);
+    border: 1px solid var(--border);
+    overflow: hidden;
   }
 
   .photoImage {
     height: 100%;
   }
 
+  .photoTag {
+    position: absolute;
+    left: var(--spaceL);
+    bottom: calc(var(--spaceL) * -1);
+    padding: var(--spaceS) var(--spaceM);
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radiusS);
+    font-size: var(--fontSizeBodyXS);
+    font-weight: var(--fontWeightMedium);
+    color: var(--textTitle);
+    white-space: nowrap;
+
+    @media (--mediaMobileS) {
+      white-space: normal;
+      max-width: calc(100% - var(--spaceL));
+    }
+  }
+
   .eyebrow {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--spaceS);
     margin-bottom: var(--spaceL);
     color: var(--accent);
     font-weight: var(--fontWeightMedium);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+    }
   }
 
   .title {
     margin: 0 0 var(--spaceXL);
     max-width: 16ch;
+  }
+
+  .titleAccent {
+    font-family: var(--fontStackDisplay);
+    font-style: italic;
+    font-weight: 400;
   }
 
   .subtitle {
@@ -97,29 +133,18 @@
   .credibility {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spaceM) var(--space2XL);
-    padding: 0;
+    gap: var(--spaceS);
+    padding: var(--spaceXL) 0 0;
     margin: 0;
     list-style: none;
-    border-top: 1px solid color-mix(in lab, var(--text) 15%, transparent);
-    padding-top: var(--spaceXL);
+    border-top: 1px solid var(--border);
 
     & li {
-      position: relative;
-      padding-left: var(--spaceM);
-      font-size: var(--fontSizeBodyS);
+      padding: var(--spaceXS) var(--spaceM);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: var(--fontSizeBodyXS);
       color: var(--textLight);
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0.5em;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--accent);
-      }
     }
   }
 }

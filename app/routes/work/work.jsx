@@ -20,7 +20,7 @@ export const meta = () => {
 export const Work = () => (
   <div className={styles.work}>
     <header className={styles.header}>
-      <SectionHeading eyebrow="Work" ghost="Work" align="center">
+      <SectionHeading eyebrow="Work" align="center">
         A closer look at what I’ve built
       </SectionHeading>
     </header>

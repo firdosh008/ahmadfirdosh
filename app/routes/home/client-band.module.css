@@ -1,15 +1,17 @@
 .band {
   width: 100%;
-  padding: var(--space2XL) 0;
+  padding: var(--spaceXL) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spaceM);
-  background: var(--backgroundLight);
+  gap: var(--spaceL);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .eyebrow {
   color: var(--textLight);
+  font-size: var(--fontSizeBodyXS);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
 }

@@ -2,8 +2,6 @@
   .marquee {
     width: 100%;
     overflow: hidden;
-    background: var(--backgroundLight);
-    padding: var(--spaceL) 0;
     mask-image: linear-gradient(
       to right,
       transparent,
@@ -18,7 +16,7 @@
     width: max-content;
 
     @media (--mediaUseMotion) {
-      animation: marquee 26s linear infinite;
+      animation: marquee 42s linear infinite;
     }
   }
 
@@ -32,30 +30,34 @@
     display: flex;
     align-items: center;
     gap: var(--spaceS);
-    height: 56px;
-    margin: 0 var(--spaceM);
-    padding: 0 var(--spaceL);
-    background: var(--background);
-    border-radius: 10px;
-    box-shadow: 0 1px 2px color-mix(in lab, var(--text) 10%, transparent);
+    height: 32px;
+    margin: 0 var(--space2XL);
+    filter: grayscale(1);
+    opacity: 0.55;
+    transition: opacity var(--durationM) ease, filter var(--durationM) ease;
+
+    &:hover {
+      opacity: 1;
+      filter: grayscale(0);
+    }
   }
 
   .wordmarkImg {
-    height: 24px;
+    height: 18px;
     width: auto;
     display: block;
   }
 
   .iconImg {
-    height: 32px;
-    width: 32px;
-    border-radius: 6px;
+    height: 26px;
+    width: 26px;
+    border-radius: var(--radiusS);
     display: block;
   }
 
   .name {
-    font-family: var(--fontStackDisplay);
-    font-size: var(--fontSizeBodyM);
+    font-size: var(--fontSizeBodyS);
+    font-weight: var(--fontWeightMedium);
     color: var(--textTitle);
     white-space: nowrap;
   }

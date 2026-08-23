@@ -48,6 +48,11 @@ const baseTokens = {
   space3XL: '64px',
   space4XL: '96px',
   space5XL: '128px',
+  radiusS: '6px',
+  radiusM: '10px',
+  radiusL: '16px',
+  border: 'color-mix(in lab, var(--text) 12%, transparent)',
+  borderStrong: 'color-mix(in lab, var(--text) 22%, transparent)',
   zIndex0: 0,
   zIndex1: 4,
   zIndex2: 8,
@@ -108,31 +113,32 @@ const tokensMobileSmall = {
 };
 
 // Tokens that change based on theme
-// Canonical presentation is `light`: cream + deep forest green (see
-// docs/superpowers/specs/2026-08-21-freelance-portfolio-design.md §8.2).
+// Canonical presentation is `light`: warm paper + one deliberate accent,
+// restrained like a precision tool rather than a decorated editorial site
+// (see docs/superpowers/specs/2026-08-23-product-redesign.md).
 // `dark` is a derived variant so the existing theme toggle keeps working.
 const dark = {
-  background: 'oklch(19% 0.01 130)',
-  backgroundLight: 'oklch(24% 0.012 130)',
-  primary: 'oklch(64% 0.1 155)',
-  accent: 'oklch(64% 0.1 155)',
+  background: 'oklch(17% 0.006 130)',
+  backgroundLight: 'oklch(21% 0.008 130)',
+  primary: 'oklch(68% 0.11 155)',
+  accent: 'oklch(68% 0.11 155)',
   error: 'oklch(65.91% 0.249 13.76)',
-  text: 'oklch(96% 0.008 95)',
+  text: 'oklch(95% 0.006 95)',
   textTitle: 'var(--text)',
-  textBody: 'color-mix(in lab, var(--text) 80%, transparent)',
-  textLight: 'color-mix(in lab, var(--text) 60%, transparent)',
+  textBody: 'color-mix(in lab, var(--text) 78%, transparent)',
+  textLight: 'color-mix(in lab, var(--text) 56%, transparent)',
 };
 
 const light = {
-  background: 'oklch(96% 0.008 95)',
-  backgroundLight: 'oklch(92% 0.014 90)',
-  primary: 'oklch(29% 0.045 155)',
-  accent: 'oklch(29% 0.045 155)',
+  background: 'oklch(98% 0.004 90)',
+  backgroundLight: 'oklch(95% 0.006 95)',
+  primary: 'oklch(39% 0.1 155)',
+  accent: 'oklch(39% 0.1 155)',
   error: 'oklch(63.17% 0.259 25.41)',
-  text: 'oklch(16% 0.006 95)',
-  textTitle: 'color-mix(in lab, var(--text) 92%, transparent)',
-  textBody: 'color-mix(in lab, var(--text) 75%, transparent)',
-  textLight: 'color-mix(in lab, var(--text) 55%, transparent)',
+  text: 'oklch(15% 0.004 90)',
+  textTitle: 'color-mix(in lab, var(--text) 94%, transparent)',
+  textBody: 'color-mix(in lab, var(--text) 72%, transparent)',
+  textLight: 'color-mix(in lab, var(--text) 52%, transparent)',
 };
 
 export const tokens = {

@@ -3,38 +3,37 @@
 }
 
 .cta {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  background: var(--accent);
-  padding-top: var(--space5XL);
+  padding-top: var(--space4XL);
   padding-bottom: var(--space5XL);
   display: flex;
   justify-content: center;
 
   @media (--mediaMobile) {
-    padding-top: var(--space3XL);
+    padding-top: var(--space2XL);
     padding-bottom: var(--space3XL);
   }
 }
 
 .ctaContent {
   max-width: var(--maxWidthS);
+  padding: var(--space3XL) var(--space2XL);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusL);
   text-align: center;
+
+  @media (--mediaMobile) {
+    padding: var(--space2XL) var(--spaceL);
+  }
 }
 
 .ctaTitle {
   margin: 0 0 var(--spaceM);
-  color: var(--background);
 }
 
 .ctaText {
   display: block;
   margin-bottom: var(--space2XL);
-  color: color-mix(in lab, var(--background) 85%, transparent);
+  color: var(--textBody);
 }
 
 .ctaActions {
@@ -42,13 +41,4 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--spaceL);
-}
-
-.ctaButton {
-  --primary: var(--background);
-  --buttonTextColor: var(--accent);
-}
-
-.ctaButtonSecondary {
-  --buttonTextColor: var(--background);
 }

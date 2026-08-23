@@ -19,10 +19,10 @@
   .imageWrap {
     position: relative;
     aspect-ratio: 16 / 9;
-    border-radius: 6px;
+    border-radius: var(--radiusM);
     overflow: hidden;
-    box-shadow: 0 0 0 0 transparent;
-    transition: box-shadow var(--durationM) var(--bezierFastoutSlowin);
+    border: 1px solid var(--border);
+    transition: border-color var(--durationM) var(--bezierFastoutSlowin);
 
     & img {
       transition: transform var(--durationL) var(--bezierFastoutSlowin);
@@ -30,11 +30,11 @@
 
     @media (--mediaUseMotion) {
       .card:hover & {
-        box-shadow: 0 20px 40px -16px color-mix(in lab, var(--text) 35%, transparent);
+        border-color: var(--borderStrong);
       }
 
       .card:hover & img {
-        transform: scale(1.06);
+        transform: scale(1.03);
       }
     }
   }
@@ -52,23 +52,18 @@
     height: 100%;
     padding: var(--spaceL);
     text-align: center;
-    background: linear-gradient(
-      135deg,
-      var(--accent),
-      color-mix(in lab, var(--accent) 70%, var(--text))
-    );
+    background: color-mix(in lab, var(--accent) 8%, var(--background));
   }
 
   .coverLogo {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radiusS);
   }
 
   .coverTitle {
-    font-family: var(--fontStackDisplay);
     font-size: var(--fontSizeH4);
-    color: var(--background);
+    color: var(--textTitle);
   }
 
   .caption {
@@ -78,18 +73,29 @@
     max-width: calc(100% - var(--space3XL));
     margin-top: calc(var(--spaceL) * -1);
     margin-left: var(--spaceL);
-    padding: var(--spaceM) var(--spaceL);
+    padding: var(--spaceS) var(--spaceL);
     background: var(--background);
-    box-shadow: 0 12px 30px -12px color-mix(in lab, var(--text) 30%, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--radiusS);
   }
 
   .category {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: var(--spaceXS);
     color: var(--accent);
     font-weight: var(--fontWeightMedium);
+    font-size: var(--fontSizeBodyXS);
     text-transform: uppercase;
     letter-spacing: 0.1em;
+
+    &::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+    }
   }
 
   .title {

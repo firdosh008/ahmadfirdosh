@@ -29,6 +29,8 @@
   padding: var(--spaceL);
   color: var(--textBody);
   background: var(--backgroundLight);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusM);
 }
 
 .table {
@@ -50,7 +52,7 @@
   align-items: baseline;
   gap: var(--spaceL);
   padding: var(--spaceM) 0;
-  border-bottom: 1px solid color-mix(in lab, var(--text) 15%, transparent);
+  border-bottom: 1px solid var(--border);
 
   @media (--mediaMobile) {
     flex-direction: column;

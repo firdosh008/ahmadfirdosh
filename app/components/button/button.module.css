@@ -1,7 +1,7 @@
 @layer components {
   .button {
-    --buttonSize: calc((56 / 16) * 1rem);
-    --buttonFontSize: calc((18 / 16) * 1rem);
+    --buttonSize: calc((44 / 16) * 1rem);
+    --buttonFontSize: calc((15 / 16) * 1rem);
     --buttonFocusWidth: 4px;
     --buttonPadding: 0 var(--spaceL);
     --buttonTextColor: var(--background);
@@ -11,7 +11,10 @@
     height: var(--buttonSize);
     padding: var(--buttonPadding);
     cursor: pointer;
-    transition-property: opacity, color, background;
+    border-radius: var(--radiusS);
+    border: 1px solid var(--primary);
+    background: var(--primary);
+    transition-property: opacity, color, background, border-color, transform;
     transition-duration: var(--durationS);
     transition-timing-function: var(--bezierFastoutSlowin);
     display: inline-flex;
@@ -24,76 +27,29 @@
       transition-duration: calc(var(--durationXS) / 2);
     }
 
-    &::after {
-      content: '';
-      transition-property: opacity, color, background;
-      transition-duration: var(--durationM);
-      transition-timing-function: var(--bezierFastoutSlowin);
-      background: var(--primary);
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% calc(100% - 8px),
-        calc(100% - 8px) 100%,
-        0 100%
-      );
+    &:hover {
+      background: color-mix(in lab, var(--primary) 88%, black);
     }
 
     @media (--mediaUseMotion) {
-      transition-property: transform, opacity, color, background;
-
       &:hover {
-        transform: scale(1.05);
+        transform: translateY(-1px);
       }
 
       &:active {
-        transform: scale(1);
+        transform: translateY(0);
       }
     }
 
     &[data-secondary='true'] {
-      --buttonSpace: 10px;
-      --buttonTextColor: var(--primary);
+      --buttonTextColor: var(--text);
 
-      background: none;
-      padding-left: var(--buttonSpace);
-      padding-right: var(--buttonSpace);
-      position: relative;
-      left: calc(var(--buttonSpace) * -1);
-      height: calc((32 / 16) * 1rem);
-
-      &::after {
-        content: '';
-        height: calc((32 / 16) * 1rem);
-        position: absolute;
-        inset: 0;
-        background-color: color-mix(in lab, var(--primary) 20%, transparent);
-        transform: scale3d(0, 1, 1);
-        transform-origin: right;
-        clip-path: none;
-      }
+      background: transparent;
+      border-color: var(--border);
 
       &:hover {
-        transform: none;
-        background: transparent;
-      }
-
-      &:hover::after {
-        transform: scale3d(1, 1, 1);
-        transform-origin: left;
-      }
-
-      &[data-icon='chevron-right'] {
-        padding-left: calc(var(--buttonSpace) / 2);
-      }
-
-      @media (--mediaUseMotion) {
-        &::after {
-          transition: transform var(--durationM) var(--bezierFastoutSlowin);
-        }
+        background: color-mix(in lab, var(--primary) 6%, transparent);
+        border-color: var(--primary);
       }
     }
 
@@ -109,17 +65,12 @@
       align-items: center;
       justify-content: center;
       padding: 0;
+      background: transparent;
+      border-color: transparent;
 
       &:hover {
-        transform: none;
-      }
-
-      &::after {
-        background: color-mix(in lab, var(--text) 0%, transparent);
-      }
-
-      &:hover::after {
-        background: color-mix(in lab, var(--text) 10%, transparent);
+        background: color-mix(in lab, var(--text) 5%, transparent);
+        border-color: var(--border);
       }
     }
 

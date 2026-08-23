@@ -2,7 +2,6 @@ import { Button } from '~/components/button';
 import { Footer } from '~/components/footer';
 import { Heading } from '~/components/heading';
 import { MagneticWrap } from '~/components/magnetic-wrap';
-import { Marquee } from '~/components/marquee';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { TestimonialsSection } from '~/components/testimonials-section';
@@ -18,14 +17,6 @@ import { WhatWeBuild, WhoWeWorkWith } from './capabilities';
 import { FeaturedWork } from './featured-work';
 import styles from './home.module.css';
 
-const MARQUEE_ITEMS = [
-  'Business Websites',
-  'Web Apps',
-  'AI Integration',
-  'Dashboards',
-  'Agencies & Studios',
-];
-
 export const meta = () => {
   return baseMeta({
     title: 'Full-Stack Developer & AI Engineer',
@@ -37,10 +28,9 @@ export const Home = () => (
   <div className={styles.home}>
     <Hero id="hero" />
     <ClientBand />
+    <WhatWeBuild id="what-i-build" />
     <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />
-    <Marquee items={MARQUEE_ITEMS} />
-    <WhatWeBuild id="what-i-build" />
     <WhoWeWorkWith />
     <ClosingCta />
     <Footer />
@@ -64,11 +54,11 @@ const ClosingCta = () => (
       </Text>
       <div className={styles.ctaActions}>
         <MagneticWrap>
-          <Button className={styles.ctaButton} icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
+          <Button icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
             Chat on WhatsApp
           </Button>
         </MagneticWrap>
-        <Button className={styles.ctaButtonSecondary} secondary iconEnd="arrow-right" iconHoverShift href="/contact">
+        <Button secondary iconEnd="arrow-right" iconHoverShift href="/contact">
           Or use the contact form
         </Button>
       </div>

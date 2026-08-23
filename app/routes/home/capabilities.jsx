@@ -41,7 +41,7 @@ const AUDIENCE = [
 export function WhatWeBuild({ id, sectionRef }) {
   return (
     <Section as="section" id={id} ref={sectionRef} className={styles.build}>
-      <SectionHeading eyebrow="What I build" ghost="Build">
+      <SectionHeading eyebrow="What I build">
         Three ways I can help
       </SectionHeading>
       <motion.div
