@@ -71,12 +71,43 @@
     }
   }
 
+  /* Wrapper for the scroll hand-off. Full-size and positioned so the scale
+     has a sensible origin and .portrait keeps the same containing block. */
+  .portraitExit {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Soft halo behind the subject. It stays in the hero while the portrait
+     itself flies off to the achievements grid. */
+  .portraitExit::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: calc(var(--subjectLeft) - var(--portraitWidth) * 0.3208);
+    width: var(--portraitWidth);
+    height: var(--portraitHeight);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in lab, var(--accent) 18%, transparent),
+      transparent 78%
+    );
+    filter: blur(46px);
+
+    @media (--mediaTablet) {
+      left: calc(50% - var(--portraitWidth) * 0.4787);
+    }
+  }
+
   /* Source PNG is 1200x555; the subject's measured bounding box inside it is
      x 32.08%-63.67%, y 18.20%-100%. Everything below is derived from that, so
      the element is sized by the *person* while the transparent margins hang
      off the viewport. Width comes from height — the ratio is never distorted. */
+  /* An invisible anchor: the portrait itself flies in the fixed layer.
+     Inlined rather than composed — .floatAnchor is declared further down. */
   .portrait {
     position: absolute;
+    visibility: hidden;
     bottom: 0;
     /* Puts the subject's left edge --subjectLeft from the viewport edge. */
     left: calc(var(--subjectLeft) - var(--portraitWidth) * 0.3208);
@@ -90,85 +121,18 @@
     }
   }
 
-  /* Soft halo behind the subject — sits inside .portrait's stacking context
-     so it lands under the photo but over the page background. */
-  .portrait::before {
-    content: '';
-    position: absolute;
-    inset: 8% 34% -4% 30%;
-    z-index: -1;
-    border-radius: 50%;
-    background: radial-gradient(
-      closest-side,
-      color-mix(in lab, var(--accent) 18%, transparent),
-      transparent 78%
-    );
-    filter: blur(46px);
-  }
-
-  .portraitImage {
-    height: 100%;
-    /* The source photo ends in a hard horizontal cut at his waist — fade the
-       bottom out so it dissolves into the page instead of showing the seam. */
-    mask-image: linear-gradient(to bottom, black 62%, transparent 96%);
-  }
-
-  /* ---- Doodle cloud — scattered across the hero, each card wired back to
-     his head with a hand-drawn curve. Everything is anchored off
-     --subjectCenter / --subjectHeight so the wiring tracks the portrait at
-     any viewport size instead of being hand-placed per breakpoint. ---- */
-
-  .cloud {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-
-    /* Narrow screens keep three of them — a portrait crop, a 9:16 sliver and
-       the note. The rest would just crowd the copy. */
-    @media (max-width: 1400px) {
-      .floatPhoto2,
-      .floatNotePhoto {
-        display: none;
-      }
-    }
-
-    /* Stacked layouts get the AI project back — three cards read as scattered,
-       two read as a pair. */
-    @media (--mediaTablet) {
-      .floatPhoto2 {
-        display: block;
-      }
-    }
-  }
-
+  /* Geometry only. These are invisible anchors — the cards themselves live in
+     the fixed flight layer and track these rects, so all the tuned scatter
+     positions stay here where they're readable. */
   .floatAnchor {
     position: absolute;
-    z-index: var(--zIndex1);
-  }
-
-  /* Only the note keeps a card around it — the screenshots and logos float
-     bare. */
-  .floatBase {
-    composes: floatAnchor;
-    background: var(--background);
-    border: 1px solid var(--border);
-    border-radius: var(--radiusL);
-    box-shadow: 0 24px 40px -18px color-mix(in lab, var(--text) 26%, transparent);
-  }
-
-  .floatBob {
-    width: 100%;
-    height: 100%;
+    visibility: hidden;
   }
 
   .floatPhotoBase {
     composes: floatAnchor;
-    border-radius: var(--radiusL);
-    box-shadow: 0 24px 40px -18px color-mix(in lab, var(--text) 26%, transparent);
   }
 
-  /* Project shots sit at the hero's edges — top left, bottom left bleeding off
-     the page, and one hanging past the right edge. */
   .floatPhoto1 {
     composes: floatPhotoBase;
     top: 12%;
@@ -193,13 +157,15 @@
     width: 265px;
     height: 165px;
 
+    /* Phone-shaped: an exact 9:16 screen. */
     @media (--mediaTablet) {
       left: auto;
-      right: -18px;
-      bottom: 14%;
-      width: 104px;
+      top: 13%;
+      right: -24px;
+      bottom: auto;
+      width: 74px;
       height: auto;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 9 / 16;
     }
   }
 
@@ -209,135 +175,32 @@
     right: -46px;
     width: 235px;
     height: 150px;
-
-    /* Phone-shaped: an exact 9:16 screen with a handset-ish radius, cropped
-       to the top of the shot so it reads as a mobile view of the site. */
-    @media (--mediaTablet) {
-      top: 13%;
-      right: -24px;
-      width: 74px;
-      height: auto;
-      aspect-ratio: 9 / 16;
-      border-radius: 16px;
-
-      & img {
-        object-position: center top;
-      }
-    }
   }
-
-  .floatPhotoImageWrap {
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radiusL);
-    overflow: hidden;
-  }
-
-  .floatPhotoImage {
-    height: 100%;
-  }
-
-  /* ---- Bottom right: a testimonial note laid over the screenshot of the
-     project it's about ---- */
 
   .floatNotePhoto {
     composes: floatPhotoBase;
     right: 12%;
     bottom: 6%;
     width: 200px;
-    height: 126px;
+    height: 148px;
   }
 
-  /* Card treatment stays on the note — it's the one element meant to read as
-     a physical note, laid over the screenshot of the project it's about. */
+  /* Needs an explicit height: as an empty anchor there's no content to size it,
+     and a zero-height rect would collapse the card that tracks it. */
   .floatNote {
-    composes: floatBase;
-    z-index: var(--zIndex2);
+    composes: floatAnchor;
     right: 3%;
     bottom: 11%;
     width: 236px;
-    padding: var(--spaceM) var(--spaceM) calc(var(--spaceM) + 6px);
-    border-radius: 18px;
-    text-align: left;
+    height: 152px;
 
-    /* Hangs off the portrait block's bottom left, over the faded hem of the
-       photo — never over the copy underneath. */
     @media (--mediaTablet) {
       right: auto;
       left: -26px;
       bottom: -7%;
-      width: 142px;
-      padding: var(--spaceS) var(--spaceM) calc(var(--spaceM) + 4px);
+      width: 148px;
+      height: 140px;
     }
-  }
-
-  .floatNoteHead {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: var(--spaceS);
-
-    @media (--mediaTablet) {
-      margin-bottom: 4px;
-    }
-  }
-
-  .floatNoteStars {
-    display: flex;
-    gap: 2px;
-    color: var(--accent);
-
-    @media (--mediaTablet) {
-      display: none;
-    }
-  }
-
-  .floatNoteMeta {
-    min-width: 0;
-    overflow: hidden;
-    font-size: var(--fontSizeBodyXS);
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: var(--textLight);
-  }
-
-  .floatNoteName {
-    margin: 0 0 4px;
-    font-size: var(--fontSizeBodyS);
-    font-weight: var(--fontWeightBold);
-    line-height: 1.3;
-    color: var(--textTitle);
-  }
-
-  .floatNoteQuote {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    margin: 0;
-    overflow: hidden;
-    font-size: var(--fontSizeBodyXS);
-    line-height: 1.5;
-    color: var(--textLight);
-  }
-
-  /* Peeled bottom-right corner. This has to be a pseudo-element on the card
-     itself: as a child it would land inside .floatBob, whose animated
-     transform makes it the containing block, so the flap would sit inset by
-     the card's padding instead of on the corner. */
-  .floatNote::after {
-    content: '';
-    position: absolute;
-    right: -1px;
-    bottom: -1px;
-    width: 26px;
-    height: 26px;
-    border-bottom-right-radius: 18px;
-    background: linear-gradient(
-      135deg,
-      transparent 0 48%,
-      color-mix(in lab, var(--text) 5%, var(--background)) 48% 100%
-    );
-    box-shadow: -6px -6px 12px -6px color-mix(in lab, var(--text) 22%, transparent) inset;
   }
 
   /* ---- Text column ---- */

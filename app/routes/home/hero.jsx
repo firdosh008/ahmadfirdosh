@@ -1,48 +1,13 @@
-import heroPortrait from '~/assets/hero-portrait.png';
-import heroPortraitPlaceholder from '~/assets/hero-portrait-placeholder.png';
 import { Button } from '~/components/button';
 import { Heading } from '~/components/heading';
-import { Image } from '~/components/image';
 import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getWhatsAppLink } from '~/utils/contact';
 import { heroFadeUp, heroStagger } from '~/utils/motion';
-import { projects } from '~/data/projects';
 import styles from './hero.module.css';
-
-// Real project screenshots, floating as proof — not stock photos. Placed at
-// the hero's edges the way a scrapbook lays photos out.
-const PHOTO_CARDS = [
-  { id: 'crazy-mountaineers', className: 'floatPhoto1', delay: 0, tilt: -6 },
-  { id: 'ladderbrief', className: 'floatPhoto2', delay: 0.9, tilt: -12 },
-  { id: 'yumy', className: 'floatPhoto3', delay: 1.8, tilt: 7 },
-].map(card => ({ ...card, project: projects.find(p => p.id === card.id) }));
-
-// Five-point star, drawn once for the note's rating row.
-const STAR_PATH = 'M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z';
-
-// The testimonial note sits over the shot of the project it's about.
-const noteProject = projects.find(project => project.id === 'admissiondesk');
-
-function PhotoCard({ project, className, delay, tilt }) {
-  return (
-    <FloatCard className={className} delay={delay} tilt={tilt}>
-      <div className={styles.floatPhotoImageWrap}>
-        <Image
-          cover
-          className={styles.floatPhotoImage}
-          src={project.images[0].src}
-          placeholder={project.images[0].placeholder}
-          alt=""
-          sizes="280px"
-        />
-      </div>
-    </FloatCard>
-  );
-}
 
 // Typed into the pill like a search box: firdosh/<skill>.
 const ROLES = [
@@ -92,99 +57,42 @@ function TypedRole() {
   );
 }
 
-function FloatCard({ className, delay = 0, tilt = 0, children }) {
-  const reduceMotion = useReducedMotion();
-
-  return (
-    <motion.div className={className} variants={heroFadeUp} style={{ rotate: tilt }}>
-      <motion.div
-        className={styles.floatBob}
-        animate={reduceMotion ? undefined : { y: [-5, 5, -5] }}
-        transition={
-          reduceMotion
-            ? undefined
-            : { duration: 5, delay, repeat: Infinity, ease: 'easeInOut' }
-        }
-      >
-        {children}
-      </motion.div>
-    </motion.div>
-  );
-}
-
 export function Hero({ id, sectionRef }) {
-  // The doodle cloud dissipates as the hero scrolls out of view — the
-  // "ideas" drift up and fade, handing off to the real project cards /
-  // build cards that scroll-reveal further down the page.
+  // Without a ref of its own this tracked window scroll, not the hero, so the
+  // cloud faded against whole-page progress and never on cue.
+  const localRef = useRef(null);
+  const ref = sectionRef ?? localRef;
+
+  // The portrait fades out as the scattered cards fly into the billboard's
+  // slots below (see scatter-flight). Scroll-linked, so scrolling up reverses.
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: ref,
     offset: ['start start', 'end start'],
   });
-  const cloudOpacity = useTransform(scrollYProgress, [0.2, 0.6], [1, 0]);
-  const cloudY = useTransform(scrollYProgress, [0.2, 0.6], [0, -50]);
+  const portraitOpacity = useTransform(scrollYProgress, [0.45, 0.95], [1, 0]);
+  const portraitScale = useTransform(scrollYProgress, [0.45, 0.95], [1, 0.92]);
 
   return (
-    <Section as="header" id={id} ref={sectionRef} className={styles.hero}>
+    <Section as="header" id={id} ref={ref} className={styles.hero}>
       <motion.div
         className={styles.portraitCol}
         initial="hidden"
         animate="visible"
         variants={heroStagger}
       >
-        <motion.div className={styles.cloud} style={{ opacity: cloudOpacity, y: cloudY }}>
-          {PHOTO_CARDS.map(({ project, className, delay, tilt }) => (
-            <PhotoCard
-              project={project}
-              className={styles[className]}
-              delay={delay}
-              tilt={tilt}
-              key={project.id}
-            />
-          ))}
+        <div className={styles.cloud}>
+          <div className={styles.floatPhoto1} data-flight-anchor="a" />
+          <div className={styles.floatPhoto2} data-flight-anchor="b" />
+          <div className={styles.floatPhoto3} data-flight-anchor="c" />
+          <div className={styles.floatNotePhoto} data-flight-anchor="d" />
+          <div className={styles.floatNote} data-flight-anchor="e" />
+        </div>
 
-          <PhotoCard
-            project={noteProject}
-            className={styles.floatNotePhoto}
-            delay={0.6}
-            tilt={9}
-          />
-
-          {!!noteProject.testimonial && (
-            <FloatCard className={styles.floatNote} delay={0.2} tilt={-3}>
-              <div className={styles.floatNoteHead}>
-                <span className={styles.floatNoteStars} aria-hidden="true">
-                  {Array.from({ length: noteProject.testimonial.rating }, (_, i) => (
-                    <svg
-                      key={i}
-                      viewBox="0 0 16 16"
-                      width="11"
-                      height="11"
-                      fill="currentColor"
-                    >
-                      <path d={STAR_PATH} />
-                    </svg>
-                  ))}
-                </span>
-                <span className={styles.floatNoteMeta}>
-                  {noteProject.testimonial.role}
-                </span>
-              </div>
-              <p className={styles.floatNoteName}>{noteProject.testimonial.name}</p>
-              <p className={styles.floatNoteQuote}>
-                {noteProject.testimonial.highlight ?? noteProject.testimonial.quote}
-              </p>
-            </FloatCard>
-          )}
-        </motion.div>
-
-        <motion.div className={styles.portrait} variants={heroFadeUp}>
-          <Image
-            className={styles.portraitImage}
-            src={heroPortrait}
-            placeholder={heroPortraitPlaceholder}
-            alt="Portrait of Firdosh Ahmad"
-            sizes="(min-width: 1041px) 1600px, 80vw"
-          />
+        <motion.div
+          className={styles.portraitExit}
+          style={{ opacity: portraitOpacity, scale: portraitScale }}
+        >
+          <div className={styles.portrait} data-flight-anchor="p" />
         </motion.div>
       </motion.div>
 

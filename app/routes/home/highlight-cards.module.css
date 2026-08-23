@@ -1,0 +1,137 @@
+@layer components {
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Sized and offset by the flight layer, not by CSS — it has to hold his head
+     in frame at both ends of the trip (full hero portrait -> avatar circle). */
+  .portrait {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    mask-image: linear-gradient(to bottom, black 62%, transparent 96%);
+  }
+
+  /* ---- Link card: shot, title, source ---- */
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    background: var(--background);
+    container-type: inline-size;
+  }
+
+  .linkImage {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    border-radius: calc(var(--radiusL) - 8px);
+    overflow: hidden;
+  }
+
+  .linkTitle {
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: var(--fontSizeBodyS);
+    font-weight: var(--fontWeightMedium);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--textTitle);
+  }
+
+  .linkDomain {
+    margin-top: 2px;
+    overflow: hidden;
+    font-size: var(--fontSizeBodyXS);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--textLight);
+  }
+
+  /* ---- Testimonial note ---- */
+
+  .note {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: var(--spaceM);
+    background: var(--background);
+    container-type: inline-size;
+  }
+
+  /* Peeled bottom-right corner. */
+  .note::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    border-bottom-right-radius: var(--radiusL);
+    background: linear-gradient(
+      135deg,
+      transparent 0 48%,
+      color-mix(in lab, var(--text) 5%, var(--background)) 48% 100%
+    );
+    box-shadow: -6px -6px 12px -6px color-mix(in lab, var(--text) 22%, transparent) inset;
+  }
+
+  .noteMeta {
+    overflow: hidden;
+    font-size: var(--fontSizeBodyXS);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--textLight);
+  }
+
+  .noteName {
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: var(--fontSizeBodyS);
+    font-weight: var(--fontWeightBold);
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--textTitle);
+  }
+
+  /* The card doubles in size on its way to the slot, so the quote grows with
+     it and shows more lines once it lands. */
+  .noteQuote {
+    display: -webkit-box;
+    /* Clamped to whatever the card is wide enough to hold: two lines while
+       it's a hero doodle, the full quote once it lands in its slot. */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-top: var(--spaceS);
+    overflow: hidden;
+    font-size: var(--fontSizeBodyXS);
+    line-height: 1.5;
+    color: var(--textLight);
+
+    @container (min-width: 190px) {
+      -webkit-line-clamp: 3;
+    }
+
+    @container (min-width: 300px) {
+      -webkit-line-clamp: 7;
+      font-size: var(--fontSizeBodyS);
+    }
+  }
+
+  @container (min-width: 300px) {
+    .noteName {
+      font-size: var(--fontSizeBodyM);
+      white-space: normal;
+    }
+  }
+}

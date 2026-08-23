@@ -1,0 +1,84 @@
+@layer layout {
+  /* Fixed, so a card's position is plain viewport maths the whole way down — no
+     re-parenting or mode switch at either end of the flight. z-index 0 keeps
+     the whole layer *behind* the hero copy (.layout is --zIndex1) while still
+     painting over the page background. */
+  .layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .cardBase {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform, width, height;
+  }
+
+  .card {
+    composes: cardBase;
+    /* border-box is global, so the border sits inside the width/height the
+       flight layer writes — no drift against the slot it lands in. */
+    border: 1px solid var(--border);
+    border-radius: var(--radiusL);
+    box-shadow: 0 24px 40px -18px color-mix(in lab, var(--text) 26%, transparent);
+    overflow: hidden;
+
+    /* The two cards the small-screen grid has no slot for. */
+    @media (--mediaTablet) {
+      &[data-on-mobile='false'] {
+        display: none;
+      }
+    }
+  }
+
+  /* Behind the scattered cards, and no card chrome — it's a cut-out photo until
+     the moment it becomes an avatar. */
+  .portraitCard {
+    composes: cardBase;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .bob {
+    --bobAmount: 5px;
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: cardIn var(--durationL) var(--bezierFastoutSlowin) both;
+
+    @media (--mediaUseMotion) {
+      animation: cardIn var(--durationL) var(--bezierFastoutSlowin) both,
+        cardBob 5s ease-in-out infinite;
+    }
+  }
+
+  /* The portrait is a person, not a floating card — it shouldn't drift. */
+  .portraitCard .bob {
+    --bobAmount: 0px;
+  }
+
+  @keyframes cardIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cardBob {
+    0%,
+    100% {
+      transform: translateY(calc(var(--bobAmount) * -1));
+    }
+
+    50% {
+      transform: translateY(var(--bobAmount));
+    }
+  }
+}

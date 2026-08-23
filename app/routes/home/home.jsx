@@ -12,6 +12,8 @@ import { fadeUp, revealViewport } from '~/utils/motion';
 import config from '~/config.json';
 import { testimonials } from '~/data/projects';
 import { Hero } from './hero';
+import { Billboard } from './billboard';
+import { ScatterFlight } from './scatter-flight';
 import { ClientBand } from './client-band';
 import { WhatWeBuild, WhoWeWorkWith } from './capabilities';
 import { FeaturedWork } from './featured-work';
@@ -30,12 +32,14 @@ export const Home = () => (
       <Hero id="hero" />
       <ClientBand />
     </div>
+    <Billboard id="highlights" />
     <WhatWeBuild id="what-i-build" />
     <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />
     <WhoWeWorkWith />
     <ClosingCta />
     <Footer />
+    <ScatterFlight />
   </div>
 );
 
