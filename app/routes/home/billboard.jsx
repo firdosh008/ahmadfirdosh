@@ -60,7 +60,7 @@ export const Billboard = ({ id }) => (
           secondary
           iconEnd="arrow-right"
           iconHoverShift
-          href="/work"
+          href="/#more-work"
         >
           View all projects
         </Button>

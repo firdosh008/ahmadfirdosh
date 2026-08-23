@@ -34,7 +34,10 @@ export const fillWindow = index => {
   return { start, end: start + FILL_DURATION };
 };
 
-// Keyed by the flight card that lands in each slot.
+// Keyed by the flight card that lands in each slot. `order` staggers the four
+// departures so they don't leave the grid in lockstep.
 export const ARRIVALS = Object.fromEntries(
-  RING.map((item, index) => [item.from, fillWindow(index)]).filter(([key]) => key)
+  RING.map((item, index) => [item.from, { ...fillWindow(index), index }])
+    .filter(([key]) => key)
+    .map(([key, value], order) => [key, { ...value, order }])
 );

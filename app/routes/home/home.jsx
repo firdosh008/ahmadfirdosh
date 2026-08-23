@@ -17,7 +17,6 @@ import { ProjectCarousel } from './carousel';
 import { ScatterFlight } from './scatter-flight';
 import { ClientBand } from './client-band';
 import { WhatWeBuild, WhoWeWorkWith } from './capabilities';
-import { FeaturedWork } from './featured-work';
 import styles from './home.module.css';
 
 export const meta = () => {
@@ -36,7 +35,6 @@ export const Home = () => (
     <Billboard id="achievements" />
     <ProjectCarousel id="more-work" />
     <WhatWeBuild id="what-i-build" />
-    <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />
     <WhoWeWorkWith />
     <ClosingCta />

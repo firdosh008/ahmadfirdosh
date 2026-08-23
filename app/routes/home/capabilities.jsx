@@ -4,7 +4,7 @@ import { Section } from '~/components/section';
 import { SectionHeading } from '~/components/section-heading';
 import { Text } from '~/components/text';
 import { motion } from 'framer-motion';
-import { categorySlugs, ProjectCategory } from '~/data/projects';
+import { ProjectCategory } from '~/data/projects';
 import { fadeUp, revealViewport, staggerChildren } from '~/utils/motion';
 import styles from './capabilities.module.css';
 
@@ -28,22 +28,20 @@ const AUDIENCE = [
     title: 'Businesses',
     text: 'Clinics, cafes, travel companies, and coaching centres who want a website or tool that actually brings in customers — explained without the jargon.',
     cta: 'See business websites',
-    href: `/work#${categorySlugs[ProjectCategory.BusinessWebsites]}`,
+    href: '/#more-work',
   },
   {
     title: 'Agencies & Studios',
     text: 'Design and marketing studios who need a reliable full-stack and AI developer to build out client work — on time, on spec, white-label friendly.',
     cta: 'See technical work',
-    href: `/work#${categorySlugs[ProjectCategory.AI]}`,
+    href: '/#more-work',
   },
 ];
 
 export function WhatWeBuild({ id, sectionRef }) {
   return (
     <Section as="section" id={id} ref={sectionRef} className={styles.build}>
-      <SectionHeading eyebrow="What I build">
-        Three ways I can help
-      </SectionHeading>
+      <SectionHeading eyebrow="What I build">Three ways I can help</SectionHeading>
       <motion.div
         className={styles.buildGrid}
         initial="hidden"
@@ -70,7 +68,9 @@ export function WhatWeBuild({ id, sectionRef }) {
 export function WhoWeWorkWith() {
   return (
     <Section as="section" className={styles.audience}>
-      <SectionHeading eyebrow="Who I work with">Two kinds of clients, one process</SectionHeading>
+      <SectionHeading eyebrow="Who I work with">
+        Two kinds of clients, one process
+      </SectionHeading>
       <motion.div
         className={styles.audienceGrid}
         initial="hidden"

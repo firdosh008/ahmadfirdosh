@@ -1,8 +1,15 @@
 import { Image } from '~/components/image';
 import { SectionHeading } from '~/components/section-heading';
 import { Text } from '~/components/text';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { Button } from '~/components/button';
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
+import { useRef, useState } from 'react';
 import { projects } from '~/data/projects';
 import { RING, SPIN_START, fillWindow } from './ring';
 import styles from './carousel.module.css';
@@ -61,10 +68,31 @@ export const ProjectCarousel = ({ id }) => {
     offset: ['start start', 'end end'],
   });
 
-  // A little over half a turn once the slots have filled — slow enough to read
-  // each card as it swings past.
-  const rotate = useTransform(scrollYProgress, [SPIN_START, 1], [0, -200]);
+  // A full turn once the slots have filled, so every project comes round to the
+  // front — slow enough to read each card as it swings past.
+  const rotate = useTransform(scrollYProgress, [SPIN_START, 1], [0, -360]);
   const scale = useTransform(scrollYProgress, [0, 0.1], [0.92, 1]);
+
+  // Whichever card is nearest the front owns the caption below the ring. State
+  // only changes when the answer does, so this isn't a render per frame.
+  const [active, setActive] = useState(0);
+
+  useMotionValueEvent(rotate, 'change', value => {
+    const front = RING.reduce(
+      (best, item, index) => {
+        const offset = (((item.angle + value) % 360) + 360) % 360;
+        const distance = Math.min(offset, 360 - offset);
+
+        return distance < best.distance ? { index, distance } : best;
+      },
+      { index: 0, distance: Infinity }
+    );
+
+    setActive(current => (current === front.index ? current : front.index));
+  });
+
+  const project = projects.find(entry => entry.id === RING[active].id);
+  const isApp = RING[active].shape === 'app';
 
   return (
     <section className={styles.stage} id={id} ref={stageRef} data-ring-stage>
@@ -92,6 +120,23 @@ export const ProjectCarousel = ({ id }) => {
             ))}
           </motion.div>
         </motion.div>
+
+        <div className={styles.detail} key={project.id}>
+          <Text as="p" size="s" className={styles.summary}>
+            {project.summary}
+          </Text>
+          {!!project.buttonLink && (
+            <Button
+              secondary
+              iconEnd="arrow-right"
+              iconHoverShift
+              href={project.buttonLink}
+              className={styles.detailCta}
+            >
+              {isApp ? `View ${project.title} app` : `View ${project.title}`}
+            </Button>
+          )}
+        </div>
       </div>
     </section>
   );

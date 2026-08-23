@@ -20,7 +20,34 @@
   }
 
   .heading {
+    flex-shrink: 0;
     padding: 0 var(--spaceOuter);
+    margin-bottom: calc(var(--spaceM) * -1);
+  }
+
+  /* Reads out whichever project is facing the front. */
+  .detail {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spaceM);
+    padding: 0 var(--spaceOuter) var(--spaceXL);
+    text-align: center;
+
+    @media (--mediaMobile) {
+      gap: var(--spaceS);
+      padding-bottom: var(--spaceL);
+    }
+  }
+
+  .summary {
+    max-width: 52ch;
+    color: var(--textBody);
+  }
+
+  .detailCta {
+    flex-shrink: 0;
   }
 
   /* The camera. Perspective lives here so the ring can own the rotation. */
@@ -29,7 +56,8 @@
     perspective-origin: 50% 45%;
     flex: 1;
     min-height: 0;
-    margin-top: -7vh;
+    margin-top: -11vh;
+    margin-bottom: -6vh;
 
     @media (--mediaMobile) {
       perspective: 900px;

@@ -154,7 +154,7 @@ export function Hero({ id, sectionRef }) {
                 Let&apos;s chat
               </Button>
             </MagneticWrap>
-            <Button className={styles.heroButton} secondary href="/work">
+            <Button className={styles.heroButton} secondary href="/#more-work">
               See my work
             </Button>
           </motion.div>

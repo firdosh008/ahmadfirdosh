@@ -1,7 +1,7 @@
 export const navLinks = [
   {
     label: 'Work',
-    pathname: '/work',
+    pathname: '/#more-work',
   },
   {
     label: 'Services',

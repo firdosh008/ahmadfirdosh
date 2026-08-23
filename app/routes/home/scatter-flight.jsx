@@ -60,13 +60,19 @@ export const ScatterFlight = () => {
       const raw = clamp((viewport - stageTop) / (viewport * 0.72));
       const progress = reduceMotion ? Math.round(raw) : ease(raw);
 
-      // Second leg: out of the grid and down onto the carousel's ring. Measured
-      // off how far through its pinned stretch the carousel is, which is the
-      // same clock its slots fill on.
+      // Second leg: out of the grid and down onto the carousel's ring.
+      //
+      // Two clocks, because they answer different questions. `approach` runs
+      // while the carousel is still rising into view, which is when the cards
+      // have to be travelling — keying the trip to the pinned stretch meant
+      // nothing moved until you were already inside the section. `ringProgress`
+      // is the pinned stretch itself, the clock the slots fill on.
+      let approach = 0;
       let ringProgress = 0;
 
       if (ringStage) {
         const rect = ringStage.getBoundingClientRect();
+        approach = clamp((viewport - rect.top) / viewport);
         ringProgress = clamp(-rect.top / Math.max(1, rect.height - viewport));
       }
 
@@ -100,7 +106,8 @@ export const ScatterFlight = () => {
         // Ride the second leg down to the ring, arriving exactly as that slot
         // starts to fill, then hand over to it across the fill window.
         if (arrival && onward?.width) {
-          const travel = ease(clamp(ringProgress / arrival.start));
+          // Lands a touch before the section pins, staggered by departure order.
+          const travel = ease(clamp((approach - arrival.order * 0.06) / 0.78));
 
           width = lerp(width, onward.width, travel);
           height = lerp(height, onward.height, travel);
