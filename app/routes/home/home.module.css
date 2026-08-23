@@ -20,7 +20,9 @@
 
 .cta {
   padding-top: var(--space4XL);
-  padding-bottom: var(--space5XL);
+  /* The footer brings its own top padding, so a big pad here as well left the
+     copyright line stranded a long way below the section. */
+  padding-bottom: var(--spaceL);
   display: flex;
   justify-content: center;
 
@@ -30,16 +32,109 @@
   }
 }
 
+/* The field the stack is scattered over. The words sit in the middle of it and
+   everything else is placed against its box, so one element sets the scale. */
+.ctaField {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1240px;
+  /* Tall enough to scatter over, no taller — the leftover was showing up as a
+     gap between the words and the footer. */
+  min-height: 480px;
+
+  @media (--mediaTablet) {
+    min-height: 420px;
+  }
+
+  @media (--mediaMobile) {
+    min-height: 0;
+  }
+}
+
+.threads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  & line {
+    stroke: color-mix(in lab, var(--text) 18%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 4 7;
+  }
+
+  @media (--mediaMobile) {
+    display: none;
+  }
+}
+
+.stack {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+
+  /* No room to scatter anything on a phone — the words take the whole width. */
+  @media (--mediaMobile) {
+    display: none;
+  }
+}
+
+/* A tile per mark, so the logos read as objects sitting on the threads rather
+   than as loose artwork. */
+.chip {
+  position: absolute;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusM);
+  background: var(--background);
+  box-shadow: 0 10px 24px -18px color-mix(in lab, var(--text) 60%, transparent);
+  color: var(--text);
+
+  @media (--mediaTablet) {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.mark {
+  width: 26px;
+  height: 26px;
+
+  @media (--mediaTablet) {
+    width: 21px;
+    height: 21px;
+  }
+}
+
 .ctaContent {
+  position: relative;
   max-width: var(--maxWidthS);
   padding: var(--space3XL) var(--space2XL);
   border: 1px solid var(--border);
   border-radius: var(--radiusL);
+  background: var(--background);
   text-align: center;
 
   @media (--mediaMobile) {
     padding: var(--space2XL) var(--spaceL);
   }
+}
+
+.ctaEyebrow {
+  display: block;
+  margin-bottom: var(--spaceS);
+  color: var(--textLight);
 }
 
 .ctaTitle {
