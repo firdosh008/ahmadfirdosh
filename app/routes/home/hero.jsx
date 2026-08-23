@@ -1,11 +1,5 @@
 import heroPortrait from '~/assets/hero-portrait.png';
 import heroPortraitPlaceholder from '~/assets/hero-portrait-placeholder.png';
-import reactLogo from '~/assets/logos-tech/react.svg';
-import pythonLogo from '~/assets/logos-tech/python.svg';
-import typescriptLogo from '~/assets/logos-tech/typescript.svg';
-import anthropicLogo from '~/assets/logos-tech/anthropic.svg';
-import fastapiLogo from '~/assets/logos-tech/fastapi.svg';
-import nextjsLogo from '~/assets/logos-tech/nextdotjs.svg';
 import { Button } from '~/components/button';
 import { Heading } from '~/components/heading';
 import { Image } from '~/components/image';
@@ -13,43 +7,96 @@ import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { getWhatsAppLink } from '~/utils/contact';
 import { heroFadeUp, heroStagger } from '~/utils/motion';
-import { projects, testimonials } from '~/data/projects';
+import { projects } from '~/data/projects';
 import styles from './hero.module.css';
 
-const proofTestimonial = testimonials[0];
+// Real project screenshots, floating as proof — not stock photos. Placed at
+// the hero's edges the way a scrapbook lays photos out.
+const PHOTO_CARDS = [
+  { id: 'crazy-mountaineers', className: 'floatPhoto1', delay: 0, tilt: -6 },
+  { id: 'ladderbrief', className: 'floatPhoto2', delay: 0.9, tilt: -12 },
+  { id: 'yumy', className: 'floatPhoto3', delay: 1.8, tilt: 7 },
+].map(card => ({ ...card, project: projects.find(p => p.id === card.id) }));
 
-// Real project screenshots, floating as proof — not stock photos. Same 3
-// projects as the "Featured work" section below, so the cloud reads as a
-// preview of the real cards that appear once you scroll to them.
-const PHOTO_PROOF_IDS = ['ladderbrief', 'admissiondesk', 'crazy-mountaineers'];
-const photoProofs = PHOTO_PROOF_IDS.map((id, index) => ({
-  project: projects.find(project => project.id === id),
-  className: ['floatProof1', 'floatProof2', 'floatProof3'][index],
-  delay: [0, 0.9, 1.8][index],
-}));
+// Five-point star, drawn once for the note's rating row.
+const STAR_PATH = 'M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z';
 
-// Real stack, pulled straight from the resume — not decorative icon soup.
-const TECH_LOGOS = [
-  { src: reactLogo, alt: 'React', className: 'floatLogoReact', delay: 0.4 },
-  { src: pythonLogo, alt: 'Python', className: 'floatLogoPython', delay: 1.6 },
-  {
-    src: typescriptLogo,
-    alt: 'TypeScript',
-    className: 'floatLogoTypescript',
-    delay: 0.7,
-  },
-  { src: fastapiLogo, alt: 'FastAPI', className: 'floatLogoFastapi', delay: 1.1 },
-  { src: nextjsLogo, alt: 'Next.js', className: 'floatLogoNextjs', delay: 2.2 },
-  { src: anthropicLogo, alt: 'Anthropic', className: 'floatLogoAnthropic', delay: 1.9 },
+// The testimonial note sits over the shot of the project it's about.
+const noteProject = projects.find(project => project.id === 'admissiondesk');
+
+function PhotoCard({ project, className, delay, tilt }) {
+  return (
+    <FloatCard className={className} delay={delay} tilt={tilt}>
+      <div className={styles.floatPhotoImageWrap}>
+        <Image
+          cover
+          className={styles.floatPhotoImage}
+          src={project.images[0].src}
+          placeholder={project.images[0].placeholder}
+          alt=""
+          sizes="280px"
+        />
+      </div>
+    </FloatCard>
+  );
+}
+
+// Typed into the pill like a search box: firdosh/<skill>.
+const ROLES = [
+  'full-stack-developer',
+  'ai-engineer',
+  'react-&-nextjs',
+  'python-&-fastapi',
+  'aws-&-cloudflare',
+  'automations',
 ];
 
-function FloatCard({ className, delay = 0, children }) {
+function TypedRole() {
+  const reduceMotion = useReducedMotion();
+  const [index, setIndex] = useState(0);
+  const [length, setLength] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    const word = ROLES[index];
+    const typed = !deleting && length === word.length;
+    const cleared = deleting && length === 0;
+    const timer = setTimeout(
+      () => {
+        if (typed) return setDeleting(true);
+
+        if (cleared) {
+          setDeleting(false);
+          setIndex(current => (current + 1) % ROLES.length);
+          return;
+        }
+
+        setLength(current => current + (deleting ? -1 : 1));
+      },
+      typed ? 1800 : cleared ? 260 : deleting ? 35 : 70
+    );
+
+    return () => clearTimeout(timer);
+  }, [index, length, deleting, reduceMotion]);
+
+  return (
+    <span className={styles.eyebrowTyped}>
+      {reduceMotion ? ROLES[0] : ROLES[index].slice(0, length)}
+      {!reduceMotion && <i className={styles.eyebrowCaret} aria-hidden="true" />}
+    </span>
+  );
+}
+
+function FloatCard({ className, delay = 0, tilt = 0, children }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <motion.div className={className} variants={heroFadeUp}>
+    <motion.div className={className} variants={heroFadeUp} style={{ rotate: tilt }}>
       <motion.div
         className={styles.floatBob}
         animate={reduceMotion ? undefined : { y: [-5, 5, -5] }}
@@ -85,47 +132,49 @@ export function Hero({ id, sectionRef }) {
         variants={heroStagger}
       >
         <motion.div className={styles.cloud} style={{ opacity: cloudOpacity, y: cloudY }}>
-          {photoProofs.map(({ project, className, delay }) => (
-            <FloatCard className={styles[className]} delay={delay} key={project.id}>
-              <div className={styles.floatProofImageWrap}>
-                <Image
-                  cover
-                  className={styles.floatProofImage}
-                  src={project.images[0].src}
-                  placeholder={project.images[0].placeholder}
-                  alt=""
-                  sizes="220px"
-                />
-              </div>
-            </FloatCard>
+          {PHOTO_CARDS.map(({ project, className, delay, tilt }) => (
+            <PhotoCard
+              project={project}
+              className={styles[className]}
+              delay={delay}
+              tilt={tilt}
+              key={project.id}
+            />
           ))}
 
-          {!!proofTestimonial && (
-            <FloatCard className={styles.floatReview} delay={0.3}>
-              <Text as="p" size="s" className={styles.floatReviewQuote}>
-                “{proofTestimonial.quote}”
-              </Text>
-              <Text as="p" size="s" weight="medium" className={styles.floatReviewName}>
-                {proofTestimonial.name}
-              </Text>
+          <PhotoCard
+            project={noteProject}
+            className={styles.floatNotePhoto}
+            delay={0.6}
+            tilt={9}
+          />
+
+          {!!noteProject.testimonial && (
+            <FloatCard className={styles.floatNote} delay={0.2} tilt={-3}>
+              <div className={styles.floatNoteHead}>
+                <span className={styles.floatNoteStars} aria-hidden="true">
+                  {Array.from({ length: noteProject.testimonial.rating }, (_, i) => (
+                    <svg
+                      key={i}
+                      viewBox="0 0 16 16"
+                      width="11"
+                      height="11"
+                      fill="currentColor"
+                    >
+                      <path d={STAR_PATH} />
+                    </svg>
+                  ))}
+                </span>
+                <span className={styles.floatNoteMeta}>
+                  {noteProject.testimonial.role}
+                </span>
+              </div>
+              <p className={styles.floatNoteName}>{noteProject.testimonial.name}</p>
+              <p className={styles.floatNoteQuote}>
+                {noteProject.testimonial.highlight ?? noteProject.testimonial.quote}
+              </p>
             </FloatCard>
           )}
-
-          {TECH_LOGOS.map(logo => (
-            <FloatCard
-              className={styles[logo.className]}
-              delay={logo.delay}
-              key={logo.alt}
-            >
-              <img
-                className={styles.floatLogoImage}
-                src={logo.src}
-                alt={logo.alt}
-                width={20}
-                height={20}
-              />
-            </FloatCard>
-          ))}
         </motion.div>
 
         <motion.div className={styles.portrait} variants={heroFadeUp}>
@@ -147,9 +196,31 @@ export function Hero({ id, sectionRef }) {
       >
         <div className={styles.textCol}>
           <motion.div variants={heroFadeUp}>
-            <Text as="p" className={styles.eyebrowPill}>
-              <span className={styles.eyebrowDot} />
-              Full-Stack &amp; AI Developer
+            <Text
+              as="p"
+              className={styles.eyebrowPill}
+              aria-label="Full-Stack and AI Developer"
+            >
+              <svg
+                className={styles.eyebrowSearchIcon}
+                viewBox="0 0 16 16"
+                width="16"
+                height="16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                  d="M10.6 10.6 14 14"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className={styles.eyebrowPrefix} aria-hidden="true">
+                firdosh/
+              </span>
+              <TypedRole />
             </Text>
           </motion.div>
           <motion.div variants={heroFadeUp}>
@@ -172,17 +243,11 @@ export function Hero({ id, sectionRef }) {
                 iconHoverShift
                 href={getWhatsAppLink()}
               >
-                Chat on WhatsApp
+                Let&apos;s chat
               </Button>
             </MagneticWrap>
-            <Button
-              className={styles.heroButton}
-              secondary
-              iconEnd="arrow-right"
-              iconHoverShift
-              href="/work"
-            >
-              See the work
+            <Button className={styles.heroButton} secondary href="/work">
+              See my work
             </Button>
           </motion.div>
         </div>

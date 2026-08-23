@@ -94,7 +94,7 @@ export const Navbar = () => {
         {!!socialLinks.length && <NavbarIcons desktop />}
         {!isMobile && (
           <Button className={styles.navCta} href={getWhatsAppLink()} icon="whatsapp">
-            Let&apos;s talk
+            Let&apos;s chat
           </Button>
         )}
         {!isMobile && <ThemeToggle />}

@@ -82,7 +82,8 @@ export const projects = [
     id: 'admissiondesk',
     title: 'AdmissionDesk',
     category: ProjectCategory.BusinessWebsites,
-    summary: 'College admissions counselling website for a Dehradun-based business, live since 2020.',
+    summary:
+      'College admissions counselling website for a Dehradun-based business, live since 2020.',
     buttonText: 'View Website',
     buttonLink: 'https://www.admissiondesk.info/',
     images: [
@@ -93,6 +94,10 @@ export const projects = [
     testimonial: {
       quote:
         'We needed a website that felt as trustworthy as the advice we give students, and Firdosh delivered exactly that — clean, fast, and easy for our team to manage ourselves.',
+      // Pulled out for the hero note, where only ~3 lines fit: the opening
+      // sets up context, this is the part that's about the work.
+      highlight:
+        'Firdosh delivered exactly that — clean, fast, and easy for our team to manage ourselves.',
       name: 'Shubham Panwar',
       role: 'AdmissionDesk',
       rating: 5,
@@ -102,7 +107,8 @@ export const projects = [
     id: 'yumy',
     title: 'Yumy',
     category: ProjectCategory.BusinessWebsites,
-    summary: 'Food ordering platform with live order tracking and a restaurant dashboard.',
+    summary:
+      'Food ordering platform with live order tracking and a restaurant dashboard.',
     buttonText: 'View Website',
     buttonLink: 'https://yumy.onrender.com/',
     images: [
@@ -147,8 +153,16 @@ export const projects = [
     buttonLink: 'https://hotelclassicinn.in/',
     images: [
       { src: hotel1, placeholder: hotel1Placeholder, alt: 'Hotel Classic Inn homepage' },
-      { src: hotel2, placeholder: hotel2Placeholder, alt: 'Hotel Classic Inn room types' },
-      { src: hotel3, placeholder: hotel3Placeholder, alt: 'Hotel Classic Inn photo gallery' },
+      {
+        src: hotel2,
+        placeholder: hotel2Placeholder,
+        alt: 'Hotel Classic Inn room types',
+      },
+      {
+        src: hotel3,
+        placeholder: hotel3Placeholder,
+        alt: 'Hotel Classic Inn photo gallery',
+      },
     ],
   },
   {
@@ -159,9 +173,21 @@ export const projects = [
     buttonText: 'View Website',
     buttonLink: 'https://drsachinsdental.com/',
     images: [
-      { src: dental1, placeholder: dental1Placeholder, alt: "Dr Sachin's Dental Clinic homepage" },
-      { src: dental2, placeholder: dental2Placeholder, alt: "Dr Sachin's Dental Clinic services" },
-      { src: dental3, placeholder: dental3Placeholder, alt: "Dr Sachin's Dental Clinic patient testimonials" },
+      {
+        src: dental1,
+        placeholder: dental1Placeholder,
+        alt: "Dr Sachin's Dental Clinic homepage",
+      },
+      {
+        src: dental2,
+        placeholder: dental2Placeholder,
+        alt: "Dr Sachin's Dental Clinic services",
+      },
+      {
+        src: dental3,
+        placeholder: dental3Placeholder,
+        alt: "Dr Sachin's Dental Clinic patient testimonials",
+      },
     ],
   },
 
@@ -174,9 +200,21 @@ export const projects = [
     buttonText: 'View Website',
     buttonLink: 'https://thecrazymountaineers.com/',
     images: [
-      { src: crazy1, placeholder: crazy1Placeholder, alt: 'The Crazy Mountaineers homepage' },
-      { src: crazy2, placeholder: crazy2Placeholder, alt: 'The Crazy Mountaineers treks listing' },
-      { src: crazy3, placeholder: crazy3Placeholder, alt: 'The Crazy Mountaineers travel blog' },
+      {
+        src: crazy1,
+        placeholder: crazy1Placeholder,
+        alt: 'The Crazy Mountaineers homepage',
+      },
+      {
+        src: crazy2,
+        placeholder: crazy2Placeholder,
+        alt: 'The Crazy Mountaineers treks listing',
+      },
+      {
+        src: crazy3,
+        placeholder: crazy3Placeholder,
+        alt: 'The Crazy Mountaineers travel blog',
+      },
     ],
     testimonial: {
       quote:
@@ -196,7 +234,11 @@ export const projects = [
     images: [
       { src: anymart1, placeholder: anymart1Placeholder, alt: 'Anymart homepage' },
       { src: anymart2, placeholder: anymart2Placeholder, alt: 'Anymart top categories' },
-      { src: anymart3, placeholder: anymart3Placeholder, alt: 'Anymart top anime section' },
+      {
+        src: anymart3,
+        placeholder: anymart3Placeholder,
+        alt: 'Anymart top anime section',
+      },
     ],
   },
   {
@@ -237,9 +279,21 @@ export const projects = [
     buttonText: 'View Website',
     buttonLink: 'https://ladderbrief.com/',
     images: [
-      { src: ladderbrief1, placeholder: ladderbrief1Placeholder, alt: 'Ladder Brief homepage' },
-      { src: ladderbrief2, placeholder: ladderbrief2Placeholder, alt: 'Ladder Brief AI script generation' },
-      { src: ladderbrief3, placeholder: ladderbrief3Placeholder, alt: "Ladder Brief Digital Brain knowledge graph" },
+      {
+        src: ladderbrief1,
+        placeholder: ladderbrief1Placeholder,
+        alt: 'Ladder Brief homepage',
+      },
+      {
+        src: ladderbrief2,
+        placeholder: ladderbrief2Placeholder,
+        alt: 'Ladder Brief AI script generation',
+      },
+      {
+        src: ladderbrief3,
+        placeholder: ladderbrief3Placeholder,
+        alt: 'Ladder Brief Digital Brain knowledge graph',
+      },
     ],
     testimonial: {
       quote:

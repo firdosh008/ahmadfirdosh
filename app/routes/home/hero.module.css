@@ -33,6 +33,10 @@
     max-width: 1600px;
     margin-bottom: 10vh;
 
+    @media (min-width: 1281px) {
+      padding-right: 0;
+    }
+
     @media (--mediaTablet) {
       justify-items: center;
       margin-bottom: 0;
@@ -43,23 +47,27 @@
   /* ---- Portrait: full-bleed, bottom-anchored, sitting behind the text ---- */
 
   .portraitCol {
-    --subjectHeight: min(60svh, 40vw);
+    --subjectHeight: min(70svh, 46vw);
     --portraitHeight: calc(var(--subjectHeight) / 0.818);
     --portraitWidth: calc(var(--portraitHeight) * 1200 / 555);
-    /* Subject's left edge sits 5vw in. */
-    --subjectLeft: 5vw;
+    /* Subject's left edge sits 13vw in. */
+    --subjectLeft: 13vw;
 
     position: absolute;
     inset: 0;
     pointer-events: none;
 
+    /* Stacked: a relative block sized to the subject, which also becomes the
+       cloud's containing block — that keeps the cards flanking him instead of
+       landing on the copy. */
     @media (--mediaTablet) {
-      position: static;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      --subjectHeight: min(46svh, 86vw);
+
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: var(--subjectHeight);
       margin-bottom: var(--spaceXL);
-      pointer-events: auto;
     }
   }
 
@@ -70,17 +78,32 @@
   .portrait {
     position: absolute;
     bottom: 0;
-    /* Puts the subject's left edge 5vw from the viewport edge. */
+    /* Puts the subject's left edge --subjectLeft from the viewport edge. */
     left: calc(var(--subjectLeft) - var(--portraitWidth) * 0.3208);
     width: var(--portraitWidth);
     height: var(--portraitHeight);
 
+    /* Centred on the subject rather than on the mostly-transparent frame:
+       the subject's mid-point sits at 47.87% of the image width. */
     @media (--mediaTablet) {
-      position: static;
-      width: 100%;
-      max-width: 300px;
-      height: auto;
+      left: calc(50% - var(--portraitWidth) * 0.4787);
     }
+  }
+
+  /* Soft halo behind the subject — sits inside .portrait's stacking context
+     so it lands under the photo but over the page background. */
+  .portrait::before {
+    content: '';
+    position: absolute;
+    inset: 8% 34% -4% 30%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in lab, var(--accent) 18%, transparent),
+      transparent 78%
+    );
+    filter: blur(46px);
   }
 
   .portraitImage {
@@ -88,10 +111,6 @@
     /* The source photo ends in a hard horizontal cut at his waist — fade the
        bottom out so it dissolves into the page instead of showing the seam. */
     mask-image: linear-gradient(to bottom, black 62%, transparent 96%);
-
-    @media (--mediaTablet) {
-      mask-image: none;
-    }
   }
 
   /* ---- Doodle cloud — scattered across the hero, each card wired back to
@@ -104,15 +123,33 @@
     inset: 0;
     pointer-events: none;
 
-    /* Needs room either side of him to scatter into. */
-    @media (max-width: 1280px) {
-      display: none;
+    /* Narrow screens keep three of them — a portrait crop, a 9:16 sliver and
+       the note. The rest would just crowd the copy. */
+    @media (max-width: 1400px) {
+      .floatPhoto2,
+      .floatNotePhoto {
+        display: none;
+      }
+    }
+
+    /* Stacked layouts get the AI project back — three cards read as scattered,
+       two read as a pair. */
+    @media (--mediaTablet) {
+      .floatPhoto2 {
+        display: block;
+      }
     }
   }
 
-  .floatBase {
+  .floatAnchor {
     position: absolute;
     z-index: var(--zIndex1);
+  }
+
+  /* Only the note keeps a card around it — the screenshots and logos float
+     bare. */
+  .floatBase {
+    composes: floatAnchor;
     background: var(--background);
     border: 1px solid var(--border);
     border-radius: var(--radiusL);
@@ -124,136 +161,183 @@
     height: 100%;
   }
 
-  .floatProofBase {
-    composes: floatBase;
-    padding: 5px;
+  .floatPhotoBase {
+    composes: floatAnchor;
+    border-radius: var(--radiusL);
+    box-shadow: 0 24px 40px -18px color-mix(in lab, var(--text) 26%, transparent);
   }
 
-  /* Pinned to the hero's edges and corners rather than clustered around him —
-     a few deliberately bleed past the viewport edge, and the tilts are all
-     different so the set reads as scattered, not as a grid. */
-  .floatProof1 {
-    composes: floatProofBase;
-    top: 10%;
-    left: -46px;
-    width: 200px;
-    height: 112px;
-    transform: rotate(-9deg);
-  }
+  /* Project shots sit at the hero's edges — top left, bottom left bleeding off
+     the page, and one hanging past the right edge. */
+  .floatPhoto1 {
+    composes: floatPhotoBase;
+    top: 12%;
+    left: 2%;
+    width: 210px;
+    height: 140px;
 
-  .floatProof2 {
-    composes: floatProofBase;
-    top: 20%;
-    right: -54px;
-    width: 220px;
-    height: 124px;
-    transform: rotate(7deg);
-  }
-
-  .floatProof3 {
-    composes: floatProofBase;
-    right: 7%;
-    bottom: 9%;
-    width: 180px;
-    height: 100px;
-    transform: rotate(-5deg);
-  }
-
-  .floatProofImageWrap {
-    width: 100%;
-    height: 100%;
-    border-radius: calc(var(--radiusL) - 5px);
-    overflow: hidden;
-  }
-
-  .floatProofImage {
-    height: 100%;
-  }
-
-  .floatReview {
-    composes: floatBase;
-    top: 13%;
-    left: 12%;
-    width: 270px;
-    padding: var(--spaceM);
-    transform: rotate(4deg);
-    text-align: left;
-  }
-
-  .floatReviewQuote {
-    margin: 0 0 6px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-family: var(--fontStackDisplay);
-    font-style: italic;
-    color: var(--textTitle);
-  }
-
-  .floatReviewName {
-    margin: 0;
-    line-height: 1.2;
-    color: var(--textLight);
-  }
-
-  /* ---- Tech-stack logo cards — real skills, not decoration ---- */
-
-  .floatLogoBase {
-    composes: floatBase;
-    width: 54px;
-    height: 54px;
-
-    & .floatBob {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* 16:9, flanking his head */
+    @media (--mediaTablet) {
+      top: 4%;
+      left: -26px;
+      width: 126px;
+      height: auto;
+      aspect-ratio: 16 / 9;
     }
   }
 
-  .floatLogoImage {
-    display: block;
+  .floatPhoto2 {
+    composes: floatPhotoBase;
+    left: -40px;
+    bottom: 24%;
+    width: 265px;
+    height: 165px;
+
+    @media (--mediaTablet) {
+      left: auto;
+      right: -18px;
+      bottom: 14%;
+      width: 104px;
+      height: auto;
+      aspect-ratio: 16 / 10;
+    }
   }
 
-  .floatLogoReact {
-    composes: floatLogoBase;
-    left: 2%;
-    bottom: 38%;
-    transform: rotate(8deg);
+  .floatPhoto3 {
+    composes: floatPhotoBase;
+    top: 14%;
+    right: -46px;
+    width: 235px;
+    height: 150px;
+
+    /* Phone-shaped: an exact 9:16 screen with a handset-ish radius, cropped
+       to the top of the shot so it reads as a mobile view of the site. */
+    @media (--mediaTablet) {
+      top: 13%;
+      right: -24px;
+      width: 74px;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      border-radius: 16px;
+
+      & img {
+        object-position: center top;
+      }
+    }
   }
 
-  .floatLogoPython {
-    composes: floatLogoBase;
-    top: 26%;
-    left: 33%;
-    transform: rotate(-11deg);
+  .floatPhotoImageWrap {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radiusL);
+    overflow: hidden;
   }
 
-  .floatLogoTypescript {
-    composes: floatLogoBase;
-    top: 30%;
-    left: 8%;
-    transform: rotate(6deg);
+  .floatPhotoImage {
+    height: 100%;
   }
 
-  .floatLogoFastapi {
-    composes: floatLogoBase;
-    left: 46%;
+  /* ---- Bottom right: a testimonial note laid over the screenshot of the
+     project it's about ---- */
+
+  .floatNotePhoto {
+    composes: floatPhotoBase;
+    right: 12%;
     bottom: 6%;
-    transform: rotate(9deg);
+    width: 200px;
+    height: 126px;
   }
 
-  .floatLogoNextjs {
-    composes: floatLogoBase;
-    top: 10%;
-    right: 22%;
-    transform: rotate(-8deg);
+  /* Card treatment stays on the note — it's the one element meant to read as
+     a physical note, laid over the screenshot of the project it's about. */
+  .floatNote {
+    composes: floatBase;
+    z-index: var(--zIndex2);
+    right: 3%;
+    bottom: 11%;
+    width: 236px;
+    padding: var(--spaceM) var(--spaceM) calc(var(--spaceM) + 6px);
+    border-radius: 18px;
+    text-align: left;
+
+    /* Hangs off the portrait block's bottom left, over the faded hem of the
+       photo — never over the copy underneath. */
+    @media (--mediaTablet) {
+      right: auto;
+      left: -26px;
+      bottom: -7%;
+      width: 142px;
+      padding: var(--spaceS) var(--spaceM) calc(var(--spaceM) + 4px);
+    }
   }
 
-  .floatLogoAnthropic {
-    composes: floatLogoBase;
-    left: 6%;
-    bottom: 14%;
-    transform: rotate(-7deg);
+  .floatNoteHead {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: var(--spaceS);
+
+    @media (--mediaTablet) {
+      margin-bottom: 4px;
+    }
+  }
+
+  .floatNoteStars {
+    display: flex;
+    gap: 2px;
+    color: var(--accent);
+
+    @media (--mediaTablet) {
+      display: none;
+    }
+  }
+
+  .floatNoteMeta {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--fontSizeBodyXS);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--textLight);
+  }
+
+  .floatNoteName {
+    margin: 0 0 4px;
+    font-size: var(--fontSizeBodyS);
+    font-weight: var(--fontWeightBold);
+    line-height: 1.3;
+    color: var(--textTitle);
+  }
+
+  .floatNoteQuote {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--fontSizeBodyXS);
+    line-height: 1.5;
+    color: var(--textLight);
+  }
+
+  /* Peeled bottom-right corner. This has to be a pseudo-element on the card
+     itself: as a child it would land inside .floatBob, whose animated
+     transform makes it the containing block, so the flap would sit inset by
+     the card's padding instead of on the corner. */
+  .floatNote::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 26px;
+    height: 26px;
+    border-bottom-right-radius: 18px;
+    background: linear-gradient(
+      135deg,
+      transparent 0 48%,
+      color-mix(in lab, var(--text) 5%, var(--background)) 48% 100%
+    );
+    box-shadow: -6px -6px 12px -6px color-mix(in lab, var(--text) 22%, transparent) inset;
   }
 
   /* ---- Text column ---- */
@@ -276,25 +360,75 @@
     }
   }
 
+  /* Reads as a search field: pill input, leading magnifier, dim prefix. */
   .eyebrowPill {
     display: inline-flex;
     align-items: center;
-    gap: var(--spaceS);
+    gap: var(--spaceM);
+    height: 52px;
     margin-bottom: var(--spaceL);
-    padding: 6px var(--spaceM);
+    padding: 0 var(--spaceL);
     border: 1px solid var(--border);
     border-radius: 100px;
-    background: var(--backgroundLight);
-    font-size: var(--fontSizeBodyXS);
+    background: var(--background);
+    box-shadow: 0 10px 24px -18px color-mix(in lab, var(--text) 40%, transparent);
+    font-size: var(--fontSizeBodyM);
     font-weight: var(--fontWeightMedium);
     color: var(--textTitle);
+
+    @media (--mediaMobile) {
+      gap: var(--spaceS);
+      height: 44px;
+      padding: 0 var(--spaceM);
+      font-size: var(--fontSizeBodyS);
+    }
   }
 
-  .eyebrowDot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+  .eyebrowSearchIcon {
+    flex-shrink: 0;
+    color: var(--textLight);
+  }
+
+  /* Search-box feel: dim prefix, typed value, blinking caret. The typed span
+     is width-locked to the longest entry so the pill doesn't jitter. */
+  .eyebrowPrefix {
+    color: var(--textLight);
+  }
+
+  .eyebrowTyped {
+    display: inline-block;
+    min-width: 20ch;
+    text-align: left;
+    color: var(--textTitle);
+
+    @media (--mediaMobile) {
+      min-width: 0;
+    }
+  }
+
+  .eyebrowCaret {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    margin-left: 1px;
+    vertical-align: -0.14em;
     background: var(--accent);
+
+    @media (--mediaUseMotion) {
+      animation: caretBlink 1.1s steps(1, end) infinite;
+    }
+  }
+
+  @keyframes caretBlink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    50.01%,
+    100% {
+      opacity: 0;
+    }
   }
 
   /* Sized and tracked to match the reference: 60px / weight 300 / -1.5px
