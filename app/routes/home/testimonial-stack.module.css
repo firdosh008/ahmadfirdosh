@@ -7,6 +7,17 @@
     overflow: hidden;
 
     @media (--mediaMobile) {
+      /* One screen, heading included. The card was sized off the width, so at
+         84vw its 3/4 height overran the stage and pushed the heading off the
+         top before the cards had landed. Here the width is taken from the
+         height left over once the heading has had its share, so the two always
+         fit together. --stackChrome is that share: padding, heading, and its
+         margin, with room for the heading to wrap to two lines. */
+      --stackChrome: 220px;
+      --cardWidth: min(84vw, calc((100dvh - var(--stackChrome)) * 0.75));
+
+      min-height: 100dvh;
+      justify-content: center;
       padding: var(--space2XL) 0;
     }
   }
@@ -25,7 +36,7 @@
     height: min(60vh, 520px);
 
     @media (--mediaMobile) {
-      height: min(66vh, 520px);
+      height: calc(var(--cardWidth) * 4 / 3);
     }
   }
 
@@ -59,7 +70,7 @@
     backface-visibility: hidden;
 
     @media (--mediaMobile) {
-      width: 84vw;
+      width: var(--cardWidth);
       aspect-ratio: 3 / 4;
     }
   }
@@ -140,7 +151,7 @@
     scroll-snap-align: start;
 
     @media (--mediaMobile) {
-      flex-basis: 84vw;
+      flex-basis: var(--cardWidth);
     }
   }
 

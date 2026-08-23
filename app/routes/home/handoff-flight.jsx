@@ -55,7 +55,14 @@ export const HandoffFlight = () => {
       const viewport = window.innerHeight;
       // Runs while the row is still rising into view — the cards have to be
       // travelling before you arrive, or they land in an empty section.
-      const approach = clamp((viewport - section.getBoundingClientRect().top) / viewport);
+      // Saturates a little before the section's top reaches the viewport's, so
+      // the last card is down while the row is still comfortably in frame. Tied
+      // to the exact top, the landing finished on the final pixel of scroll —
+      // which on mobile, where the section is one screen, meant the heading and
+      // the landed cards were never both on screen.
+      const approach = clamp(
+        (viewport - section.getBoundingClientRect().top) / (viewport * 0.85)
+      );
 
       // Read every rect before writing anything — interleaving them forces a
       // layout per card, and these rects sit inside a pinned, 3D-transformed
