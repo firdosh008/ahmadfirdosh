@@ -14,7 +14,11 @@
 }
 
 .header {
-  max-width: var(--maxWidthM);
+  /* --spaceOuter is 255px a side, and the box is border-box, so a bare
+     --maxWidthM here left 210px of content — the heading wrapped at its
+     longest word. The gutter is added on top of the measure, the way the
+     page's other containers do it. */
+  max-width: calc(var(--maxWidthM) + var(--spaceOuter) * 2);
   margin: 0 auto var(--space3XL);
   padding: 0 var(--spaceOuter);
   width: 100%;
