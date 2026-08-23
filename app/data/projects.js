@@ -189,6 +189,19 @@ export const projects = [
         alt: "Dr Sachin's Dental Clinic patient testimonials",
       },
     ],
+    // PLACEHOLDER — not a real client quote. Written to hold the layout until
+    // Dr Sachin's own words replace it. Swap the quote, highlight, name and
+    // role before this goes live.
+    testimonial: {
+      quote:
+        'Patients used to call just to ask about timings and treatments. The site answers all of that now, and the bookings that come through are people who already know what they want.',
+      // Pulled out for the hero note, where only ~3 lines fit.
+      highlight:
+        'The bookings that come through are people who already know what they want.',
+      name: 'Dr Sachin',
+      role: "Dr Sachin's Dental Clinic",
+      rating: 5,
+    },
   },
 
   // --- Client Products -------------------------------------------------

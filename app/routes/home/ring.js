@@ -2,17 +2,23 @@
 //
 // Four of these slots are filled by cards that fly down out of the achievements
 // grid — `from` names the flight card that lands there — and the rest fill on
-// their own. Angles are explicit rather than index * step so the four arriving
-// cards can be kept in the front hemisphere: a slot near 90deg is edge-on, and
-// a card can't land on a zero-width box.
+// their own. Angles are explicit rather than index * step so the arriving and
+// departing cards can be kept in the front hemisphere: a slot near 90deg is
+// edge-on, and a card can't fly to or from a zero-width box.
 export const RING = [
-  { id: 'crazy-mountaineers', shape: 'web', angle: 0, from: 'a' },
-  { id: 'ladderbrief', shape: 'web', angle: 30, from: 'b' },
-  { id: 'dr-sachins-dental', shape: 'web', angle: 330, from: 'c' },
+  // The four slots a card flies into hold the same project as the card that
+  // lands there, or the shot changes identity mid-flight. `handoff` then marks
+  // the slots that hand their shot down to the testimonial row, and orders it.
+  // Only the cards the row actually shows at rest are worth flying — the ones
+  // behind those sit at the same spot, so flying them just drags extra cards
+  // across the page to land where nothing can see them.
+  { id: 'crazy-mountaineers', shape: 'web', angle: 0, from: 'a', handoff: 1 },
+  { id: 'ladderbrief', shape: 'web', angle: 30, from: 'b', handoff: 2 },
+  { id: 'dr-sachins-dental', shape: 'web', angle: 330, from: 'c', handoff: 0 },
   { id: 'admissiondesk', shape: 'web', angle: 60, from: 'd' },
   { id: 'yumy', shape: 'web', angle: 300 },
-  { id: 'flexipaisa', shape: 'app', angle: 90 },
   { id: 'sra-hotels', shape: 'web', angle: 270 },
+  { id: 'flexipaisa', shape: 'app', angle: 90 },
   { id: 'llm-controls', shape: 'web', angle: 120 },
   { id: 'anymart', shape: 'web', angle: 240 },
   { id: 'preplix', shape: 'web', angle: 150 },

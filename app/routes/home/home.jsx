@@ -4,17 +4,17 @@ import { Heading } from '~/components/heading';
 import { MagneticWrap } from '~/components/magnetic-wrap';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
-import { TestimonialsSection } from '~/components/testimonials-section';
 import { baseMeta } from '~/utils/meta';
 import { getWhatsAppLink } from '~/utils/contact';
 import { motion } from 'framer-motion';
 import { fadeUp, revealViewport } from '~/utils/motion';
 import config from '~/config.json';
-import { testimonials } from '~/data/projects';
 import { Hero } from './hero';
 import { Billboard } from './billboard';
 import { ProjectCarousel } from './carousel';
+import { TestimonialStack } from './testimonial-stack';
 import { ScatterFlight } from './scatter-flight';
+import { HandoffFlight } from './handoff-flight';
 import { ClientBand } from './client-band';
 import { WhatWeBuild, WhoWeWorkWith } from './capabilities';
 import styles from './home.module.css';
@@ -34,12 +34,13 @@ export const Home = () => (
     </div>
     <Billboard id="achievements" />
     <ProjectCarousel id="more-work" />
+    <TestimonialStack id="testimonials" />
     <WhatWeBuild id="what-i-build" />
-    <TestimonialsSection items={testimonials} id="testimonials" />
     <WhoWeWorkWith />
     <ClosingCta />
     <Footer />
     <ScatterFlight />
+    <HandoffFlight />
   </div>
 );
 

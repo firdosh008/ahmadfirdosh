@@ -1,0 +1,147 @@
+@layer layout {
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space3XL) 0;
+    overflow: hidden;
+
+    @media (--mediaMobile) {
+      padding: var(--space2XL) 0;
+    }
+  }
+
+  .heading {
+    width: 100%;
+    max-width: 1240px;
+    padding: 0 var(--spaceOuter);
+    margin-bottom: var(--spaceXL);
+  }
+
+  .viewport {
+    position: relative;
+    width: 100%;
+    max-width: 1240px;
+    height: min(60vh, 520px);
+
+    @media (--mediaMobile) {
+      height: min(66vh, 520px);
+    }
+  }
+
+  /* z-index, so the per-card z-index the script writes stays inside the stage
+     instead of escaping and painting the cards over the rail — which would
+     swallow every wheel, drag and click meant for it. */
+  .stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Padding on .viewport wouldn't move these — an absolutely positioned child
+     is offset from the padding box, not inside the padding — so the gutter
+     that lines the front card up with the heading lives here. */
+  .card {
+    position: absolute;
+    top: 50%;
+    left: var(--spaceOuter);
+    width: min(760px, 62vw);
+    aspect-ratio: 16 / 10;
+    transform-origin: left center;
+    border-radius: var(--radiusL);
+    background: var(--backgroundLight);
+    box-shadow: 0 24px 60px -28px color-mix(in lab, var(--text) 40%, transparent);
+    /* Two owners: the row fades a card as it slides off (--fade), the flight
+       layer holds one back while it is still in the air (--flown). */
+    opacity: calc(var(--fade, 1) * var(--flown, 1));
+    overflow: hidden;
+    will-change: transform;
+    backface-visibility: hidden;
+
+    @media (--mediaMobile) {
+      width: 84vw;
+      aspect-ratio: 3 / 4;
+    }
+  }
+
+  .media {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The cloudy white the words sit on. */
+  .panel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: var(--spaceM) var(--spaceL) var(--spaceL);
+    /* Solid, not frosted: Chrome samples backdrop-filter badly inside a
+       transformed, clipped card and smears the image across the panel. */
+    background: var(--backgroundLight);
+    /* Behind the front card the panel would only show a sliver of clipped
+       text, so the stack shows its image alone. */
+    opacity: var(--panelOpacity, 1);
+
+    @media (--mediaMobile) {
+      padding: var(--spaceM);
+    }
+  }
+
+  .stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: var(--spaceS);
+    color: var(--accent);
+  }
+
+  .quote {
+    display: block;
+    margin: 0 0 var(--spaceS);
+    font-family: var(--fontStackDisplay);
+    font-style: italic;
+    font-size: var(--fontSizeBodyL);
+    line-height: 1.45;
+    color: var(--textTitle);
+
+    @media (--mediaMobile) {
+      margin-bottom: var(--spaceS);
+      font-size: var(--fontSizeBodyL);
+    }
+  }
+
+  .name {
+    display: block;
+    margin: 0;
+    color: var(--textLight);
+  }
+
+  /* Sits over the arc purely to catch wheel, trackpad, touch and arrow keys —
+     the cards are positioned from its scrollLeft, not laid out inside it. */
+  .rail {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    /* x only. Left as overflow-x alone, the other axis computes to auto and the
+       rail becomes a vertical scroller with nowhere to go, which eats the wheel
+       and pins the page wherever the cursor is over the cards. */
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .railStop {
+    flex: 0 0 min(760px, 62vw);
+    scroll-snap-align: start;
+
+    @media (--mediaMobile) {
+      flex-basis: 84vw;
+    }
+  }
+
+}

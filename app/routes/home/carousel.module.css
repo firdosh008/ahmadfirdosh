@@ -76,6 +76,44 @@
     }
   }
 
+  /* Sits behind the ring, panning with it. Heavy blur and low opacity: this is
+     depth, not content — it must never compete with the cards in front. */
+  .backdrop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    gap: var(--space2XL);
+    width: max-content;
+    opacity: 0.35;
+    transform: translate(-50%, -50%);
+    filter: blur(26px) saturate(120%);
+    pointer-events: none;
+
+    @media (--mediaMobile) {
+      opacity: 0.28;
+      filter: blur(18px) saturate(120%);
+    }
+  }
+
+  .backdropShot {
+    display: block;
+    flex: 0 0 auto;
+    width: 260px;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radiusL);
+    overflow: hidden;
+
+    @media (--mediaMobile) {
+      width: 150px;
+    }
+  }
+
+  .backdropImage {
+    width: 100%;
+    height: 100%;
+  }
+
   .ring {
     position: relative;
     width: 100%;
@@ -156,9 +194,13 @@
     }
   }
 
+  /* The shot isn't copied into the testimonial row below — it leaves. That
+     section drives --handoff on the slots it collects from, so the screenshot
+     empties out of the slot as the card arrives there, down to the grey box. */
   .shot {
     width: 100%;
     height: 100%;
     border-radius: var(--cardRadius);
+    opacity: var(--handoff, 1);
   }
 }

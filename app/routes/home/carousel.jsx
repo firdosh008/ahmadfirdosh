@@ -35,6 +35,7 @@ function RingCard({ item, index, progress, reduceMotion }) {
       className={item.shape === 'app' ? styles.app : styles.web}
       style={{ '--angle': `${item.angle}deg` }}
       data-ring-slot={item.from}
+      data-ring-handoff={item.handoff}
     >
       <motion.div
         className={styles.fill}
@@ -68,6 +69,9 @@ export const ProjectCarousel = ({ id }) => {
   // A full turn once the slots have filled, so every project comes round to the
   // front — slow enough to read each card as it swings past.
   const rotate = useTransform(scrollYProgress, [SPIN_START, 1], [0, -360]);
+  // The backdrop pans with the wheel at a fraction of the rate, so the shapes
+  // drifting behind read as the far side of the same ring.
+  const drift = useTransform(rotate, value => `${value * 2.4}px`);
   const scale = useTransform(scrollYProgress, [0, 0.1], [0.92, 1]);
 
   // Whichever card is nearest the front owns the caption below the ring. State
@@ -101,7 +105,28 @@ export const ProjectCarousel = ({ id }) => {
         <motion.div
           className={styles.viewport}
           style={reduceMotion ? undefined : { scale }}
+          data-ring-source
         >
+          {/* The far side of the wheel: the projects currently facing away,
+              blurred back into the page so the ring reads as a solid object
+              rather than a handful of floating cards. */}
+          <motion.div
+            className={styles.backdrop}
+            style={reduceMotion ? undefined : { x: drift }}
+            aria-hidden="true"
+          >
+            {RING.map(item => (
+              <span className={styles.backdropShot} key={item.id}>
+                <Image
+                  cover
+                  className={styles.backdropImage}
+                  alt=""
+                  sizes="240px"
+                  {...source(projects.find(entry => entry.id === item.id))}
+                />
+              </span>
+            ))}
+          </motion.div>
           <motion.div
             className={styles.ring}
             style={reduceMotion ? undefined : { rotateY: rotate }}
