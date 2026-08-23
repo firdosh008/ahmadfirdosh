@@ -2,6 +2,19 @@
   overflow-x: hidden;
 }
 
+/* Hero and the "worked with" band split one viewport between them, so the
+   band is visible without scrolling and the portrait's feet land on it. */
+.fold {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+
+  @media (--mediaTablet) {
+    display: block;
+    min-height: 0;
+  }
+}
+
 .cta {
   padding-top: var(--space4XL);
   padding-bottom: var(--space5XL);

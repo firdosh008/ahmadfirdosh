@@ -26,8 +26,10 @@ export const meta = () => {
 
 export const Home = () => (
   <div className={styles.home}>
-    <Hero id="hero" />
-    <ClientBand />
+    <div className={styles.fold}>
+      <Hero id="hero" />
+      <ClientBand />
+    </div>
     <WhatWeBuild id="what-i-build" />
     <FeaturedWork id="work" />
     <TestimonialsSection items={testimonials} id="testimonials" />

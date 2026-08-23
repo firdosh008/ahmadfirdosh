@@ -1,17 +1,20 @@
 @layer layout {
   .hero {
+    position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
     padding: 130px var(--spaceOuter) var(--space2XL);
-
-    /* Extra clearance for the doodle cloud above the portrait — only
-       needed where the cloud actually renders (matches --mediaLaptop). */
-    @media (min-width: 1681px) {
-      padding-top: 260px;
-    }
+    /* The portrait PNG is mostly transparent margin and gets scaled way past
+       the viewport width — clip it instead of growing the page sideways. */
+    overflow: hidden;
 
     @media (--mediaTablet) {
+      flex-direction: column;
       padding-top: 110px;
+      overflow: visible;
     }
 
     @media (--mediaMobile) {
@@ -22,56 +25,87 @@
 
   .layout {
     position: relative;
+    z-index: var(--zIndex1);
     display: grid;
-    grid-template-columns: minmax(320px, 420px) 1fr;
-    align-items: center;
-    gap: var(--space2XL);
+    grid-template-columns: 1fr;
+    justify-items: end;
     width: 100%;
-    max-width: 1240px;
+    max-width: 1600px;
+    margin-bottom: 10vh;
 
     @media (--mediaTablet) {
-      grid-template-columns: 1fr;
       justify-items: center;
+      margin-bottom: 0;
       gap: var(--spaceXL);
     }
   }
 
-  /* ---- Portrait column ---- */
+  /* ---- Portrait: full-bleed, bottom-anchored, sitting behind the text ---- */
 
   .portraitCol {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    --subjectHeight: min(60svh, 40vw);
+    --portraitHeight: calc(var(--subjectHeight) / 0.818);
+    --portraitWidth: calc(var(--portraitHeight) * 1200 / 555);
+    /* Subject's left edge sits 5vw in. */
+    --subjectLeft: 5vw;
 
-  .portrait {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 
     @media (--mediaTablet) {
-      max-width: 300px;
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: var(--spaceXL);
+      pointer-events: auto;
     }
   }
 
-  /* ---- Doodle cloud — clustered above the head, drifts up and fades
-     as the hero scrolls out of view ---- */
+  /* Source PNG is 1200x555; the subject's measured bounding box inside it is
+     x 32.08%-63.67%, y 18.20%-100%. Everything below is derived from that, so
+     the element is sized by the *person* while the transparent margins hang
+     off the viewport. Width comes from height — the ratio is never distorted. */
+  .portrait {
+    position: absolute;
+    bottom: 0;
+    /* Puts the subject's left edge 5vw from the viewport edge. */
+    left: calc(var(--subjectLeft) - var(--portraitWidth) * 0.3208);
+    width: var(--portraitWidth);
+    height: var(--portraitHeight);
+
+    @media (--mediaTablet) {
+      position: static;
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+    }
+  }
+
+  .portraitImage {
+    height: 100%;
+    /* The source photo ends in a hard horizontal cut at his waist — fade the
+       bottom out so it dissolves into the page instead of showing the seam. */
+    mask-image: linear-gradient(to bottom, black 62%, transparent 96%);
+
+    @media (--mediaTablet) {
+      mask-image: none;
+    }
+  }
+
+  /* ---- Doodle cloud — scattered across the hero, each card wired back to
+     his head with a hand-drawn curve. Everything is anchored off
+     --subjectCenter / --subjectHeight so the wiring tracks the portrait at
+     any viewport size instead of being hand-placed per breakpoint. ---- */
 
   .cloud {
-    /* Centered via margin, not transform: translateX — this element also
-       gets an animated `y` from Framer Motion, which takes over the whole
-       transform property via inline style and would silently wipe out a
-       CSS-defined transform. */
     position: absolute;
-    left: 50%;
-    top: -210px;
-    margin-left: -190px;
-    width: 380px;
-    height: 200px;
+    inset: 0;
     pointer-events: none;
 
-    @media (--mediaLaptop) {
+    /* Needs room either side of him to scatter into. */
+    @media (max-width: 1280px) {
       display: none;
     }
   }
@@ -81,8 +115,8 @@
     z-index: var(--zIndex1);
     background: var(--background);
     border: 1px solid var(--border);
-    border-radius: var(--radiusM);
-    box-shadow: 0 16px 28px -12px color-mix(in lab, var(--text) 20%, transparent);
+    border-radius: var(--radiusL);
+    box-shadow: 0 24px 40px -18px color-mix(in lab, var(--text) 26%, transparent);
   }
 
   .floatBob {
@@ -92,36 +126,43 @@
 
   .floatProofBase {
     composes: floatBase;
-    width: 118px;
-    height: 66px;
-    padding: 4px;
+    padding: 5px;
   }
 
+  /* Pinned to the hero's edges and corners rather than clustered around him —
+     a few deliberately bleed past the viewport edge, and the tilts are all
+     different so the set reads as scattered, not as a grid. */
   .floatProof1 {
     composes: floatProofBase;
-    top: 10px;
-    left: 6%;
-    transform: rotate(-8deg);
+    top: 10%;
+    left: -46px;
+    width: 200px;
+    height: 112px;
+    transform: rotate(-9deg);
   }
 
   .floatProof2 {
     composes: floatProofBase;
-    top: 108px;
-    left: 0%;
-    transform: rotate(5deg);
+    top: 20%;
+    right: -54px;
+    width: 220px;
+    height: 124px;
+    transform: rotate(7deg);
   }
 
   .floatProof3 {
     composes: floatProofBase;
-    top: 130px;
-    left: 42%;
-    transform: rotate(-4deg);
+    right: 7%;
+    bottom: 9%;
+    width: 180px;
+    height: 100px;
+    transform: rotate(-5deg);
   }
 
   .floatProofImageWrap {
     width: 100%;
     height: 100%;
-    border-radius: calc(var(--radiusM) - 4px);
+    border-radius: calc(var(--radiusL) - 5px);
     overflow: hidden;
   }
 
@@ -129,28 +170,13 @@
     height: 100%;
   }
 
-  .floatCheck {
-    position: absolute;
-    right: -5px;
-    bottom: -5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: var(--background);
-    box-shadow: 0 0 0 3px var(--background);
-  }
-
   .floatReview {
     composes: floatBase;
-    top: 0px;
-    right: 4%;
-    width: 190px;
+    top: 13%;
+    left: 12%;
+    width: 270px;
     padding: var(--spaceM);
-    transform: rotate(6deg);
+    transform: rotate(4deg);
     text-align: left;
   }
 
@@ -174,8 +200,8 @@
 
   .floatLogoBase {
     composes: floatBase;
-    width: 46px;
-    height: 46px;
+    width: 54px;
+    height: 54px;
 
     & .floatBob {
       display: flex;
@@ -190,30 +216,44 @@
 
   .floatLogoReact {
     composes: floatLogoBase;
-    top: 60px;
-    right: 22%;
+    left: 2%;
+    bottom: 38%;
     transform: rotate(8deg);
   }
 
   .floatLogoPython {
     composes: floatLogoBase;
-    top: 150px;
-    right: 10%;
-    transform: rotate(-6deg);
+    top: 26%;
+    left: 33%;
+    transform: rotate(-11deg);
   }
 
   .floatLogoTypescript {
     composes: floatLogoBase;
-    top: 175px;
-    left: 22%;
-    transform: rotate(-5deg);
+    top: 30%;
+    left: 8%;
+    transform: rotate(6deg);
+  }
+
+  .floatLogoFastapi {
+    composes: floatLogoBase;
+    left: 46%;
+    bottom: 6%;
+    transform: rotate(9deg);
+  }
+
+  .floatLogoNextjs {
+    composes: floatLogoBase;
+    top: 10%;
+    right: 22%;
+    transform: rotate(-8deg);
   }
 
   .floatLogoAnthropic {
     composes: floatLogoBase;
-    top: 0px;
-    left: 34%;
-    transform: rotate(5deg);
+    left: 6%;
+    bottom: 14%;
+    transform: rotate(-7deg);
   }
 
   /* ---- Text column ---- */
@@ -222,7 +262,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
+    max-width: min(720px, 46vw);
     text-align: left;
+
+    @media (--mediaTablet) {
+      max-width: none;
+    }
 
     @media (--mediaTablet) {
       align-items: center;
@@ -256,9 +302,9 @@
   .title {
     margin: 0 0 var(--spaceL);
     font-family: var(--fontStack);
-    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    font-size: clamp(2.5rem, 4.6vw, 4.5rem);
     font-weight: 400;
-    line-height: 1.08;
+    line-height: 1;
     letter-spacing: -0.025em;
     color: var(--textTitle);
   }
@@ -271,7 +317,7 @@
 
   .subtitle {
     display: block;
-    max-width: 42ch;
+    max-width: 46ch;
     margin: 0 0 var(--spaceXL);
     color: var(--textBody);
   }
