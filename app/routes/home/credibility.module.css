@@ -1,0 +1,40 @@
+@layer layout {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* Column gap is deliberately tight: five items plus --space3XL between them
+       overruns the band and wraps to two rows on a 1440 laptop, which is the
+       one thing the spec asks this strip not to do. */
+    gap: var(--spaceS) var(--spaceXL);
+    max-width: var(--maxWidthXL);
+    margin: 0;
+    padding: 0 var(--spaceOuter);
+    list-style: none;
+
+    @media (--mediaMobile) {
+      gap: var(--spaceXS) var(--spaceM);
+    }
+  }
+
+  /* Value and label share a baseline, so a row that does wrap still reads as a
+     list of five facts rather than five little stacked cards. */
+  .item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spaceXS);
+  }
+
+  .value {
+    font-family: var(--fontStackDisplay);
+    font-size: var(--fontSizeH4);
+    line-height: 1.1;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .label {
+    color: var(--textBody);
+    white-space: nowrap;
+  }
+}

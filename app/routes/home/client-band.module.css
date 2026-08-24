@@ -1,10 +1,14 @@
 .band {
   width: 100%;
-  padding: var(--spaceXL) 0;
+  padding: var(--spaceL) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spaceL);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+.row {
+  width: 100%;
 }
