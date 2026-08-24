@@ -99,16 +99,14 @@
     }
   }
 
+  /* The slot is always reserved, so an appearing error fades in rather than
+     pushing the rest of the form down. */
   .error {
     transition-property: opacity;
     transition-duration: var(--durationM);
     transition-timing-function: var(--bezierFastoutSlowin);
-    height: var(--height);
+    min-height: calc(1lh + var(--spaceS));
     opacity: 0;
-
-    @media (--mediaUseMotion) {
-      transition-property: height, opacity;
-    }
 
     &[data-visible='true'] {
       opacity: 1;

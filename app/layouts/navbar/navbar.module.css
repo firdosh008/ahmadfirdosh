@@ -110,40 +110,8 @@
     }
   }
 
-  .navIcons {
-    display: flex;
-    align-items: center;
-    gap: var(--spaceS);
-    position: relative;
-    z-index: var(--zIndex2);
 
-    @media (--mediaMobile), (--mediaMobileLS) {
-      flex-direction: row;
-      justify-content: center;
-      margin-top: var(--spaceXL);
-    }
-  }
 
-  .navIconLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spaceS);
-    width: var(--space2XL);
-    height: var(--space2XL);
-    color: var(--textLight);
-    transition: color var(--durationM) var(--bezierFastoutSlowin);
-
-    &:hover,
-    &:active {
-      color: var(--accent);
-    }
-  }
-
-  .navIcon {
-    fill: currentColor;
-    transition: fill var(--durationM) ease;
-  }
 
   .mobileNav {
     --backdrop: blur(24px) saturate(120%);

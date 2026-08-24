@@ -12,6 +12,3 @@ export const navLinks = [
     pathname: '/contact',
   },
 ];
-
-// Client-facing site — no GitHub/LinkedIn developer-profile links.
-export const socialLinks = [];

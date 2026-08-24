@@ -29,22 +29,10 @@
       height: 6px;
       background: var(--accent);
     }
-
-    &[data-invert='true'] {
-      color: var(--background);
-
-      &::before {
-        background: var(--background);
-      }
-    }
   }
 
   .title {
     position: relative;
     margin: 0;
-
-    &[data-invert='true'] {
-      color: var(--background);
-    }
   }
 }
