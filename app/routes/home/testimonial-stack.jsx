@@ -245,6 +245,28 @@ export const TestimonialStack = ({ id }) => {
       }, 700);
     };
 
+    // Chrome maps a vertical wheel onto the horizontal axis when an element
+    // can only scroll that way. On a carousel you're aiming at that's a
+    // convenience; on one that covers half the section it means the page
+    // stops dead wherever the cursor happens to be and the row slides
+    // sideways instead. A mostly-vertical gesture is the page's, so it's
+    // taken off the rail and handed to the window by hand.
+    //
+    // deltaMode matters: a wheel that reports lines (1) or pages (2) rather
+    // than pixels (0) would otherwise crawl.
+    const steer = event => {
+      // The rewind owns the wheel while it runs; leave it alone.
+      if (holding) return;
+      // A real sideways swipe still belongs to the row.
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+      const scale =
+        event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+
+      event.preventDefault();
+      window.scrollBy(0, event.deltaY * scale);
+    };
+
     // The rail covers the cards, so a click on them lands here: anything to
     // the right of the front card is the stack, and means "next".
     const advance = event => {
@@ -259,6 +281,9 @@ export const TestimonialStack = ({ id }) => {
 
     update();
     rail.addEventListener('click', advance);
+    // Before the window-level hold, which still sees the event either way:
+    // preventDefault doesn't stop it propagating.
+    rail.addEventListener('wheel', steer, { passive: false });
     window.addEventListener('wheel', hold, { passive: false });
     window.addEventListener('touchmove', hold, { passive: false });
     rail.addEventListener('scroll', schedule, { passive: true });
@@ -273,6 +298,7 @@ export const TestimonialStack = ({ id }) => {
       if (frame) cancelAnimationFrame(frame);
       if (tween) cancelAnimationFrame(tween);
       rail.removeEventListener('click', advance);
+      rail.removeEventListener('wheel', steer);
       clearTimeout(release);
       window.removeEventListener('wheel', hold);
       window.removeEventListener('touchmove', hold);
