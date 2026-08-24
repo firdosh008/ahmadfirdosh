@@ -23,7 +23,7 @@ export const meta = () => {
   return baseMeta({
     title: 'Contact',
     description:
-      'Send me a message if you’re interested in discussing a project or if you just want to say hi',
+      'Tell me about your project on WhatsApp, or send it through the form. Rough budget optional — I’ll tell you honestly if I’m the right fit.',
   });
 };
 
@@ -131,7 +131,7 @@ export const Contact = () => {
               as="h1"
               style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
             >
-              <DecoderText text="Say hello" start={status !== 'exited'} delay={300} />
+              <DecoderText text="Let’s talk" start={status !== 'exited'} delay={300} />
             </Heading>
             <Divider
               className={styles.divider}
@@ -237,7 +237,7 @@ export const Contact = () => {
               className={styles.completeTitle}
               data-status={status}
             >
-              Message Sent
+              Message sent
             </Heading>
             <Text
               size="l"
@@ -246,7 +246,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationXS)}
             >
-              I’ll get back to you within a couple days, sit tight
+              I’ll get back to you within a day. If it’s urgent, WhatsApp is faster.
             </Text>
             <Button
               secondary

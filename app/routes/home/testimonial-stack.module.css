@@ -1,41 +1,112 @@
 @layer layout {
   .section {
+    /* The band carries its own ground and its own ink. Re-pointing the shared
+       text tokens here is what brings the heading, the eyebrow's dot and the
+       stars along without any of them needing to know they're on it. */
+    --textTitle: var(--onSurfaceDeep);
+    --textBody: color-mix(in lab, var(--onSurfaceDeep) 80%, transparent);
+    --textLight: color-mix(in lab, var(--onSurfaceDeep) 62%, transparent);
+    --accent: var(--onSurfaceDeep);
+    --border: color-mix(in lab, var(--onSurfaceDeep) 26%, transparent);
+
+    --waveHeight: 56px;
+
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--space3XL) 0;
+    /* The wave eats into the band's edge, so the content's clearance is
+       measured from the bottom of the curve, not the top of the box. */
+    padding: calc(var(--spaceXL) + var(--waveHeight)) var(--spaceOuter);
+    background: var(--surfaceDeep);
+    color: var(--onSurfaceDeep);
     overflow: hidden;
 
     @media (--mediaMobile) {
-      /* One screen, heading included. The card was sized off the width, so at
-         84vw its 3/4 height overran the stage and pushed the heading off the
-         top before the cards had landed. Here the width is taken from the
-         height left over once the heading has had its share, so the two always
-         fit together. --stackChrome is that share: padding, heading, and its
-         margin, with room for the heading to wrap to two lines. */
-      --stackChrome: 220px;
+      /* One screen, heading and quote included. The card is sized off the
+         height left over once they've had their share rather than off the
+         width, so the three always fit together. --stackChrome is that
+         share: padding, heading, the quote below the stack, and the gaps. */
+      --waveHeight: 32px;
+      --stackChrome: 424px;
       --cardWidth: min(84vw, calc((100dvh - var(--stackChrome)) * 0.75));
 
       min-height: 100dvh;
       justify-content: center;
-      padding: var(--space2XL) 0;
+      padding: var(--space3XL) var(--spaceOuter);
     }
+  }
+
+  /* Painted in the page's own colour and laid over the band's edge, so what
+     you see is the page eating into it. Above the cards (the stage caps its
+     own z-index at 0) so nothing pokes through the curve. */
+  .waveTop,
+  .waveBottom {
+    position: absolute;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: var(--waveHeight);
+    fill: var(--background);
+    pointer-events: none;
+  }
+
+  .waveTop {
+    top: 0;
+  }
+
+  /* No flip: the bottom path already encloses the other side of the crest,
+     which is what keeps the two edges out of phase. */
+  .waveBottom {
+    bottom: 0;
   }
 
   .heading {
     width: 100%;
     max-width: 1240px;
-    padding: 0 var(--spaceOuter);
     margin-bottom: var(--spaceXL);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    align-items: center;
+    gap: var(--space3XL);
+    width: 100%;
+    max-width: 1240px;
+
+    @media (--mediaTablet) {
+      gap: var(--space2XL);
+    }
+
+    @media (--mediaMobile) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--spaceXL);
+    }
+  }
+
+  /* One cell, every quote stacked in it: the container takes the height of the
+     longest one, so a crossfade never changes the layout. */
+  .quotes {
+    display: grid;
+    align-content: center;
+    min-width: 0;
+
+    @media (--mediaMobile) {
+      order: 1;
+    }
   }
 
   .viewport {
     position: relative;
+    --cardW: min(640px, 90%);
+
     width: 100%;
-    max-width: 1240px;
-    height: min(60vh, 520px);
+    height: min(54vh, 450px);
 
     @media (--mediaMobile) {
+      --cardW: var(--cardWidth);
+
       height: calc(var(--cardWidth) * 4 / 3);
     }
   }
@@ -47,16 +118,24 @@
     position: absolute;
     inset: 0;
     z-index: 0;
+    /* The whole stack leans, rather than each card leaning on its own — the
+       per-card transform is the row's positioning maths and stays clean. */
+    rotate: -3deg;
+    translate: 4% 0;
+
+    @media (--mediaMobile) {
+      rotate: -2deg;
+      translate: 0;
+    }
   }
 
-  /* Padding on .viewport wouldn't move these — an absolutely positioned child
-     is offset from the padding box, not inside the padding — so the gutter
-     that lines the front card up with the heading lives here. */
+  /* Sized from --cardW so the rail's stops stay the same width as the cards
+     they scroll — the row's maths reads one from the other. */
   .card {
     position: absolute;
     top: 50%;
-    left: var(--spaceOuter);
-    width: min(760px, 62vw);
+    left: 0;
+    width: var(--cardW);
     aspect-ratio: 16 / 10;
     transform-origin: left center;
     border-radius: var(--radiusL);
@@ -70,7 +149,6 @@
     backface-visibility: hidden;
 
     @media (--mediaMobile) {
-      width: var(--cardWidth);
       aspect-ratio: 3 / 4;
     }
   }
@@ -80,22 +158,17 @@
     height: 100%;
   }
 
-  /* The cloudy white the words sit on. */
+  /* Every quote occupies the same cell; the script fades the front one in. */
   .panel {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: var(--spaceM) var(--spaceL) var(--spaceL);
-    /* Solid, not frosted: Chrome samples backdrop-filter badly inside a
-       transformed, clipped card and smears the image across the panel. */
-    background: var(--backgroundLight);
-    /* Behind the front card the panel would only show a sliver of clipped
-       text, so the stack shows its image alone. */
-    opacity: var(--panelOpacity, 1);
+    grid-area: 1 / 1;
+    margin: 0;
+    min-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--durationM) ease;
 
-    @media (--mediaMobile) {
-      padding: var(--spaceM);
+    @media (--mediaReduceMotion) {
+      transition: none;
     }
   }
 
@@ -108,14 +181,15 @@
 
   .quote {
     display: block;
-    margin: 0 0 var(--spaceS);
+    margin: 0 0 var(--spaceM);
+    max-width: 34ch;
     font-family: var(--fontStackDisplay);
-    font-style: italic;
-    font-size: var(--fontSizeBodyL);
-    line-height: 1.45;
+    font-size: var(--fontSizeH4);
+    line-height: 1.3;
     color: var(--textTitle);
 
     @media (--mediaMobile) {
+      max-width: none;
       margin-bottom: var(--spaceS);
       font-size: var(--fontSizeBodyL);
     }
@@ -147,12 +221,8 @@
   }
 
   .railStop {
-    flex: 0 0 min(760px, 62vw);
+    flex: 0 0 var(--cardW);
     scroll-snap-align: start;
-
-    @media (--mediaMobile) {
-      flex-basis: var(--cardWidth);
-    }
   }
 
 }

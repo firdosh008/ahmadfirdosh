@@ -11,7 +11,7 @@ import styles from './capabilities.module.css';
 const BUILD_ITEMS = [
   {
     title: 'Business Websites',
-    text: 'Fast, mobile-first websites that make a strong first impression and are easy for customers to find, trust, and book.',
+    text: 'Fast websites that load properly on a phone, make the right first impression, and make it easy for customers to find you, trust you, and book.',
   },
   {
     title: 'Web Apps & Dashboards',
@@ -27,13 +27,13 @@ const AUDIENCE = [
   {
     title: 'Businesses',
     text: 'Clinics, cafes, travel companies, and coaching centres who want a website or tool that actually brings in customers — explained without the jargon.',
-    cta: 'See business websites',
+    cta: 'See the work',
     href: '/#more-work',
   },
   {
     title: 'Agencies & Studios',
     text: 'Design and marketing studios who need a reliable full-stack and AI developer to build out client work — on time, on spec, white-label friendly.',
-    cta: 'See technical work',
+    cta: 'See the work',
     href: '/#more-work',
   },
 ];
