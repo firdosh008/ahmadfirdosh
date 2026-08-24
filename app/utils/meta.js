@@ -18,7 +18,7 @@ export function baseMeta({
     { name: 'author', content: name },
     ...(noIndex ? [{ name: 'robots', content: 'noindex, nofollow' }] : []),
     { property: 'og:image', content: ogImage },
-    { property: 'og:image:alt', content: 'Banner for the site' },
+    { property: 'og:image:alt', content: `${name} — full-stack developer and AI engineer` },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
     { property: 'og:title', content: titleText },

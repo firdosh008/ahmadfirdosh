@@ -37,8 +37,8 @@ import styles from './home.module.css';
 
 export const meta = () => {
   return baseMeta({
-    title: 'Full-Stack Developer & AI Engineer',
-    description: `${config.name} builds websites, web apps, and AI-powered tools for businesses and agencies.`,
+    title: 'Full-Stack Developer & AI Engineer, Dehradun',
+    description: `Websites, web apps, and AI tools for businesses and agencies. ${config.name} builds them in Dehradun and usually replies on WhatsApp the same day.`,
   });
 };
 
@@ -139,7 +139,7 @@ const ClosingCta = () => (
           Built with the stack I work in every day
         </Text>
         <Heading level={2} className={styles.ctaTitle}>
-          Have a project in mind?
+          Have something you want built?
         </Heading>
         <Text as="p" size="l" className={styles.ctaText}>
           Tell me a little about it on WhatsApp — I usually reply the same day.
@@ -151,7 +151,7 @@ const ClosingCta = () => (
             </Button>
           </MagneticWrap>
           <Button secondary iconEnd="arrow-right" iconHoverShift href="/contact">
-            Or use the contact form
+            Use the contact form
           </Button>
         </div>
       </motion.div>

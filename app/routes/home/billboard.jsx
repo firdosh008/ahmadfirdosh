@@ -40,8 +40,8 @@ const Grid = ({ cards, className }) => (
  */
 export const Billboard = ({ id }) => (
   <Section as="section" className={styles.billboard} id={id} data-flight-stage>
-    <SectionHeading eyebrow="Achievements" className={styles.heading}>
-      Work that shipped and stayed shipped
+    <SectionHeading eyebrow="Recent work" className={styles.heading}>
+      Work that went live and stayed live
     </SectionHeading>
 
     <div className={styles.panel}>

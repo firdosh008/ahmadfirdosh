@@ -83,7 +83,7 @@ export const projects = [
     title: 'AdmissionDesk',
     category: ProjectCategory.BusinessWebsites,
     summary:
-      'College admissions counselling website for a Dehradun-based business, live since 2020.',
+      'Admissions counselling site for a Dehradun business — live, and still running, since 2020.',
     buttonText: 'View Website',
     buttonLink: 'https://www.admissiondesk.info/',
     images: [
@@ -108,7 +108,7 @@ export const projects = [
     title: 'Yumy',
     category: ProjectCategory.BusinessWebsites,
     summary:
-      'Food ordering platform with live order tracking and a restaurant dashboard.',
+      'Food ordering site where customers track their order live and the restaurant runs it all from one dashboard.',
     buttonText: 'View Website',
     buttonLink: 'https://yumy.onrender.com/',
     images: [
@@ -128,7 +128,8 @@ export const projects = [
     id: 'sra-hotels',
     title: 'SRA Hotels',
     category: ProjectCategory.BusinessWebsites,
-    summary: 'Multi-page hotel website with room booking and a photo gallery.',
+    summary:
+      'Hotel site where guests see the rooms, browse the gallery, and book without picking up the phone.',
     buttonText: 'View Website',
     buttonLink: 'https://firdosh008.github.io/Sra-hotles/',
     images: [
@@ -148,7 +149,8 @@ export const projects = [
     id: 'hotel-classic-inn',
     title: 'Hotel Classic Inn',
     category: ProjectCategory.BusinessWebsites,
-    summary: 'Boutique hotel website with room types, gallery, and online booking.',
+    summary:
+      'Boutique hotel site — room types, photos, and online booking, on a page that reads fine on a phone.',
     buttonText: 'View Website',
     buttonLink: 'https://hotelclassicinn.in/',
     images: [
@@ -169,7 +171,8 @@ export const projects = [
     id: 'dr-sachins-dental',
     title: "Dr Sachin's Dental Clinic",
     category: ProjectCategory.BusinessWebsites,
-    summary: 'Clinic website with services, booking, and patient testimonials.',
+    summary:
+      'Dental clinic site that answers what patients used to phone in — treatments, timings, and booking.',
     buttonText: 'View Website',
     buttonLink: 'https://drsachinsdental.com/',
     images: [
@@ -209,7 +212,8 @@ export const projects = [
     id: 'crazy-mountaineers',
     title: 'The Crazy Mountaineers',
     category: ProjectCategory.ClientProducts,
-    summary: 'Travel booking platform with real-time itineraries and online payments.',
+    summary:
+      'Trek booking platform — itineraries, seats, and payments in one place instead of scattered across WhatsApp.',
     buttonText: 'View Website',
     buttonLink: 'https://thecrazymountaineers.com/',
     images: [
@@ -241,7 +245,8 @@ export const projects = [
     id: 'anymart',
     title: 'Anymart',
     category: ProjectCategory.ClientProducts,
-    summary: 'E-commerce platform with payments, inventory, and an admin dashboard.',
+    summary:
+      'Full e-commerce build — storefront, payments, inventory, and an admin dashboard behind it.',
     buttonText: 'View Website',
     buttonLink: 'https://anymart.onrender.com/',
     images: [
@@ -258,7 +263,8 @@ export const projects = [
     id: 'flexipaisa',
     title: 'FlexiPaisa',
     category: ProjectCategory.ClientProducts,
-    summary: 'Lending app for MSME loan management, live on the Play Store.',
+    summary:
+      'MSME lending app — applications, approvals, and repayments, live on the Play Store.',
     buttonText: 'View on Play Store',
     buttonLink:
       'https://play.google.com/store/apps/details?id=com.madhurinstalments.flexipaisa&hl=en_IN',
@@ -272,7 +278,8 @@ export const projects = [
     id: 'preplix',
     title: 'Preplix',
     category: ProjectCategory.ClientProducts,
-    summary: 'Online learning platform connecting students with expert instructors.',
+    summary:
+      'Online learning platform that puts students and expert instructors in the same classroom.',
     buttonText: null,
     buttonLink: null,
     image: {
@@ -288,7 +295,7 @@ export const projects = [
     title: 'Ladder Brief',
     category: ProjectCategory.AI,
     summary:
-      'AI content pipeline that takes founders from research to script to video, powered by a custom long-term memory system and MCP server.',
+      'AI content pipeline that takes a founder from research to script to finished video, with a custom long-term memory system and MCP server behind it.',
     buttonText: 'View Website',
     buttonLink: 'https://ladderbrief.com/',
     images: [
@@ -320,7 +327,8 @@ export const projects = [
     id: 'llm-controls',
     title: 'LLM Controls',
     category: ProjectCategory.AI,
-    summary: 'AI control platform for LLM workflows and agent monitoring.',
+    summary:
+      'Control plane for LLM workflows — see what your agents are actually doing, not just their logs.',
     buttonText: 'View Website',
     buttonLink: 'https://app.llmcontrols.ai/',
     image: {
@@ -340,7 +348,8 @@ export const projects = [
     id: 'objs',
     title: 'Objs',
     category: ProjectCategory.AI,
-    summary: 'AI workspace that turns uploaded files into a searchable knowledge base.',
+    summary:
+      'AI workspace that turns a pile of uploaded files into something you can actually search.',
     buttonText: null,
     buttonLink: null,
     image: {

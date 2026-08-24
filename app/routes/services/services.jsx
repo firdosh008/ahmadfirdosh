@@ -66,7 +66,7 @@ const FAQS = [
 export const meta = () => {
   return baseMeta({
     title: 'Services',
-    description: `How working with ${config.name} works — process, timelines, and answers to common questions.`,
+    description: `Process, timelines, and straight answers — what a website, web app, or AI build with ${config.name} actually involves. No sales call required.`,
   });
 };
 

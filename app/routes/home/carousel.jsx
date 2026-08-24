@@ -98,8 +98,8 @@ export const ProjectCarousel = ({ id }) => {
   return (
     <section className={styles.stage} id={id} ref={stageRef} data-ring-stage>
       <div className={styles.pin}>
-        <SectionHeading eyebrow="More work" className={styles.heading} align="center">
-          More things I&apos;ve shipped
+        <SectionHeading eyebrow="All work" className={styles.heading} align="center">
+          Everything I&apos;ve built for clients
         </SectionHeading>
 
         <motion.div

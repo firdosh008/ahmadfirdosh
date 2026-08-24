@@ -18,18 +18,18 @@ export function Error({ error }) {
     switch (error.status) {
       case 404:
         return {
-          summary: 'Error: redacted',
+          summary: 'Page not found',
           message:
-            'This page could not be found. It either doesn’t exist or was deleted. Or perhaps you don’t exist and this webpage couldn’t find you.',
+            'This page isn’t here — it either moved or never existed. The work, the services, and a way to reach me are all one click away.',
         };
       case 405:
         return {
-          summary: 'Error: method denied',
+          summary: 'Something went wrong',
           message: error.data,
         };
       default:
         return {
-          summary: 'Error: anomaly',
+          summary: 'Something went wrong',
           message: error.statusText || error.data || error.toString(),
         };
     }

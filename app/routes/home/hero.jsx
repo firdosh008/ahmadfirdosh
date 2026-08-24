@@ -107,7 +107,7 @@ export function Hero({ id, sectionRef }) {
             <Text
               as="p"
               className={styles.eyebrowPill}
-              aria-label="Full-Stack and AI Developer"
+              aria-label="Full-stack developer and AI engineer"
             >
               <svg
                 className={styles.eyebrowSearchIcon}
@@ -133,14 +133,14 @@ export function Hero({ id, sectionRef }) {
           </motion.div>
           <motion.div variants={heroFadeUp}>
             <Heading level={1} as="h1" className={styles.title}>
-              Websites and apps that turn visitors into{' '}
-              <em className={styles.titleAccent}>customers</em>.
+              Websites and apps that bring in{' '}
+              <em className={styles.titleAccent}>customers</em>, not just compliments.
             </Heading>
           </motion.div>
           <motion.div variants={heroFadeUp}>
             <Text className={styles.subtitle} size="l" as="p">
-              Full-stack development for businesses and agencies — from a simple site to a
-              custom AI-powered tool.
+              Full-stack and AI development in Dehradun, for businesses and agencies —
+              from a first website to a custom tool.
             </Text>
           </motion.div>
           <motion.div className={styles.actions} variants={heroFadeUp}>
