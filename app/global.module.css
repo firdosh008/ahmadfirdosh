@@ -21,8 +21,7 @@
     transition: var(--durationM) ease;
     transition-property: background, opacity;
     color: var(--textBody);
-    width: 100vw;
-    overflow-x: hidden;
+    overflow-x: clip;
     opacity: 1;
     scrollbar-width: thin;
     scrollbar-color: color-mix(in lab, var(--text) 22%, transparent) transparent;

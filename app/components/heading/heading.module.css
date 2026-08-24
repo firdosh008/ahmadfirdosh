@@ -3,6 +3,10 @@
     font-family: var(--fontStack);
     line-height: var(--lineHeightTitle);
     color: var(--textTitle);
+    /* Long hyphenated words only break at the hyphen otherwise, which
+       overflows narrow viewports. */
+    overflow-wrap: anywhere;
+    min-width: 0;
 
     &[data-level='0'] {
       letter-spacing: -0.05em;

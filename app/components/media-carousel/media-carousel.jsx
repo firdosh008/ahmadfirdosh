@@ -31,6 +31,10 @@ export const MediaCarousel = ({ images, className }) => {
       className={classes(styles.carousel, className)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      // WCAG 2.2.2: auto-rotating content pauses for keyboard users too, not
+      // just on hover. Capture, so focus on the dot buttons counts.
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
     >
       {images.map((image, i) => (
         <img

@@ -28,7 +28,14 @@
     line-height: var(--lineHeightBody);
     padding: var(--spaceL) 0 var(--spaceM);
     overflow-x: hidden;
-    outline: none;
+    /* Reserved at rest so activating focus doesn't shift geometry, and never
+       transitioned - keyboard users need the indicator immediately. */
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &:focus-visible {
+      outline-color: var(--primary);
+    }
 
     &:-internal-autofill-selected {
       -webkit-text-fill-color: var(--textBody);
