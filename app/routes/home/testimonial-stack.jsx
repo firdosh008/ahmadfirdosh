@@ -100,7 +100,6 @@ export const TestimonialStack = ({ id }) => {
     rail.scrollLeft = Math.floor(LOOPS / 2) * CARDS.length * cards[0].offsetWidth;
 
     let frame = null;
-    let armed = true;
 
     const update = () => {
       frame = null;
@@ -156,20 +155,16 @@ export const TestimonialStack = ({ id }) => {
         card.style.zIndex = `${Math.round(1000 - place * 10)}`;
       });
 
-      // Leaving the section rewinds the row before the page carries on, so it
-      // is never left part-scrolled and always comes back to its first card —
-      // which is also where the flight expects to land.
+      // Once the section is mostly gone the row is put back where the flight
+      // expects to find it. Instantly, and only while it's off screen: there
+      // is nothing to watch, so there is nothing to animate — and nothing
+      // worth holding the page still for.
       const rect = section.getBoundingClientRect();
       const shown = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
       const home = Math.floor(LOOPS / 2) * CARDS.length * step;
 
-      // Re-armed here rather than in the wheel handler: the section can be
-      // re-entered by a scrollbar drag, a keypress or an anchor jump, none of
-      // which are wheel events, and a stale latch means no hold next time.
-      if (shown > rect.height * 0.9) armed = true;
-
       if (shown < rect.height * 0.4 && !tween && Math.abs(rail.scrollLeft - home) > 1) {
-        slide(home);
+        rail.scrollLeft = home;
       }
     };
 
@@ -202,49 +197,6 @@ export const TestimonialStack = ({ id }) => {
       tween = requestAnimationFrame(step);
     };
 
-    const home = () => Math.floor(LOOPS / 2) * CARDS.length * cards[0].offsetWidth;
-
-    // Leaving the section holds the page still until the row has rewound, so
-    // the reset finishes before the screen moves rather than racing it. Bounded
-    // by the tween and a hard timeout — a scroll that can't be released is a
-    // far worse bug than one that resets late.
-    let holding = false;
-    let release = null;
-
-    const hold = event => {
-      if (holding) {
-        event.preventDefault();
-        return;
-      }
-
-      const rect = section.getBoundingClientRect();
-      const shown = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-
-      // One departure gets one hold, however many times the wheel turns; the
-      // scroll loop re-arms it once the section is properly back.
-      if (!armed || shown < rect.height * 0.4) return;
-      if (Math.abs(rail.scrollLeft - home()) <= 1) return;
-
-      // Going up, the cards start flying back to the carousel on the first
-      // pixel of scroll — their clock runs off the section's top, which is
-      // spent on the way in and unwinds the moment you turn round. So the
-      // rewind has to happen before that pixel, not once the section is
-      // half gone. Going down the clock stays pinned at its far end and the
-      // cards sit still, so there it can wait until the row is on its way out.
-      if (!(event.deltaY < 0) && shown > rect.height * 0.9) return;
-
-      event.preventDefault();
-      holding = true;
-      armed = false;
-      slide(home(), () => {
-        holding = false;
-        clearTimeout(release);
-      });
-      release = setTimeout(() => {
-        holding = false;
-      }, 700);
-    };
-
     // Chrome maps a vertical wheel onto the horizontal axis when an element
     // can only scroll that way. On a carousel you're aiming at that's a
     // convenience; on one that covers half the section it means the page
@@ -255,8 +207,6 @@ export const TestimonialStack = ({ id }) => {
     // deltaMode matters: a wheel that reports lines (1) or pages (2) rather
     // than pixels (0) would otherwise crawl.
     const steer = event => {
-      // The rewind owns the wheel while it runs; leave it alone.
-      if (holding) return;
       // A real sideways swipe still belongs to the row.
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
 
@@ -281,11 +231,7 @@ export const TestimonialStack = ({ id }) => {
 
     update();
     rail.addEventListener('click', advance);
-    // Before the window-level hold, which still sees the event either way:
-    // preventDefault doesn't stop it propagating.
     rail.addEventListener('wheel', steer, { passive: false });
-    window.addEventListener('wheel', hold, { passive: false });
-    window.addEventListener('touchmove', hold, { passive: false });
     rail.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
@@ -299,9 +245,6 @@ export const TestimonialStack = ({ id }) => {
       if (tween) cancelAnimationFrame(tween);
       rail.removeEventListener('click', advance);
       rail.removeEventListener('wheel', steer);
-      clearTimeout(release);
-      window.removeEventListener('wheel', hold);
-      window.removeEventListener('touchmove', hold);
       rail.removeEventListener('scroll', schedule);
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
