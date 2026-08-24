@@ -18,6 +18,14 @@ const PEEK = 0.2; // of the front card's width that the whole stack shows past i
 const SHRINK = 0.9; // each step back
 const BEHIND = 2; // cards visible behind the front one; the rest hide under them
 const LOOPS = 20; // copies of the row in the rail, so the line never runs out
+const LIFT = '0 -10px'; // hover nudge on a card sitting behind the front one
+
+// The right-hand edge of the card sitting `place` deep, in stage pixels: where
+// it starts, plus its shrunken width. Built from the same three constants the
+// row is drawn with, so what a click thinks it hit and what you can actually
+// see can't come apart.
+const edgeOf = (place, width) =>
+  (width * PEEK * (1 - SHRINK ** place)) / (1 - SHRINK) + width * SHRINK ** place;
 
 const STAR_PATH = 'M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z';
 
@@ -100,6 +108,9 @@ export const TestimonialStack = ({ id }) => {
     rail.scrollLeft = Math.floor(LOOPS / 2) * CARDS.length * cards[0].offsetWidth;
 
     let frame = null;
+    // Which card the pointer is over, as a place rather than an index — the row
+    // wraps, so which card sits in a given spot changes as it scrolls. -1 is none.
+    let hovered = -1;
 
     const update = () => {
       frame = null;
@@ -131,6 +142,10 @@ export const TestimonialStack = ({ id }) => {
         card.style.transform = `translate3d(${toX}px, ${
           -height / 2
         }px, 0) scale(${toScale})`;
+        // `translate`, not folded into the transform above: that one is
+        // rewritten every frame and a transition on it would smear the row's
+        // own motion. The two compose, and only this half animates.
+        card.style.translate = Math.round(place) === hovered ? LIFT : '0 0';
         // Cards that have gone past the front fade as they slide off left.
         // --fade, not opacity: the flight layer owns --flown on the cards it
         // still has in the air, and the two multiply.
@@ -217,20 +232,58 @@ export const TestimonialStack = ({ id }) => {
       window.scrollBy(0, event.deltaY * scale);
     };
 
-    // The rail covers the cards, so a click on them lands here: anything to
-    // the right of the front card is the stack, and means "next".
-    const advance = event => {
+    // The rail covers the cards, so every click and every hover meant for them
+    // lands here instead, and which card was meant has to be worked back out
+    // of x. Place 0 is the card at the front; 1 and 2 are the strips peeking
+    // past its right edge.
+    const placeAt = clientX => {
       const front = cards[0];
-      const edge =
-        stage.getBoundingClientRect().left + front.offsetLeft + front.offsetWidth;
-      if (event.clientX <= edge) return;
+      const width = front.offsetWidth;
+      const x = clientX - (stage.getBoundingClientRect().left + front.offsetLeft);
+
+      for (let place = 0; place <= BEHIND; place += 1) {
+        if (x < edgeOf(place, width)) return place;
+      }
+
+      return BEHIND;
+    };
+
+    // Clicking a card brings that card forward — two deep means two steps, not
+    // one. The front card is already the one being read, so it does nothing.
+    const advance = event => {
+      const place = placeAt(event.clientX);
+      if (place <= 0) return;
       slide(
-        Math.min(rail.scrollLeft + front.offsetWidth, rail.scrollWidth - rail.clientWidth)
+        Math.min(
+          rail.scrollLeft + place * cards[0].offsetWidth,
+          rail.scrollWidth - rail.clientWidth
+        )
       );
+    };
+
+    const hover = event => {
+      const place = placeAt(event.clientX);
+      const next = place > 0 ? place : -1;
+
+      rail.style.cursor = next > 0 ? 'pointer' : '';
+      if (next === hovered) return;
+
+      hovered = next;
+      schedule();
+    };
+
+    const unhover = () => {
+      if (hovered === -1) return;
+
+      hovered = -1;
+      rail.style.cursor = '';
+      schedule();
     };
 
     update();
     rail.addEventListener('click', advance);
+    rail.addEventListener('mousemove', hover);
+    rail.addEventListener('mouseleave', unhover);
     rail.addEventListener('wheel', steer, { passive: false });
     rail.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('scroll', schedule, { passive: true });
@@ -244,6 +297,8 @@ export const TestimonialStack = ({ id }) => {
       if (frame) cancelAnimationFrame(frame);
       if (tween) cancelAnimationFrame(tween);
       rail.removeEventListener('click', advance);
+      rail.removeEventListener('mousemove', hover);
+      rail.removeEventListener('mouseleave', unhover);
       rail.removeEventListener('wheel', steer);
       rail.removeEventListener('scroll', schedule);
       window.removeEventListener('scroll', schedule);

@@ -147,6 +147,13 @@
     overflow: hidden;
     will-change: transform;
     backface-visibility: hidden;
+    /* The hover lift only — the row's positioning lives in `transform`, which
+       is rewritten every frame and must not be transitioned. */
+    transition: translate var(--durationS) var(--bezierFastoutSlowin);
+
+    @media (--mediaReduceMotion) {
+      transition: none;
+    }
 
     @media (--mediaMobile) {
       aspect-ratio: 3 / 4;
@@ -229,5 +236,4 @@
     flex: 0 0 var(--cardW);
     scroll-snap-align: start;
   }
-
 }
