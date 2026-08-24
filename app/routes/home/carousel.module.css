@@ -64,6 +64,10 @@
     height: clamp(300px, 42vh, 430px);
     perspective: 1400px;
     perspective-origin: 50% 50%;
+    /* Vertical stays the page's; sideways comes to the script, which turns the
+       ring with it. Without this, some browsers claim a horizontal swipe for
+       back-navigation and the wheel never sees it. */
+    touch-action: pan-y;
 
     @media (--mediaTablet) {
       height: clamp(250px, 36vh, 340px);
@@ -138,6 +142,26 @@
     border-radius: var(--cardRadius);
     box-shadow: 0 40px 70px -40px color-mix(in lab, var(--text) 45%, transparent);
     backface-visibility: hidden;
+    cursor: pointer;
+    /* The lift rides on `translate`, not folded into `transform`. That one is
+       the ring's 3D placement and is rewritten as the wheel turns — a
+       transition on it would smear the rotation. The two compose, and only
+       this half animates. */
+    transition: translate var(--durationS) var(--bezierFastoutSlowin);
+
+    &:hover:not([data-front]),
+    &:focus-visible:not([data-front]) {
+      translate: 0 -10px;
+    }
+
+    /* The card already facing you is where a click would send it. */
+    &[data-front] {
+      cursor: default;
+    }
+
+    @media (--mediaReduceMotion) {
+      transition: none;
+    }
 
     @media (--mediaTablet) {
       --radius: 540px;

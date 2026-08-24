@@ -9,7 +9,7 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { projects } from '~/data/projects';
 import { RING, SPIN_START, fillWindow } from './ring';
 import styles from './carousel.module.css';
@@ -21,7 +21,7 @@ const source = project =>
     : { srcSet: project.image.srcSet, placeholder: project.image.placeholder };
 
 // One hook set per card — useTransform can't be called in a loop in the parent.
-function RingCard({ item, index, progress, reduceMotion }) {
+function RingCard({ item, index, progress, reduceMotion, isFront, onSelect }) {
   const project = projects.find(entry => entry.id === item.id);
   const { start, end } = fillWindow(index);
   const opacity = useTransform(progress, [start, end], [0, 1]);
@@ -29,6 +29,7 @@ function RingCard({ item, index, progress, reduceMotion }) {
   // the achievements grid is already the right size, so this is a pure
   // cross-fade at the handover.
   const scale = useTransform(progress, [start, end], [item.from ? 1 : 0.9, 1]);
+  const select = () => !isFront && onSelect(item.angle);
 
   return (
     <div
@@ -36,6 +37,18 @@ function RingCard({ item, index, progress, reduceMotion }) {
       style={{ '--angle': `${item.angle}deg` }}
       data-ring-slot={item.from}
       data-ring-handoff={item.handoff}
+      // Drives the hover lift and the cursor: the card already facing you has
+      // nowhere to go, so it gets neither.
+      data-front={isFront || undefined}
+      role="button"
+      tabIndex={0}
+      aria-label={`Bring ${project.title} to the front`}
+      onClick={select}
+      onKeyDown={event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        select();
+      }}
     >
       <motion.div
         className={styles.fill}
@@ -92,6 +105,67 @@ export const ProjectCarousel = ({ id }) => {
     setActive(current => (current === front.index ? current : front.index));
   });
 
+  // Where the page has to sit for `angle` to be facing front. The ring's
+  // rotation is a pure function of scroll position — solving that function is
+  // what keeps a click, a swipe and the wheel all saying the same thing. A
+  // second, hand-held rotation would drift out of step the moment you scrolled.
+  const bringToFront = angle => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const share = SPIN_START + (1 - SPIN_START) * (angle / 360);
+    const top = stage.getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({
+      top: top + share * (stage.offsetHeight - window.innerHeight),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
+  };
+
+  // Sideways input — trackpad, wheel tilt, thumb — turns the wheel by moving
+  // the page, for the same reason the click does.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const onWheel = event => {
+      // Anything with more vertical than horizontal in it is a page scroll
+      // that happens to be a little crooked. Leave it alone.
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      event.preventDefault();
+      window.scrollBy(0, event.deltaX);
+    };
+
+    let from = null;
+
+    const onTouchStart = event => {
+      from = { x: event.touches[0].clientX, top: window.scrollY };
+    };
+
+    // Doubled: a thumb has only the screen's width to give, and at 1:1 a full
+    // swipe barely moves the wheel round.
+    const onTouchMove = event => {
+      if (from)
+        window.scrollTo({ top: from.top + (from.x - event.touches[0].clientX) * 2 });
+    };
+
+    const onTouchEnd = () => {
+      from = null;
+    };
+
+    stage.addEventListener('wheel', onWheel, { passive: false });
+    stage.addEventListener('touchstart', onTouchStart, { passive: true });
+    stage.addEventListener('touchmove', onTouchMove, { passive: true });
+    stage.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      stage.removeEventListener('wheel', onWheel);
+      stage.removeEventListener('touchstart', onTouchStart);
+      stage.removeEventListener('touchmove', onTouchMove);
+      stage.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
+
   const project = projects.find(entry => entry.id === RING[active].id);
   const isApp = RING[active].shape === 'app';
 
@@ -137,6 +211,8 @@ export const ProjectCarousel = ({ id }) => {
                 index={index}
                 progress={scrollYProgress}
                 reduceMotion={reduceMotion}
+                isFront={index === active}
+                onSelect={bringToFront}
                 key={item.id}
               />
             ))}
