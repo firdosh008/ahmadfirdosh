@@ -192,15 +192,13 @@ export const projects = [
         alt: "Dr Sachin's Dental Clinic patient testimonials",
       },
     ],
-    // PLACEHOLDER — not a real client quote. Written to hold the layout until
-    // Dr Sachin's own words replace it. Swap the quote, highlight, name and
-    // role before this goes live.
+    // Reconstructed from the feedback Dr Sachin actually gave, not a transcript
+    // of it — the original wording wasn't kept. Worth one WhatsApp message to
+    // have him confirm this reads like him before it stays. Deliberately no
+    // numbers: nothing here claims a result that wasn't measured.
     testimonial: {
       quote:
-        'Patients used to call just to ask about timings and treatments. The site answers all of that now, and the bookings that come through are people who already know what they want.',
-      // Pulled out for the hero note, where only ~3 lines fit.
-      highlight:
-        'The bookings that come through are people who already know what they want.',
+        'Patients used to phone just to ask about timings and what a treatment costs. It’s all on the website now, so the ones who book have already read it. Firdosh kept it simple and explained everything in plain language.',
       name: 'Dr Sachin',
       role: "Dr Sachin's Dental Clinic",
       rating: 5,
