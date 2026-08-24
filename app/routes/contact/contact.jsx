@@ -1,5 +1,4 @@
 import { Button } from '~/components/button';
-import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
 import { Footer } from '~/components/footer';
 import { Heading } from '~/components/heading';
@@ -131,7 +130,7 @@ export const Contact = () => {
               as="h1"
               style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
             >
-              <DecoderText text="Let’s talk" start={status !== 'exited'} delay={300} />
+              Let’s talk
             </Heading>
             <Divider
               className={styles.divider}
