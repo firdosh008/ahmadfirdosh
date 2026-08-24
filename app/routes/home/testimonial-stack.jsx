@@ -21,6 +21,37 @@ const LOOPS = 20; // copies of the row in the rail, so the line never runs out
 
 const STAR_PATH = 'M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z';
 
+// The page showing through the band's edge. Everything above the curve is
+// filled, so the band reads as having been cut by a wave rather than ending
+// square. Drawn once; the bottom edge is the same path turned 180deg.
+//
+// Every endpoint sits on the midline (50) and the control points swing past
+// the box — a quadratic only travels half way to its control, so reaching
+// y=20 and y=80 takes controls at -10 and 110. That's what gives the crests
+// their depth; putting the endpoints themselves at the extremes would just
+// flatten the curve between them. Three segments = one and a half cycles.
+const CREST = 'Q1200,110 960,50 T480,50 T0,50';
+
+// The two edges run the same crest but enclose opposite sides of it: the top
+// fills up to y=0, the bottom down to y=100. That inversion is what puts them
+// out of phase — where the page cuts into the band at the top it bulges away
+// at the bottom, so the band flows instead of pinching in and out together.
+// (Turning one edge 180deg would mirror it horizontally and land back in
+// phase, which is what it was doing before.)
+const WAVE_TOP = `M0,0 H1440 V50 ${CREST} Z`;
+const WAVE_BOTTOM = `M0,100 H1440 V50 ${CREST} Z`;
+
+const Wave = ({ className, d }) => (
+  <svg
+    className={className}
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path d={d} />
+  </svg>
+);
+
 // The ring slots that hand a card down to this stack, in slot order — and only
 // those whose project actually carries a testimonial. Pairing by project id
 // rather than by position is what keeps the two lists free to be reordered
@@ -42,7 +73,7 @@ const CARDS = projects
 
 // The row is circular: past the last card the first comes round again. Only the
 // drawing wraps — the rail underneath is a long ordinary scroller.
-const wrap = place => (((place + 1) % CARDS.length) + CARDS.length) % CARDS.length - 1;
+const wrap = place => ((((place + 1) % CARDS.length) + CARDS.length) % CARDS.length) - 1;
 
 export const source = project =>
   project.images?.[0]
@@ -62,6 +93,7 @@ export const TestimonialStack = ({ id }) => {
     if (!section || !stage || !rail) return;
 
     const cards = [...stage.querySelectorAll('[data-stack-card]')];
+    const panels = [...section.querySelectorAll('[data-stack-panel]')];
     if (!cards.length) return;
 
     // Start in the middle of the loops so the row runs both ways.
@@ -97,7 +129,9 @@ export const TestimonialStack = ({ id }) => {
             : (width * PEEK * (1 - SHRINK ** behind)) / (1 - SHRINK);
         const toScale = SHRINK ** behind;
 
-        card.style.transform = `translate3d(${toX}px, ${-height / 2}px, 0) scale(${toScale})`;
+        card.style.transform = `translate3d(${toX}px, ${
+          -height / 2
+        }px, 0) scale(${toScale})`;
         // Cards that have gone past the front fade as they slide off left.
         // --fade, not opacity: the flight layer owns --flown on the cards it
         // still has in the air, and the two multiply.
@@ -108,9 +142,15 @@ export const TestimonialStack = ({ id }) => {
           '--fade',
           `${clamp(1 + place * 1.2, 0, 1) * clamp(BEHIND + 1 - place)}`
         );
-        // Only the front card reads its quote — behind it the panel would be a
-        // sliver of clipped text.
-        card.style.setProperty('--panelOpacity', `${clamp(1 - place)}`);
+        // The quote sits beside the stack rather than on it, so its panel is
+        // a sibling keyed to the same index: whichever card is at the front
+        // fades its words in, and the rest crossfade out either way.
+        const panel = panels[index];
+        if (panel) {
+          const read = clamp(1 - Math.abs(place) * 1.4);
+          panel.style.opacity = `${read}`;
+          panel.style.pointerEvents = read > 0.9 ? 'auto' : 'none';
+        }
         // From its place, not its index: with the row wrapping, the card on its
         // way out has to stay above the one taking its spot.
         card.style.zIndex = `${Math.round(1000 - place * 10)}`;
@@ -209,7 +249,8 @@ export const TestimonialStack = ({ id }) => {
     // the right of the front card is the stack, and means "next".
     const advance = event => {
       const front = cards[0];
-      const edge = stage.getBoundingClientRect().left + front.offsetLeft + front.offsetWidth;
+      const edge =
+        stage.getBoundingClientRect().left + front.offsetLeft + front.offsetWidth;
       if (event.clientX <= edge) return;
       slide(
         Math.min(rail.scrollLeft + front.offsetWidth, rail.scrollWidth - rail.clientWidth)
@@ -245,57 +286,74 @@ export const TestimonialStack = ({ id }) => {
 
   return (
     <section className={styles.section} id={id} ref={sectionRef} data-stack-section>
+      <Wave className={styles.waveTop} d={WAVE_TOP} />
+      <Wave className={styles.waveBottom} d={WAVE_BOTTOM} />
+
       <SectionHeading eyebrow="Testimonials" className={styles.heading}>
-        What they said afterwards
+        In their own words
       </SectionHeading>
 
-      <div className={styles.viewport}>
-        <div className={styles.stage} ref={stageRef}>
+      <div className={styles.layout}>
+        <div className={styles.quotes}>
           {CARDS.map(project => (
-            <article className={styles.card} data-stack-card={project.id} key={project.id}>
-              <Image
-                cover
-                className={styles.media}
-                alt={project.title}
-                sizes="(max-width: 696px) 88vw, 760px"
-                {...source(project)}
-              />
-
-              <div className={styles.panel}>
-                <span className={styles.stars} aria-hidden="true">
-                  {Array.from({ length: project.testimonial.rating }, (_, star) => (
-                    <svg
-                      key={star}
-                      viewBox="0 0 16 16"
-                      width="13"
-                      height="13"
-                      fill="currentColor"
-                    >
-                      <path d={STAR_PATH} />
-                    </svg>
-                  ))}
-                </span>
-                <Text as="p" className={styles.quote}>
-                  {project.testimonial.quote}
-                </Text>
-                <Text as="p" size="s" className={styles.name}>
-                  {project.testimonial.name} · {project.testimonial.role}
-                </Text>
-              </div>
-            </article>
+            <figure
+              className={styles.panel}
+              data-stack-panel={project.id}
+              key={project.id}
+            >
+              <span className={styles.stars} aria-hidden="true">
+                {Array.from({ length: project.testimonial.rating }, (_, star) => (
+                  <svg
+                    key={star}
+                    viewBox="0 0 16 16"
+                    width="13"
+                    height="13"
+                    fill="currentColor"
+                  >
+                    <path d={STAR_PATH} />
+                  </svg>
+                ))}
+              </span>
+              <Text as="blockquote" className={styles.quote}>
+                {project.testimonial.quote}
+              </Text>
+              <Text as="figcaption" size="s" className={styles.name}>
+                {project.testimonial.name} · {project.testimonial.role}
+              </Text>
+            </figure>
           ))}
         </div>
 
-        {/* Input surface only — the arc above is drawn from its scroll offset. */}
-        <div
-          className={styles.rail}
-          ref={railRef}
-          tabIndex={0}
-          aria-label="Browse testimonials"
-        >
-          {Array.from({ length: CARDS.length * LOOPS }, (_, stop) => (
-            <div className={styles.railStop} key={stop} />
-          ))}
+        <div className={styles.viewport}>
+          <div className={styles.stage} ref={stageRef}>
+            {CARDS.map(project => (
+              <article
+                className={styles.card}
+                data-stack-card={project.id}
+                key={project.id}
+              >
+                <Image
+                  cover
+                  className={styles.media}
+                  alt={project.title}
+                  sizes="(max-width: 696px) 88vw, 560px"
+                  {...source(project)}
+                />
+              </article>
+            ))}
+          </div>
+
+          {/* Input surface only — the arc above is drawn from its scroll offset. */}
+          <div
+            className={styles.rail}
+            ref={railRef}
+            tabIndex={0}
+            aria-label="Browse testimonials"
+          >
+            {Array.from({ length: CARDS.length * LOOPS }, (_, stop) => (
+              <div className={styles.railStop} key={stop} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

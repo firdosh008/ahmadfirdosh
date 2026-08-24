@@ -125,6 +125,11 @@ const dark = {
   accent: 'oklch(60% 0.14 18)',
   error: 'oklch(65.91% 0.249 13.76)',
   text: 'oklch(95% 0.006 95)',
+  // A deliberately deep ground for the testimonial band. It can't just be
+  // --accent: the dark theme's accent is light enough that white text on it
+  // fails contrast, so the band carries its own pair in both themes.
+  surfaceDeep: 'oklch(26% 0.09 18)',
+  onSurfaceDeep: 'oklch(96% 0.006 95)',
   textTitle: 'var(--text)',
   textBody: 'color-mix(in lab, var(--text) 78%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 56%, transparent)',
@@ -137,6 +142,8 @@ const light = {
   accent: 'oklch(32% 0.11 18)',
   error: 'oklch(63.17% 0.259 25.41)',
   text: 'oklch(15% 0.005 90)',
+  surfaceDeep: 'oklch(32% 0.11 18)',
+  onSurfaceDeep: 'oklch(97% 0.005 90)',
   textTitle: 'color-mix(in lab, var(--text) 94%, transparent)',
   textBody: 'color-mix(in lab, var(--text) 72%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 52%, transparent)',
