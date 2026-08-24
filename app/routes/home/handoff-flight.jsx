@@ -16,6 +16,14 @@ const FLYABLE = 40;
 // last one still lands by the time the row is in place.
 const SPREAD = 0.3;
 
+// Where the flight is finished, as a share of the viewport measured down from
+// its top to the section's top edge. 0.55 means the last card is down while
+// the section's top is still past halfway down the screen — the travel belongs
+// to the approach, so by the time you're looking at the row nothing is moving.
+// Lower values run the landing later and let it finish under your eyes, which
+// is what it used to do.
+const LANDED_AT = 0.55;
+
 const FLIGHTS = HANDOFF.map(slot => ({
   slot,
   project: projects.find(project => project.id === slot.id),
@@ -54,14 +62,13 @@ export const HandoffFlight = () => {
 
       const viewport = window.innerHeight;
       // Runs while the row is still rising into view — the cards have to be
-      // travelling before you arrive, or they land in an empty section.
-      // Saturates a little before the section's top reaches the viewport's, so
-      // the last card is down while the row is still comfortably in frame. Tied
-      // to the exact top, the landing finished on the final pixel of scroll —
-      // which on mobile, where the section is one screen, meant the heading and
-      // the landed cards were never both on screen.
+      // travelling before you arrive, or they land in an empty section. It also
+      // has to be *over* before you arrive: saturating near the section's top
+      // meant the cards were still settling once the row filled the screen,
+      // so the movement read as the section glitching rather than as an
+      // entrance. LANDED_AT ends it during the approach instead.
       const approach = clamp(
-        (viewport - section.getBoundingClientRect().top) / (viewport * 0.85)
+        (viewport - section.getBoundingClientRect().top) / (viewport * (1 - LANDED_AT))
       );
 
       // Read every rect before writing anything — interleaving them forces a
@@ -73,9 +80,7 @@ export const HandoffFlight = () => {
         // Staggered from the back of the stack forward, so the card still in
         // the air is always the one that belongs on top. Delaying the far ones
         // instead would fly them over cards that had already landed.
-        const raw = clamp(
-          (approach - (items.length - 1 - index) * gap) / (1 - SPREAD)
-        );
+        const raw = clamp((approach - (items.length - 1 - index) * gap) / (1 - SPREAD));
 
         return {
           el,
