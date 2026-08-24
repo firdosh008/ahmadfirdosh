@@ -1,0 +1,17 @@
+@layer layout {
+  /* Same slot and same mobile rules as the theme toggle — they sit side by
+     side and must hide and reappear together. */
+  .toggle {
+    composes: toggle from './theme-toggle.module.css';
+  }
+
+  /* Its own path style rather than the theme toggle's: that one is the sun's
+     rays, dashed and set to fade out entirely in dark mode. */
+  .icon {
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
