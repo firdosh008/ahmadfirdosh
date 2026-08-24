@@ -1,8 +1,8 @@
-import { useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import { Icon } from '~/components/icon';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
-import { classes, cssProps, msToNum } from '~/utils/style';
+import { classes, msToNum } from '~/utils/style';
 import { TextArea } from './text-area';
 import styles from './input.module.css';
 
@@ -25,7 +25,6 @@ export const Input = ({
 }) => {
   const [focused, setFocused] = useState(false);
   const generatedId = useId();
-  const errorRef = useRef();
   const inputId = id || `${generatedId}input`;
   const labelId = `${inputId}-label`;
   const errorId = `${inputId}-error`;
@@ -73,7 +72,7 @@ export const Input = ({
         />
         <div className={styles.underline} data-focused={focused} />
       </div>
-      <Transition unmount in={error} timeout={msToNum(tokens.base.durationM)}>
+      <Transition in={error} timeout={msToNum(tokens.base.durationM)}>
         {({ visible, nodeRef }) => (
           <div
             ref={nodeRef}
@@ -81,11 +80,8 @@ export const Input = ({
             data-visible={visible}
             id={errorId}
             role="alert"
-            style={cssProps({
-              height: visible ? errorRef.current?.getBoundingClientRect().height : 0,
-            })}
           >
-            <div className={styles.errorMessage} ref={errorRef}>
+            <div className={styles.errorMessage}>
               <Icon icon="error" />
               {error}
             </div>

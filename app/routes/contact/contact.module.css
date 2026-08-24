@@ -207,11 +207,17 @@
   color: var(--textBody);
   font-family: var(--fontStack);
   font-size: calc((16 / 16) * 1rem);
-  padding: var(--spaceM) 0;
+  /* Same padding and line box as .input, so the two field types match
+     height rather than sitting 6px apart. */
+  line-height: var(--lineHeightBody);
+  padding: var(--spaceL) 0 var(--spaceM);
   cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 
   &:focus-visible {
     box-shadow: inset 0 -2px 0 0 var(--primary);
+    outline-color: var(--primary);
   }
 }
 

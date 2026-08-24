@@ -1,5 +1,4 @@
 import { Button } from '~/components/button';
-import { Icon } from '~/components/icon';
 import { Monogram } from '~/components/monogram';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
@@ -10,7 +9,7 @@ import { cssProps, media, msToNum, numToMs } from '~/utils/style';
 import { getWhatsAppLink } from '~/utils/contact';
 import { NavToggle } from './nav-toggle';
 import { ThemeToggle } from './theme-toggle';
-import { navLinks, socialLinks } from './nav-data';
+import { navLinks } from './nav-data';
 import config from '~/config.json';
 import styles from './navbar.module.css';
 
@@ -91,7 +90,6 @@ export const Navbar = () => {
         ))}
       </nav>
       <div className={styles.navActions}>
-        {!!socialLinks.length && <NavbarIcons desktop />}
         {!isMobile && (
           <Button className={styles.navCta} href={getWhatsAppLink()} icon="whatsapp">
             Let&apos;s chat
@@ -128,7 +126,6 @@ export const Navbar = () => {
               {label}
             </RouterLink>
           ))}
-          {!!socialLinks.length && <NavbarIcons />}
           <ThemeToggle isMobile />
         </nav>
       )}
@@ -137,19 +134,3 @@ export const Navbar = () => {
   );
 };
 
-const NavbarIcons = ({ desktop }) => (
-  <div className={styles.navIcons}>
-    {socialLinks.map(({ label, url, icon }) => (
-      <a
-        key={label}
-        className={styles.navIconLink}
-        aria-label={label}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Icon className={styles.navIcon} icon={icon} />
-      </a>
-    ))}
-  </div>
-);

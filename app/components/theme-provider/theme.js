@@ -131,12 +131,12 @@ const dark = {
 };
 
 const light = {
-  background: 'oklch(98% 0.004 90)',
+  background: 'oklch(98% 0.005 90)',
   backgroundLight: 'oklch(95% 0.006 95)',
   primary: 'oklch(32% 0.11 18)',
   accent: 'oklch(32% 0.11 18)',
   error: 'oklch(63.17% 0.259 25.41)',
-  text: 'oklch(15% 0.004 90)',
+  text: 'oklch(15% 0.005 90)',
   textTitle: 'color-mix(in lab, var(--text) 94%, transparent)',
   textBody: 'color-mix(in lab, var(--text) 72%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 52%, transparent)',

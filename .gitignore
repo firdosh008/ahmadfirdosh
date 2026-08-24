@@ -10,3 +10,7 @@ node_modules
 public/draco
 storybook-static
 .vercel
+
+.DS_Store
+.agents
+skills-lock.json

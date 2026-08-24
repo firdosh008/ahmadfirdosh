@@ -28,7 +28,14 @@
     line-height: var(--lineHeightBody);
     padding: var(--spaceL) 0 var(--spaceM);
     overflow-x: hidden;
-    outline: none;
+    /* Reserved at rest so activating focus doesn't shift geometry, and never
+       transitioned - keyboard users need the indicator immediately. */
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    &:focus-visible {
+      outline-color: var(--primary);
+    }
 
     &:-internal-autofill-selected {
       -webkit-text-fill-color: var(--textBody);
@@ -92,16 +99,14 @@
     }
   }
 
+  /* The slot is always reserved, so an appearing error fades in rather than
+     pushing the rest of the form down. */
   .error {
     transition-property: opacity;
     transition-duration: var(--durationM);
     transition-timing-function: var(--bezierFastoutSlowin);
-    height: var(--height);
+    min-height: calc(1lh + var(--spaceS));
     opacity: 0;
-
-    @media (--mediaUseMotion) {
-      transition-property: height, opacity;
-    }
 
     &[data-visible='true'] {
       opacity: 1;

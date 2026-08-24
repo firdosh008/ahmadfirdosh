@@ -10,7 +10,6 @@ export const SectionHeading = ({
   children,
   level = 2,
   align = 'start',
-  invert,
   className,
   ...rest
 }) => (
@@ -25,13 +24,13 @@ export const SectionHeading = ({
   >
     {!!eyebrow && (
       <motion.div variants={fadeUp}>
-        <Text className={styles.eyebrow} size="s" data-invert={invert}>
+        <Text className={styles.eyebrow} size="s">
           {eyebrow}
         </Text>
       </motion.div>
     )}
     <motion.div variants={fadeUp}>
-      <Heading level={level} className={styles.title} data-invert={invert}>
+      <Heading level={level} className={styles.title}>
         {children}
       </Heading>
     </motion.div>

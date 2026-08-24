@@ -6,20 +6,16 @@
     align-items: center;
     flex: 1;
     min-height: 0;
-    padding: 130px var(--spaceOuter) var(--space2XL);
+    /* Bottom padding stays heavier than the top so the hero sits into the
+       band below instead of floating above it (>= 1.3x). */
+    padding: var(--space4XL) var(--spaceOuter) var(--space5XL);
     /* The portrait PNG is mostly transparent margin and gets scaled way past
        the viewport width — clip it instead of growing the page sideways. */
     overflow: hidden;
 
     @media (--mediaTablet) {
       flex-direction: column;
-      padding-top: 110px;
       overflow: visible;
-    }
-
-    @media (--mediaMobile) {
-      padding-top: 110px;
-      padding-bottom: var(--space3XL);
     }
   }
 
@@ -306,10 +302,15 @@
     color: var(--textTitle);
   }
 
+  /* Emphasis is carried by the display face and the accent, not by italic:
+     an italicised word inside an upright headline is a top AI tell. */
   .titleAccent {
     font-family: var(--fontStackDisplay);
-    font-style: italic;
+    /* <em> is italic in the UA stylesheet; the emphasis is carried by the
+       display face and the accent instead. */
+    font-style: normal;
     font-weight: 400;
+    color: var(--accent);
   }
 
   .subtitle {
