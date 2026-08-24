@@ -1,161 +1,63 @@
-import notFoundPoster from '~/assets/notfound.jpg';
-import notFoundVideo from '~/assets/notfound.mp4';
-import flatlinePoster from '~/assets/flatline.png';
-import flatlineVideo from '~/assets/flatline.mp4';
 import { Button } from '~/components/button';
-import { DecoderText } from '~/components/decoder-text';
 import { Heading } from '~/components/heading';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
+import { getWhatsAppLink } from '~/utils/contact';
 import styles from './error.module.css';
-import { Image } from '~/components/image';
-import flatlineSkull from './error-flatline.svg';
+
+// The anime videos, the skull and the "Flatlined" gag came with the template.
+// They read as a developer's personal site; this one sells services, and the
+// people who land here are lost customers who need a way back. Dropping them
+// also takes ~7MB of mp4 out of the build, which matters more on a mid-range
+// Android over mobile data than the joke did (design spec §8.5).
+const NOT_FOUND = {
+  title: 'Page not found',
+  message:
+    'This page isn’t here — it either moved or never existed. The work, the services, and a way to reach me are all one click away.',
+};
+
+// Deliberately not `error.statusText`/`error.data`: a raw stack trace in front
+// of a clinic owner is worse than no detail at all, and the real error is
+// already in the server log.
+const FAILED = {
+  title: 'Something went wrong',
+  message:
+    'This one is on me, not on you. Try again in a moment — or send me a message and I’ll get it sorted.',
+};
 
 export function Error({ error }) {
-  const flatlined = !error.status;
-
-  const getMessage = () => {
-    switch (error.status) {
-      case 404:
-        return {
-          summary: 'Page not found',
-          message:
-            'This page isn’t here — it either moved or never existed. The work, the services, and a way to reach me are all one click away.',
-        };
-      case 405:
-        return {
-          summary: 'Something went wrong',
-          message: error.data,
-        };
-      default:
-        return {
-          summary: 'Something went wrong',
-          message: error.statusText || error.data || error.toString(),
-        };
-    }
-  };
-
-  const { summary, message } = getMessage();
+  const { title, message } = error.status === 404 ? NOT_FOUND : FAILED;
 
   return (
     <section className={styles.page}>
-      {flatlined && (
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-            [data-theme='dark'] {
-              --primary: oklch(69.27% 0.242 25.41);
-              --accent: oklch(69.27% 0.242 25.41);
-            }
-            [data-theme='light'] {
-              --primary: oklch(56.29% 0.182 26.5);
-              --accent: oklch(56.29% 0.182 26.5);
-            }
-          `,
-          }}
-        />
-      )}
       <Transition in>
         {({ visible }) => (
-          <>
-            <div className={styles.details}>
-              <div className={styles.text}>
-                {!flatlined && (
-                  <Heading
-                    className={styles.title}
-                    data-visible={visible}
-                    level={0}
-                    weight="bold"
-                  >
-                    {error.status}
-                  </Heading>
-                )}
-                {flatlined && (
-                  <Heading
-                    className={styles.titleFlatline}
-                    data-visible={visible}
-                    level={2}
-                    as="h1"
-                  >
-                    <svg width="60" height="80" viewBox="0 0 60 80">
-                      <use href={`${flatlineSkull}#skull`} />
-                    </svg>
-                    <DecoderText text="Flatlined" start={visible} delay={300} />
-                  </Heading>
-                )}
-                {!flatlined && (
-                  <Heading
-                    aria-hidden
-                    className={styles.subheading}
-                    data-visible={visible}
-                    as="h2"
-                    level={4}
-                  >
-                    <DecoderText text={summary} start={visible} delay={300} />
-                  </Heading>
-                )}
-                <Text className={styles.description} data-visible={visible} as="p">
-                  {message}
-                </Text>
-                {flatlined ? (
-                  <Button
-                    secondary
-                    iconHoverShift
-                    className={styles.button}
-                    data-visible={visible}
-                    href="https://www.youtube.com/watch?v=EuQzHGcsjlA"
-                    icon="chevron-right"
-                  >
-                    Emotional support
-                  </Button>
-                ) : (
-                  <Button
-                    secondary
-                    iconHoverShift
-                    className={styles.button}
-                    data-visible={visible}
-                    href="/"
-                    icon="chevron-right"
-                  >
-                    Back to homepage
-                  </Button>
-                )}
-              </div>
+          <div className={styles.text}>
+            {!!error.status && (
+              <Heading
+                className={styles.status}
+                data-visible={visible}
+                level={0}
+                weight="bold"
+              >
+                {error.status}
+              </Heading>
+            )}
+            <Heading className={styles.title} data-visible={visible} as="h1" level={3}>
+              {title}
+            </Heading>
+            <Text className={styles.description} data-visible={visible} as="p" size="l">
+              {message}
+            </Text>
+            <div className={styles.actions} data-visible={visible}>
+              <Button iconEnd="arrow-right" iconHoverShift href="/">
+                Back to homepage
+              </Button>
+              <Button secondary icon="whatsapp" iconHoverShift href={getWhatsAppLink()}>
+                Chat on WhatsApp
+              </Button>
             </div>
-
-            <div className={styles.videoContainer} data-visible={visible}>
-              <Image
-                reveal
-                cover
-                noPauseButton
-                delay={600}
-                className={styles.video}
-                src={flatlined ? flatlineVideo : notFoundVideo}
-                placeholder={flatlined ? flatlinePoster : notFoundPoster}
-              />
-              {flatlined ? (
-                <a
-                  className={styles.credit}
-                  data-visible={visible}
-                  href="https://www.imdb.com/title/tt0318871/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Animation from Berserk (1997)
-                </a>
-              ) : (
-                <a
-                  className={styles.credit}
-                  data-visible={visible}
-                  href="https://www.imdb.com/title/tt0113568/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Animation from Ghost in the Shell (1995)
-                </a>
-              )}
-            </div>
-          </>
+          </div>
         )}
       </Transition>
     </section>
