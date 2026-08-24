@@ -211,6 +211,11 @@
        rail becomes a vertical scroller with nowhere to go, which eats the wheel
        and pins the page wherever the cursor is over the cards. */
     overflow: auto hidden;
+    /* The rail handles horizontal pans and nothing else. Without this a
+       vertical drag over the cards is claimed by this scroller — which can
+       only move sideways — and the page stops dead under the finger. The
+       wheel equivalent is handled in JS; this is the touch half. */
+    touch-action: pan-x;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
