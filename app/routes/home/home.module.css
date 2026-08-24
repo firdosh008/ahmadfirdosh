@@ -51,6 +51,8 @@
 
   @media (--mediaMobile) {
     min-height: 0;
+    flex-direction: column;
+    gap: var(--space2XL);
   }
 }
 
@@ -80,9 +82,17 @@
   list-style: none;
   pointer-events: none;
 
-  /* No room to scatter anything on a phone — the words take the whole width. */
+  /* No room to scatter at phone width — the panel takes the whole width, so
+     anything placed behind it is lost. The marks line up under the ask
+     instead of disappearing. */
   @media (--mediaMobile) {
-    display: none;
+    order: 1;
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    justify-items: center;
+    gap: var(--spaceS);
+    width: 100%;
   }
 }
 
@@ -104,6 +114,15 @@
   @media (--mediaTablet) {
     width: 44px;
     height: 44px;
+  }
+
+  @media (--mediaMobile) {
+    position: static;
+    translate: none;
+    width: 100%;
+    max-width: 44px;
+    height: auto;
+    aspect-ratio: 1;
   }
 }
 
